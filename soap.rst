@@ -53,7 +53,7 @@ Tools können viele dieser Pain Points abnehmen.
 SOAP Envelope
 =============
 
-Beispiel::
+.. code-block:: xml
 
     <?xml version="1.0"?>
     <soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
