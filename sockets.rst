@@ -12,11 +12,14 @@ Mechanismus
 Ein Socket ist eine eindeutige Verbindung zwischen eine Client (IP + Port) und einem
 Server (IP + Port).
 
-.. CAUTION:: Things that can go wrong
+.. CAUTION::
 
-   * Attempt to connect to port that nobody is listening on
-   * Attempt to bind to port that is already in use (other program listening)
-   * Protocol mismatches (Format stimmt nicht überein, Buffer überläuft)
+   Typische Fehler
+   ^^^^^^^^^^^^^^^
+
+   * Mit einem Port zu verbinden, für den kein BIND und LISTEN ausgeführt wurde 
+   * BIND auf Port machen, der bereits belegt ist
+   * Protocol Mismatches (Format stimmt nicht überein, Buffer überläuft)
 
 Client
 ^^^^^^
