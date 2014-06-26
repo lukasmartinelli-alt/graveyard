@@ -94,7 +94,9 @@ RMI Beispiel
 Server und Client
 ^^^^^^^^^^^^^^^^^
 Es muss ein Interface für die Remote-Methoden erstellt werden, dass sowohl
-dem Client, als auch dem Server bekannt ist::
+dem Client, als auch dem Server bekannt ist
+
+.. code-block:: xml
 
     import java.rmi.Remote;
     import java.rmi.RemoteException;
@@ -104,7 +106,9 @@ dem Client, als auch dem Server bekannt ist::
 
 Server
 ^^^^^^
-Der Server implementiert nun dieses Interface::
+Der Server implementiert nun dieses Interface
+
+.. code-block:: xml
 
     import java.rmi.RemoteException;
     import java.rmi.server.UnicastRemoteObject;
