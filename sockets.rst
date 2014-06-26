@@ -81,7 +81,9 @@ Die Klasse Socket in Java benutzt standardmässig einen TCP/IP Socket.
 
 Server
 ^^^^^^
-Beispiel für einen Single-Threaded Server, welcher die aktuelle Zeit liefert::
+Beispiel für einen Single-Threaded Server, welcher die aktuelle Zeit liefert
+
+.. code-block:: java 
 
     public class TimeServer {
         public static void main(String args[]) throws Exception {
@@ -105,7 +107,9 @@ können.
 
 Client
 ^^^^^^
-Beispiel für den Client der die Zeit vom Server holt::
+Beispiel für den Client der die Zeit vom Server holt
+
+.. code-block:: java 
 
     public class TimeClient {
         public static void main(String args[]) throws IOException {

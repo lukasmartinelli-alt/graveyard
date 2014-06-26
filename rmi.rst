@@ -96,7 +96,7 @@ Server und Client
 Es muss ein Interface für die Remote-Methoden erstellt werden, dass sowohl
 dem Client, als auch dem Server bekannt ist
 
-.. code-block:: xml
+.. code-block:: java 
 
     import java.rmi.Remote;
     import java.rmi.RemoteException;
@@ -108,7 +108,7 @@ Server
 ^^^^^^
 Der Server implementiert nun dieses Interface
 
-.. code-block:: xml
+.. code-block:: java 
 
     import java.rmi.RemoteException;
     import java.rmi.server.UnicastRemoteObject;
@@ -123,7 +123,9 @@ Der Server implementiert nun dieses Interface
     }
 
 Nun muss ein Remote Object der Implementierung erzeugt und bei der RMI-Registry
-angemeldet::
+angemeldet werden.
+
+.. code-block:: java 
 
     import java.rmi.Naming;
     public class HelloServer {
@@ -139,7 +141,9 @@ Client
 ^^^^^^
 
 Zuerst muss das Remote Object von der RMI-Registry abgeholt werden.
-Danach können wir auf dem Interface alle definierten Methoden aufrufen::
+Danach können wir auf dem Interface alle definierten Methoden aufrufen
+
+.. code-block:: java 
 
     import java.rmi.*;
     public class RmiClient {
@@ -180,7 +184,9 @@ geschrieben.
 .. image:: images/binary-serialized-java-object.png
 
 Um in Java ein Klasse serialisierbar zu machen, muss das Objekt mit dem Marker Interface
-`java.io.Serializable` ausgezeichnet werden::
+`java.io.Serializable` ausgezeichnet werden
+
+.. code-block:: java 
 
     public class Person implements Serializable {
         private static final long serialVersionUID = 1L;
