@@ -16,7 +16,8 @@ Inhaltsverzeichnis:
    rpc
    messaging
    rmi
-   soap 
+   soap
+   nfr
 
 Indices and tables
 ==================

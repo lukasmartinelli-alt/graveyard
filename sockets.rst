@@ -14,18 +14,17 @@ Server (IP + Port).
 
 .. CAUTION::
 
-   Typische Fehler
-   ^^^^^^^^^^^^^^^
+   Typische Fehler:
 
-   * Mit einem Port zu verbinden, für den kein BIND und LISTEN ausgeführt wurde 
+   * Mit einem Port zu verbinden, für den kein BIND und LISTEN ausgeführt wurde
    * BIND auf Port machen, der bereits belegt ist
    * Protocol Mismatches (Format stimmt nicht überein, Buffer überläuft)
 
 Client
 ^^^^^^
-Client kennt Hostname und Port für Connect mit Server:
+Client kennt Hostname und Port für den `CONNECT` mit dem Server:
 
-1. stellt Connect her
+1. stellt eine Verbindung her
 2. erhält Socket Objekt
 3. kommuniziert mit Methoden des Socket Objekts
 
@@ -33,9 +32,9 @@ Client kennt Hostname und Port für Connect mit Server:
 
 Server
 ^^^^^^
-Server kennt eigenen Port und ist im Listen Modus:
+Server kennt eigenen Port und ist im `LISTEN` Modus:
 
-1. Listen: Wartet bis Client über den Connect Port verbindet
+1. Wartet bis Client über den Connect Port verbindet
 2. akzeptiert Request
 3. erzeugt für jeden Request einen neuen Socket (neuer Port)
    um auf den Request zu antworten
@@ -86,7 +85,7 @@ Server
 ^^^^^^
 Beispiel für einen Single-Threaded Server, welcher die aktuelle Zeit liefert
 
-.. code-block:: java 
+.. code-block:: java
 
     public class TimeServer {
         public static void main(String args[]) throws Exception {
@@ -112,7 +111,7 @@ Client
 ^^^^^^
 Beispiel für den Client der die Zeit vom Server holt
 
-.. code-block:: java 
+.. code-block:: java
 
     public class TimeClient {
         public static void main(String args[]) throws IOException {
@@ -142,10 +141,7 @@ UDP und Multicast
 
 Multithreaded Server
 --------------------
-Fragen:
 
-* Can one program listen to and accept connections on multiple ports?
-* How can multiple clients connect to the same server without blocking the port?
 
 TCP/IP vs UDP/IP
 ----------------

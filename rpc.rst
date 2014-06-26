@@ -1,9 +1,10 @@
 Remote Procedure Call
 =====================
-Zwei Designdimensionen:
+Es gibt zwei Designdimensionen:
 
-* lokaler Aufruf: Kommunikation mit nächsttieferer lokaler Schicht
-* remote Aufruf: Kommunikation mit derselben Schicht auf entferntem Rechner
+**lokaler Aufruf:** Kommunikation mit nächsttieferer lokaler Schicht
+
+** remote Aufruf:** Kommunikation mit derselben Schicht auf entferntem Rechner
 
 Blocking vs Non-Blocking
 ------------------------
@@ -13,13 +14,12 @@ muss dies unbedingt dokumentiert werden.
 Bringt ausserdem viele Fehlermöglichkeiten mit sich. Bei blockierenden Methoden
 deshalb immer ein Timeout setzen.
 
-======================   ==============   =================
-                         Synchrones       Asynchrones
-                         Protokoll        Protokoll
-======================   ==============   =================
-Blocking API Call        Ja               Situationsbedingt
-Non-blocking API Call    Selten           Ja
-======================   ==============   =================
+======================   ====================   =====================
+                         Synchrones Protokoll   Asynchrones Protokoll
+======================   ====================   =====================
+Blocking API Call        Ja                     Situationsbedingt
+Non-blocking API Call    Selten                 Ja
+======================   ====================   =====================
 
 Synchronous Remote Procedure Call
 ---------------------------------
