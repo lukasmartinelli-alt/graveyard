@@ -18,6 +18,27 @@ Non-Functional Requirements (NFRs)
 Performance NFR
 ---------------
 
+.. danger:: TODO
+
+Performance and Scalability Tactics
+-----------------------------------
+
+* Optimize repeated processing
+* Reduce contention via replication
+* Prioritize processing
+* Consolidate related workload
+* Distribute processing over time
+* Minimize the use of shared resources
+* Reuse resources and results
+* Partition and parallelize
+* Scale up or scale out
+* Degrade gracefully
+* Use asynchronous processing
+* Relax transactional consistency
+* Make design compromises
+
+.. danger:: TODO
+
 Quality Attributes (QAs)
 ------------------------
 * QA Accuracy: orders must not be lost, resource reservations must be undone
@@ -39,13 +60,14 @@ zu modellieren.
 
 .. image:: images/deployment-diagram-overview-manifestation.png
 
-.. image:: image/deployment-diagram-overview-specification.png
+.. image:: images/deployment-diagram-overview-specification.png
 
 UML Komponenten Diagramm
 ------------------------
 
 .. image:: images/component-diagram-overview.png
 
+========================
 MSDN Deployment Patterns
 ========================
 
@@ -74,6 +96,7 @@ Failover Cluster
 
 .. image:: images/failover-cluster.png
 
+===================
 Performance Testing
 ===================
 
