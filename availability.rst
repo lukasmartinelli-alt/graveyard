@@ -101,4 +101,19 @@ A hot server is a backup server that receives regular updates and
 is standing by ready (on hot standby) to take over immediately in
 the event of a failover.
 
+Single Point of Failure (SPOF)
+------------------------------
+Potentielle SPOFs:
+
+Active Directory Server 
+    Schlägt die Authentisierung / Autorisierung fehl läuft meistens gar nichts mehr
+Externe Komponenten
+    Zum Beispiel der Shipping Scheduler der nicht so oft gebraucht wird und deshalb
+    nicht redundant ausgelegt ist
+Garbage Collector
+    Läuft der GC nicht mehr, wird das Programm irgendwann abstürzen.
+
+
+
+
 
