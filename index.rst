@@ -18,6 +18,11 @@ Inhaltsverzeichnis:
    rmi
    soap
    nfr
+   scalability
+   availability
+   api
+   dcs
+   system-management 
 
 Indices and tables
 ==================
