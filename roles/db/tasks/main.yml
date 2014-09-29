@@ -1,0 +1,9 @@
+- name: Install server and Python support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  notify: Start postgres server
+  with_items:
+    - postgresql
+    - python-psycopg2
+
+- include: database.yml

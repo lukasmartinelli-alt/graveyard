@@ -22,3 +22,21 @@
     - postfix
     - dovecot
     - dkim
+
+- hosts: webmail
+    roles:
+    - webmail
+
+- hosts: mta
+    roles:
+    - mta
+
+- hosts: mda
+    roles:
+    - mda
+
+- hosts: dbservers
+    roles:
+    - db
+
+

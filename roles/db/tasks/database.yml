@@ -1,16 +1,15 @@
 - name: Create database for mail users
-  mysql_db: name={{ mysql_db }} state=present
+  postgresql_db: name={{ db_name }} state=present
 
 - name: Create Dovecot user
-  mysql_user: name={{ mysql_user }}
-              password={{ mysql_pass }}
+  postgresql_user: name={{ db_dovecot_user }}
+              password={{ db_dovecot_pass }}
               host=localhost
               priv=*.*:ALL,GRANT
               state=present
-
 
 - name: Copy table setup script
   copy: src=tables.sql dest=/tmp/tables.sql
 
 - name: Create tables with setup script
-  shell: cat /tmp/tables.sql | mysql -u {{ mysql_user }} -p{{ mysql_pass }} {{ mysql_db }}
+  shell: cat /tmp/tables.sql | psql -u {{ db_deploy_user }} -p{{ db_deploy_pass }} {{ db_name }}
