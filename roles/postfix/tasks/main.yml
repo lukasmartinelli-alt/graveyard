@@ -1,0 +1,28 @@
+- name: Install Postfix and MySQL support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  notify: Start postfix server
+  with_items:
+    - postfix
+    - postfix-mysql
+
+- name: Copy Postfix configuration
+  sudo: yes
+  template: src=main.cf dest=/etc/postfix/main.cf
+
+- name: Copy Postfix master configuration
+  sudo: yes
+  copy: src=master.cf dest=/etc/postfix/master.cf
+
+- name: Copy MySQL mailboxes
+  sudo: yes
+  template: src=mysql-virtual-mailbox-domains.cf dest=/etc/postfix/mysql-virtual-mailbox-domains.cf
+
+- name: Copy MySQL mapping between mail boxes and users
+  sudo: yes
+  template: src=mysql-virtual-mailbox-maps.cf dest=/etc/postfix/mysql-virtual-mailbox-maps.cf
+
+- name: Copy MySQL virtual aliases
+  sudo: yes
+  notify: Restart postfix server
+  template: src=mysql-virtual-alias-maps.cf dest=/etc/postfix/mysql-virtual-alias-maps.cf

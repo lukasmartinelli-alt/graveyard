@@ -1,0 +1,16 @@
+- name: Install dspam together with dovecot and and postfix support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  with_items:
+    - dspam
+    - dovecot-antispam
+    - postfix-pcre
+    - dovecot-sieve
+
+- name: Copy dspam config
+  sudo: yes
+  template: src=dspam.conf dest=/etc/dspam/dspam.conf
+
+- name: Copy dspam preferences
+  sudo: yes
+  copy: src=default.prefs dest=/etc/dspam/default.prefs

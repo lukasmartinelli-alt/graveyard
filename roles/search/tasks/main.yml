@@ -1,0 +1,15 @@
+- name: Install solr for fulltext search
+  sudo: yes
+  action: apt name={{ item }} state=present
+  with_items:
+    - solr-tomcat
+    - dovecot-solr
+
+- name: Copy Tomcat configuration
+  sudo: yes
+  template: src=server.xml dest=/etc/tomcat6/server.xml
+
+- name: Copy Solr configuration
+  sudo: yes
+  copy: src=solrconfig.xml dest=/etc/solr/conf/solrconfig.xml
+

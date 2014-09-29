@@ -1,0 +1,17 @@
+- name: Install server and Python support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  notify: Start mysql server
+  with_items:
+    - mysql-server
+    - python-mysqldb
+
+- name: Added script for creating domains
+  sudo: yes
+  template: src=dovecot_add_domain.sh dest=/home/ubuntu/dovecot_add_domain.sh
+
+- name: Added script for creating users
+  sudo: yes
+  template: src=dovecot_add_user.sh dest=/home/ubuntu/dovecot_add_user.sh
+
+- include: database.yml

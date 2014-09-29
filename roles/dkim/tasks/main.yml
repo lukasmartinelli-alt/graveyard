@@ -1,0 +1,18 @@
+- name: Install DKIM service and tools
+  sudo: yes
+  action: apt name={{ item }} state=present
+  with_items:
+    - opendkim
+    - opendkim-tools
+
+- name: Copy KeyTable
+  sudo: yes
+  template: src=KeyTable dest=/etc/opendkim/KeyTable
+
+- name: Copy TrustedHosts
+  sudo: yes
+  copy: src=TrustedHosts dest=/etc/opendkim/TrustedHosts
+
+- name: Copy SigningTable
+  sudo: yes
+  template: src=SigningTable dest=/etc/opendkim/SigningTable

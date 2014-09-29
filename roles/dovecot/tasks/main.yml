@@ -1,0 +1,38 @@
+- name: Install Dovecot and MySQL support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  notify: Start dovecot server
+  with_items:
+    - dovecot-imapd
+    - dovecot-mysql
+    - dovecot-lmtpd
+
+- name: Copy mail configuration
+  sudo: yes
+  template: src=10-mail.conf dest=/etc/dovecot/conf.d/10-mail.conf
+
+- name: Copy auth configuration
+  sudo: yes
+  copy: src=10-auth.conf dest=/etc/dovecot/conf.d/10-auth.conf
+
+- name: Copy auth sql extension
+  sudo: yes
+  template: src=auth-sql.conf.ext dest=/etc/dovecot/conf.d/auth-sql.conf.ext
+
+- name: Copy sql extension
+  sudo: yes
+  template: src=dovecot-sql.conf.ext dest=/etc/dovecot/dovecot-sql.conf.ext
+
+- name: Copy master config
+  sudo: yes
+  copy: src=10-master.conf dest=/etc/dovecot/conf.d/10-master.conf
+
+- name: Copy SSL configuration
+  sudo: yes
+  notify: Restart dovecot server
+  template: src=10-ssl.conf dest=/etc/dovecot/conf.d/10-ssl.conf
+
+
+
+
+

@@ -1,0 +1,2 @@
+mail._domainkey	IN	TXT	( "v=DKIM1; h=rsa-sha256; k=rsa; s=email; "
+	  "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnYWRksv7VPi4OE8ysEYX1je3mEJvB8kw8+eovHQv1QMw/0jkk9OknUJiGEbJP+1pEPGWG1oGMqw32Sza5Mo85KpTyp33ggXAulhEDyt8DCLeaDIEkrStzq1FR+s4yoAKT30c85/h9UW1+thvebA16Bm0c9/FfM5EL8/1rreiQVwIDAQAB" )  ; ----- DKIM key mail for lukasmartinelli.ch

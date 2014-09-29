@@ -1,0 +1,5 @@
+- name: Start dovecot server
+  service: name=dovecot state=started enabled=yes
+
+- name: Restart dovecot server
+  service: name=dovecot state=restarted
