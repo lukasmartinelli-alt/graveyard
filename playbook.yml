@@ -9,6 +9,9 @@
     db_dovecot_pass: 127lkasfb
     db_postfix_user: postfix
     db_postfix_pass: 12xfx_341
+    mail_dir: "/var/mail/%d/%n"
+    mail_user: mail
   roles:
     - db
+    - mta
     - mda

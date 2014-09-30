@@ -27,7 +27,7 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_loglevel = 2
 smtpd_tls_received_header = yes
 smtpd_sasl_type = dovecot
-smtpd_sasl_path = inet:{{ mda_proxy_host }}:{{ mda_proxy_port }}
+smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
 smtpd_recipient_restrictions =
         permit_sasl_authenticated
@@ -48,9 +48,7 @@ mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
 
-
-
-virtual_transport = lmtp:inet:{{ mda_proxy_host }}:{{ mda_proxy_port }}
+virtual_transport = lmtp:unix:private/dovecot-lmtp
 virtual_mailbox_domains = pgsql:/etc/postfix/pgsql-virtual-mailbox-domains.cf
 virtual_mailbox_maps = pgsql:/etc/postfix/pgsql-virtual-mailbox-maps.cf
 virtual_alias_maps = pgsql:/etc/postfix/pgsql-virtual-alias-maps.cf
