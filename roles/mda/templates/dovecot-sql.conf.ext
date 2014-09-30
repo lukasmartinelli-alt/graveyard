@@ -29,8 +29,7 @@
 # );
 
 # Database driver: mysql, pgsql, sqlite
-driver = mysql
-
+driver = pgsql
 # Database connection string. This is driver-specific setting.
 #
 # HA / round-robin load-balancing is supported by giving multiple host
@@ -62,11 +61,10 @@ driver = mysql
 #   The path to the database file.
 #
 # Examples:
-connect = host=127.0.0.1 dbname={{ mysql_db }} user={{ mysql_user }} password={{ mysql_pass }}
 #   connect = host=sql.example.com dbname=virtual user=virtual password=blarg
 #   connect = /etc/dovecot/authdb.sqlite
 #
-#connect =
+connect = host={{ db_host }} dbname={{ db_name }} user={{ db_dovecot_user }} password={{ db_dovecot_pass }}
 
 # Default password scheme.
 #
@@ -132,7 +130,7 @@ default_pass_scheme = SHA512-CRYPT
 # string. For example:
 password_query = \
   SELECT email AS user, password \
-  FROM virtual_users WHERE email = '%u'
+  FROM users WHERE email = '%u'
 
 # Query to get a list of all usernames.
 #iterate_query = SELECT username AS user FROM users

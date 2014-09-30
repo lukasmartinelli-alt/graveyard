@@ -10,6 +10,14 @@
     db_postfix_pass: 12xfx_341
   roles:
     - db
+- hosts: mda
+  vars:
+    db_host: elephant
+    db_name: mailgenic
+    db_dovecot_user: dovecot
+    db_dovecot_pass: 127lkasfb
+  roles:
+    - mda
 #- hosts: mta
 #  vars:
 #    db_name: mailgenic
