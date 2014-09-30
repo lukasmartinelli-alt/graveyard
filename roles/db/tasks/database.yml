@@ -1,15 +1,20 @@
-- name: Create database for mail users
-  postgresql_db: name={{ db_name }} state=present
-
-- name: Create Dovecot user
-  postgresql_user: name={{ db_dovecot_user }}
-              password={{ db_dovecot_pass }}
-              host=localhost
-              priv=*.*:ALL,GRANT
+- name: Create deploy user
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: db={{ db_name }}
+              name={{ db_deploy_user }}
+              password={{ db_deploy_pass }}
               state=present
+
+- name: Create database for mail users
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db: name={{ db_name }} owner={{ db_deploy_user }} state=present
 
 - name: Copy table setup script
   copy: src=tables.sql dest=/tmp/tables.sql
 
 - name: Create tables with setup script
-  shell: cat /tmp/tables.sql | psql -u {{ db_deploy_user }} -p{{ db_deploy_pass }} {{ db_name }}
+  environment:
+    PGPASSWORD: db_deploy_pass
+  shell: psql -U {{ db_deploy_user }} -d {{ db_name}} -a -f /tmp/tables.sql

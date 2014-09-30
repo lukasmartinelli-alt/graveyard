@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Run ansible playbooks for defined groups
   config.vm.provision "ansible" do |ansible|
-    ansible.verbose = "vvv"
+    ansible.verbose = "vv"
     ansible.groups = {
       "db" => ["alpha"],
       "mda" => ["gamma", "delta"],

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: db
   vars:
     db_name: mailgenic
     db_deploy_user: deploy
@@ -8,7 +8,5 @@
     db_dovecot_pass: 127lkasfb
     db_postfix_user: postfix
     db_postfix_pass: 12xfx_341
-
-- hosts: db
   roles:
     - db
