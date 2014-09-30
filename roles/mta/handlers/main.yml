@@ -1,5 +1,5 @@
-- name: Start postfix server
+- name: start postfix server
   service: name=postfix state=started enabled=yes
 
-- name: Restart postfix server
+- name: restart postfix server
   service: name=postfix state=restarted

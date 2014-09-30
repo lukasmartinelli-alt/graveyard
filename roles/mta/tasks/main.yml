@@ -1,0 +1,28 @@
+- name: install Postfix and Postgres support
+  sudo: yes
+  action: apt name={{ item }} state=present
+  notify: start postfix server
+  with_items:
+    - postfix
+    - postfix-pgsql
+
+- name: copy Postfix configuration
+  sudo: yes
+  template: src=main.cf dest=/etc/postfix/main.cf
+
+- name: copy Postfix master configuration
+  sudo: yes
+  copy: src=master.cf dest=/etc/postfix/master.cf
+
+- name: copy Postgres virtual mailbox config
+  sudo: yes
+  template: src=pgsql-virtual-mailbox-domains.cf dest=/etc/postfix/pgsql-virtual-mailbox-domains.cf
+
+- name: copy Postgres mapping between mailboxes and users
+  sudo: yes
+  template: src=pgsql-virtual-mailbox-maps.cf dest=/etc/postfix/pgsql-virtual-mailbox-maps.cf
+
+- name: copy Postgres virtual aliases config
+  sudo: yes
+  notify: Restart postfix server
+  template: src=pgsql-virtual-alias-maps.cf dest=/etc/postfix/pgsql-virtual-alias-maps.cf

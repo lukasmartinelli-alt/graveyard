@@ -1,7 +1,7 @@
-- name: Install server and Python support
+- name: install server and Python support
   sudo: yes
   action: apt name={{ item }} state=present
-  notify: Start postgresql server
+  notify: start postgresql server
   with_items:
     - postgresql
     - libpq-dev
