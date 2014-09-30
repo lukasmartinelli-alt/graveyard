@@ -1,6 +1,7 @@
 ---
-- hosts: db
+- hosts: all
   vars:
+    db_host: localhost
     db_name: mailgenic
     db_deploy_user: deploy
     db_deploy_pass: passwörd
@@ -10,21 +11,4 @@
     db_postfix_pass: 12xfx_341
   roles:
     - db
-- hosts: mda
-  vars:
-    db_host: elephant
-    db_name: mailgenic
-    db_dovecot_user: dovecot
-    db_dovecot_pass: 127lkasfb
-  roles:
     - mda
-#- hosts: mta
-#  vars:
-#    db_name: mailgenic
-#    db_postfix_user: postfix
-#    db_postfix_pass: 12xfx_341
-#    mda_proxy_host: gamma
-#    mda_proxy_port: 12345
-#  roles:
-#    - mta
-
