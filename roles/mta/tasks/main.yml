@@ -14,6 +14,10 @@
   sudo: yes
   copy: src=master.cf dest=/etc/postfix/master.cf
 
+- name: copy Postfix ssl configuration
+  sudo: yes
+  template: src=main.cf dest=/etc/postfix/main.cf
+
 - name: copy Postgres virtual mailbox config
   sudo: yes
   template: src=pgsql-virtual-mailbox-domains.cf dest=/etc/postfix/pgsql-virtual-mailbox-domains.cf
@@ -24,5 +28,5 @@
 
 - name: copy Postgres virtual aliases config
   sudo: yes
-  notify: Restart postfix server
+  notify: restart postfix server
   template: src=pgsql-virtual-alias-maps.cf dest=/etc/postfix/pgsql-virtual-alias-maps.cf

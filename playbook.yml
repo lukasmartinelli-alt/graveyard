@@ -4,13 +4,19 @@
     db_host: localhost
     db_name: mailgenic
     db_deploy_user: deploy
-    db_deploy_pass: passwörd
+    db_deploy_pass: "passwörd"
     db_dovecot_user: dovecot
-    db_dovecot_pass: 127lkasfb
+    db_dovecot_pass: "127lkasfb"
     db_postfix_user: postfix
-    db_postfix_pass: 12xfx_341
+    db_postfix_pass: "12xfx_341"
     mail_dir: "/var/mail/%d/%n"
     mail_user: mail
+    ssl_key: "/etc/ssl/private/norman.mailgenic.com.pem"
+    ssl_cert: "{{ ssl_key }}"
+  pre_tasks:
+    - name: copy server certificate and private key
+      sudo: yes
+      copy: src=norman.mailgenic.com.pem dest={{ ssl_cert }}
   roles:
     - db
     - mta

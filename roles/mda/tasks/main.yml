@@ -25,13 +25,13 @@
 
 - name: copy master config
   sudo: yes
-  copy: src=10-master.conf dest=/etc/dovecot/conf.d/10-master.conf
+  template: src=10-master.conf dest=/etc/dovecot/conf.d/10-master.conf
   notify: restart Dovecot server
 
-#- name: copy SSL configuration
-#  sudo: yes
-#  notify: restart Dovecot server
-#  template: src=10-ssl.conf dest=/etc/dovecot/conf.d/10-ssl.conf
+- name: copy SSL configuration
+  sudo: yes
+  notify: restart Dovecot server
+  template: src=10-ssl.conf dest=/etc/dovecot/conf.d/10-ssl.conf
 
 
 

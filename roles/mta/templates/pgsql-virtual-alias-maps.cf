@@ -1,5 +1,5 @@
 user = {{ db_postfix_user }}
 password = {{ db_postfix_pass }}
-hosts = {% for host in groups['db'] %}{{ hostvars[host]['ansible_' + iface].ipv4.address }}{% endfor %}
+hosts = {{ db_host }}
 dbname = {{ db_name }}
 query = SELECT destination FROM aliases WHERE source='%s'
