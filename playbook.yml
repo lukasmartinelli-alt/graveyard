@@ -3,7 +3,7 @@
   vars:
     db_name: mailgenic
     db_deploy_user: deploy
-    db_deploy_pass: ab134%sfk2
+    db_deploy_pass: passwörd
     db_dovecot_user: dovecot
     db_dovecot_pass: 127lkasfb
     db_postfix_user: postfix
