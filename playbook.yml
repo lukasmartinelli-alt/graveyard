@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  sudo: yes
   vars:
     db_host: localhost
     db_name: mailgenic
@@ -15,7 +16,6 @@
     ssl_cert: "{{ ssl_key }}"
   pre_tasks:
     - name: copy server certificate and private key
-      sudo: yes
       copy: src=norman.mailgenic.com.pem dest={{ ssl_cert }}
   roles:
     - db

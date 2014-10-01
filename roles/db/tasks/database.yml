@@ -1,5 +1,4 @@
 - name: create deployment user
-  sudo: yes
   sudo_user: postgres
   postgresql_user: name={{ db_deploy_user }}
               password={{ db_deploy_pass }}
@@ -7,12 +6,10 @@
 
 
 - name: create database for mail users
-  sudo: yes
   sudo_user: postgres
   postgresql_db: name={{ db_name }} owner={{ db_deploy_user }} state=present
 
 - name: create Postfix user
-  sudo: yes
   sudo_user: postgres
   postgresql_user: db={{ db_name }}
               name={{ db_postfix_user }}
@@ -20,7 +17,6 @@
               state=present
 
 - name: create Dovecot user
-  sudo: yes
   sudo_user: postgres
   postgresql_user: db={{ db_name }}
               name={{ db_dovecot_user }}
@@ -32,7 +28,6 @@
 
   #Script should be executed as deploy user
 - name: create tables with setup script
-  sudo: yes
   sudo_user: postgres
   shell: psql -v ON_ERROR_STOP=1 -d {{ db_name }} -a -f /tmp/tables.sql
   register: psql_result
@@ -44,7 +39,6 @@
 
   #Script should be executed as deploy user
 - name: setup initial domains
-  sudo: yes
   sudo_user: postgres
   shell: psql -v ON_ERROR_STOP=1 -d {{ db_name }} -a -f /tmp/test_users.sql
   register: psql_result

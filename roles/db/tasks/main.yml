@@ -1,5 +1,4 @@
 - name: install server and Python support
-  sudo: yes
   action: apt name={{ item }} state=present
   notify: start postgresql server
   with_items:

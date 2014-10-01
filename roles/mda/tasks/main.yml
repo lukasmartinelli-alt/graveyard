@@ -1,5 +1,4 @@
 - name: install Dovecot and Postgres support
-  sudo: yes
   action: apt name={{ item }} state=present
   notify: start Dovecot server
   with_items:
@@ -8,30 +7,31 @@
     - dovecot-lmtpd
 
 - name: copy mail configuration
-  sudo: yes
+  notify: restart Dovecot server
   template: src=10-mail.conf dest=/etc/dovecot/conf.d/10-mail.conf
 
 - name: copy auth configuration
-  sudo: yes
+  notify: restart Dovecot server
   copy: src=10-auth.conf dest=/etc/dovecot/conf.d/10-auth.conf
 
 - name: copy auth sql extension
-  sudo: yes
+  notify: restart Dovecot server
   template: src=auth-sql.conf.ext dest=/etc/dovecot/conf.d/auth-sql.conf.ext
 
 - name: copy sql extension
-  sudo: yes
+  notify: restart Dovecot server
   template: src=dovecot-sql.conf.ext dest=/etc/dovecot/dovecot-sql.conf.ext
 
 - name: copy master config
-  sudo: yes
   template: src=10-master.conf dest=/etc/dovecot/conf.d/10-master.conf
   notify: restart Dovecot server
 
 - name: copy SSL configuration
-  sudo: yes
   notify: restart Dovecot server
   template: src=10-ssl.conf dest=/etc/dovecot/conf.d/10-ssl.conf
+
+- name: set rights on dovecot directory
+  file: owner=mail group=dovecot mode=o+rwx path=/etc/dovecot recurse=yes
 
 
 
