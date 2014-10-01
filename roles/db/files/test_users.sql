@@ -1,6 +1,7 @@
 INSERT INTO domains (domain)
-VALUES ('lukasmartinelli.ch');
+VALUES ('lukasmartinelli.ch'), ('mailgenic.com');
 
 -- Password is "test"
-INSERT INTO users (mail, password, domain)
-VALUES ('me@lukasmartinelli.ch', '$6$szOYpPtO5imoQ6X7$nddVhziQiJcavXM3F/73LtbwZDxTmdvzTrZSUA1zBFNJy6c2ShiH9bg.OjESp9elzxqutz3paQC5LELw10KET0', 'lukasmartinelli.ch');
+INSERT INTO users (mail, domain, password)
+VALUES ('me@lukasmartinelli.ch', 'lukasmartinelli.ch', '$6$t8yoaEQ1chO2MLoV$.yq6VeDhVWp5cUZk3sif.eQq9/suh504zlHnbb0B5ic/4c6QCwyqqQovyP4Ipe1oBpRgGA09m1bGfrwjgOEsL0'),
+('admin@mailgenic.com', 'mailgenic.com', '$6$t8yoaEQ1chO2MLoV$.yq6VeDhVWp5cUZk3sif.eQq9/suh504zlHnbb0B5ic/4c6QCwyqqQovyP4Ipe1oBpRgGA09m1bGfrwjgOEsL0');

@@ -23,15 +23,6 @@
               password={{ db_dovecot_pass }}
               state=present
 
-- name: apply privs for Dovecot and Postfix users
-  sudo_user: postgres
-  postgresql_privs: >
-    db={{ db_name }}
-    privs=SELECT
-    objs=users,domains,aliases
-    roles={{ db_dovecot_user }},{{ db_postfix_user}}
-    grant_option=yes
-
 - name: copy table setup script
   copy: src=tables.sql dest=/tmp/tables.sql
 
@@ -54,3 +45,11 @@
   failed_when: psql_result.rc != 0 and ("already exists" not in psql_result.stderr)
   changed_when: "psql_result.rc == 0"
 
+- name: apply privs for Dovecot and Postfix users
+  sudo_user: postgres
+  postgresql_privs: >
+    db={{ db_name }}
+    privs=SELECT
+    objs=users,domains,aliases
+    roles={{ db_dovecot_user }},{{ db_postfix_user}}
+    grant_option=yes

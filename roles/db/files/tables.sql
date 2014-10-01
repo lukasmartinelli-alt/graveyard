@@ -4,8 +4,8 @@ CREATE TABLE domains (
 );
 CREATE TABLE users (
     mail VARCHAR(255) NOT NULL,
-    password VARCHAR(128) NOT NULL,
     domain VARCHAR(128) NOT NULL,
+    password VARCHAR(128) NOT NULL,
     PRIMARY KEY (mail),
     FOREIGN KEY (domain) REFERENCES domains(domain)
 );
