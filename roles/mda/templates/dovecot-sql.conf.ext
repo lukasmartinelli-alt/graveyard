@@ -129,8 +129,8 @@ default_pass_scheme = SHA512-CRYPT
 # also have to return userdb fields in password_query prefixed with "userdb_"
 # string. For example:
 password_query = \
-  SELECT email AS user, password \
-  FROM users WHERE email = '%u'
+  SELECT mail AS user, password \
+  FROM users WHERE mail = '%u'
 
 # Query to get a list of all usernames.
 #iterate_query = SELECT username AS user FROM users
