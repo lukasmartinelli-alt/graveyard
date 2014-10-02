@@ -72,4 +72,4 @@ Initial setup
 In the initial setup we have everything on one single server `norman.mailgenic.com`.
 We can  use UNIX sockets for LMTP communication between MTA and MDA.
 
-<div style="width: 480px; height: 360px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:480px; height:360px" src="https://www.lucidchart.com/documents/embeddedchart/4b4350dd-48c4-4406-8c68-52f3a612de18"></iframe><a href="https://www.lucidchart.com/pages/examples/mind_mapping_software" style="margin: 0; padding: 0; border: none; display: inline-block; position: absolute; bottom: 5px; left: 5px;"><img alt="mind mapping software"title="Lucidchart online diagrams"style="width: 100px; height: 30px; margin: 0; padding: 0; border-image: none; border: none; display: block"src="https://www.lucidchart.com/img/diagrams-lucidchart.png"/></a></div>
+![Initial deployment](https://www.lucidchart.com/publicSegments/view/542d665a-95bc-4a9c-bbd0-01720a005489/image.png)
