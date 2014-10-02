@@ -1,0 +1,22 @@
+- name: install packages for mailpile 
+  action: apt name={{ item }} state=present
+  with_items:
+    - git
+    - python-pip 
+    - python-setuptools 
+    - python-dev
+    - build-essential
+    - python-jinja2
+    - python-imaging
+    - python-lxml
+    - libxml2-dev 
+    - libxslt1-dev
+
+- name: create install dir for mailpile
+  file: path=/opt/mailpile state=directory
+
+- name: clone mailpile
+  git: repo=https://github.com/pagekite/Mailpile.git dest=/opt/mailpile
+
+- name: install mailpile requirements
+  pip: requirements=/opt/mailpile/requirements.txt
