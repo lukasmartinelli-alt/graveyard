@@ -12,11 +12,11 @@
     db_postfix_pass: "12xfx_341"
     mail_dir: "/var/mail/%d/%n"
     mail_user: mail
-    ssl_key: "/etc/ssl/private/norman.mailgenic.com.pem"
+    ssl_key: "/etc/ssl/private/smtp.mailgenic.com.pem"
     ssl_cert: "{{ ssl_key }}"
   pre_tasks:
     - name: copy server certificate and private key
-      copy: src=norman.mailgenic.com.pem dest={{ ssl_cert }}
+      copy: src=smtp.mailgenic.com.pem dest={{ ssl_cert }}
   roles:
     - db
     - mta

@@ -14,17 +14,11 @@ We follow the guide specified in [this great article](http://mnx.io/blog/a-prope
 1. Pick a unique name for the server
 2. Create a functional `CNAME` record and point it to the server name
 
-**Example:**
+**Problems**
 
-In the initial phase we only have one server `norman.mailgenic.com`.
-This server will forever keep this hostname and is secured with an SSL certificate.
-Because the MTA and MDA are installed on this server,
-we point `imap.mailgenic.com` and `smtp.mailgenic.com` to `norman.mailgenic.com`.
-This will allow us to simply point `imap.mailgenic.com` to a dedicated server or a
-load balancer in the future.
-
-Because the MX record must not be pointed to a CNAME we directly create an A
-record to the same IP.
+Because all SMTP servers need a reverse PTR record to get through spam.
+We will ignore this rule for one time and name our first server `smtp.mailgenic.com`.
+For `imap.mailgenic.com` and `webmail.mailgenic.com` web we point a CNAME to `smtp.mailgenic.com`.
 
 Abbreviations
 -------------
@@ -69,7 +63,7 @@ Quick Security Considerations
 
 Initial setup
 -------------
-In the initial setup we have everything on one single server `norman.mailgenic.com`.
+In the initial setup we have everything on one single server `smtp.mailgenic.com`.
 We can  use UNIX sockets for LMTP communication between MTA and MDA.
 
 ![Initial deployment](https://www.lucidchart.com/publicSegments/view/542d665a-95bc-4a9c-bbd0-01720a005489/image.png)
