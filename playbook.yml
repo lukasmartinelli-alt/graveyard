@@ -22,3 +22,4 @@
     - mta
     - mda
     - rainloop
+    - logstash

@@ -1,0 +1,22 @@
+- name: install java
+  apt: name=openjdk-7-jre state=present
+
+- name: install gpg key for elasticsearch
+  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+
+- name: add elasticsearch repo
+  apt_repository: state=present repo='deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main'
+
+- name: add logstash repo
+  apt_repository: state=present repo='deb http://packages.elasticsearch.org/logstash/1.4/debian stable main'
+
+- name: install elasticsearch
+  apt: name=elasticsearch=1.1.1 state=present
+  notify: start elasticsearch server
+
+- name: install logstash
+  apt: name=logstash=1.4.2-1-2c0f5a1 state=present
+
+- name: copy elasticsearch config
+  notify: restart elasticsearch server
+  template: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml

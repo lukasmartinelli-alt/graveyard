@@ -1,0 +1,5 @@
+- name: start elasticsearch server
+  service: name=elasticsearch state=started enabled=yes
+
+- name: restart elasticsearch server
+  service: name=elasticsearch state=restarted
