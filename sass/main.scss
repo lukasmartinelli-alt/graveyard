@@ -2,12 +2,13 @@
 
 // ===COLORS=== //
 
-$color-background: #fff;
+$color-background: #F9F9F9;
 $color-accent1: #FF6B6B;
 $color-accent2: #fff;
 $color-gray: #666;
 
-$color-text: #000;
+$color-text: #5A5A5A;
+$color-title: #000;
 $color-border: $color-accent1;
 
 $color-navigation-background: $color-background;
@@ -21,8 +22,7 @@ $header-background-color: #fff;
 
 $font-title: 'Lato', sans-serif;
 $font-navigation: $font-title;
-$font-text: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-
+$font-text: 'Lato', sans-serif; 
 $font-size-base: 1.4rem;
 $font-size-browser: 1.6rem;
 $gutter: 1rem;

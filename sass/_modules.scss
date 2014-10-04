@@ -45,3 +45,54 @@
         }
     }
 }
+
+/* ===FEATURES=== */
+.feature {
+    @include clearfix;
+    background: none repeat scroll 0% 0% #F0F0F0;
+    padding: $gutter;
+    border: 5px solid #fff;
+
+    .circle {
+        @include clearfix;
+        border-radius: 50%;
+        overflow: hidden;
+        background: none repeat scroll 0% 0% $color-accent1;;
+        position: relative;
+        z-index: 99999;
+        text-align: center;
+        width: 8rem;
+        height: 8rem;
+        float: left;
+        padding-top: 2rem;
+    }
+
+    .desc {
+        float: left;
+        margin-left: 2*$gutter;
+        width: 70%;
+    }
+
+    .icon {
+        text-align: center;
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .icon * {
+        fill: #fff;
+    }
+}
+
+.features {
+    @include clearfix;
+}
+
+@media(min-width: 55rem) {
+    .feature {
+        height: 15rem;
+        width: 50%;
+        float:left;
+    }
+}
+
