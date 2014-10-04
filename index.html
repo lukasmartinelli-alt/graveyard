@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mailgenic - Create your personal Email Adress</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="shortcut icon" href="/static/img/favicon.ico" />-->
+    <link href="<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>" rel="stylesheet" href="css/main.css" />
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <link rel="stylesheet" href="css/responsive-nav.css" type="text/css" />
+</head>
+<!--[if lt IE 9]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<body class="home">
+    <div class="top">
+        <header class="header">
+            <div class="branding">
+                <img class="icon-mailgenic" src="svg/mailgenic.svg" alt="Mailgenic"></img>
+                <h1>Mailgenic</h2>
+                <a id="toggle" href="#nav" class="nav-toggle">
+                    <img class="icon icon-menu" src="svg/menu.svg" alt="menu">
+                </a>
+            </div>
+            <nav id="nav" class="nav-collapse">
+                <ul>
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Features</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Pricing</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Login</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    <div class="cover">
+        <section class="signup"> <!--Put a carousel here later on-->
+            <h2>Create your personal mail address</h2>
+            <h2>for only <span class="accent">$2</span> per month</h2>
+            <form method="post">
+                <div>
+                    <input id="enter-domain" type="text" placeholder="Enter your email address" name="domain"></input> 
+                    <select name="tld">
+                        <option>.ch</option>
+                        <option>.com</option>
+                    </select>
+                    <input class="button" type="submit" name="submit" value="CREATE">
+                    </input>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="main">
+        <section class="features">
+        </section>
+        <section class="pricing">
+        </section>
+    </div>
+    <footer class="footer">
+    </footer>
+    <script type="text/javascript" src="js/responsive-nav.js"></script>
+    <script type="text/javascript" src="js/svg-injector.js"></script>
+    <script>
+        var nav = responsiveNav(".nav-collapse", {
+            customToggle: "toggle"
+        });
+        var svgIcons = document.querySelectorAll('.icon');
+        SVGInjector(svgIcons);
+    </script>
+</body>
+

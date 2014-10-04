@@ -1,0 +1,47 @@
+/* ===BRANDING=== */
+
+.branding {
+    .icon-mailgenic {
+        float: left;
+        width: 8rem;
+        height: 8rem;
+        float: left;
+    }
+
+    h1 {
+        float: left;
+        margin-top: 3rem;
+        font-size: 4rem;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .nav-toggle {
+        float: right;
+        margin-top: 2.6rem;
+        padding-top: 0.5rem;
+        padding-left: 0.5rem;
+        width: 4rem;
+        height: 4rem;
+        background-color: $color-accent1;
+        margin-left: $gutter;
+    }
+
+    .icon-menu {
+        padding-bottom: 0.7rem;
+        width: 3.2rem;
+        height: 3.2rem;
+    }
+
+    .icon-menu * {
+         fill: #fff;
+    }
+
+    @media(min-width: 27rem) {
+        .icon-mailgenic {
+        }
+
+        .branding-container {
+        }
+    }
+}

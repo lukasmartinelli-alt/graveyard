@@ -1,0 +1,59 @@
+@import "compass";
+
+// ===COLORS=== //
+
+$color-background: #fff;
+$color-accent1: #FF6B6B;
+$color-accent2: #fff;
+$color-gray: #666;
+
+$color-text: #000;
+$color-border: $color-accent1;
+
+$color-navigation-background: $color-background;
+$color-navigation-background-active: $color-accent1;
+$color-navigation-link: #000;
+$color-navigation-link-active: #fff;
+
+$header-background-color: #fff;
+
+// ===VARS=== //
+
+$font-title: 'Lato', sans-serif;
+$font-navigation: $font-title;
+$font-text: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+
+$font-size-base: 1.4rem;
+$font-size-browser: 1.6rem;
+$gutter: 1rem;
+
+$wrapper-width: 100.24rem;
+
+// ===MIXINS=== //
+
+@function px-to-em($target, $context) {
+@return ($target/$context)+0em;
+}
+
+@function rem-to-em($target, $context) {
+@return ($target/$context)+0em;
+}
+
+@mixin global-box-sizing() {
+// apply a natural box layout model to all elements
+//but allowing components to change
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    }
+}
+
+/* ===RESET=== */
+@import "compass/reset";
+@include global-box-sizing;
+//@import "icons";
+@import "base";
+@import "layout";
+@import "modules";
