@@ -1,0 +1,83 @@
+{% extends 'front/base.html' %}
+
+{% block content %}
+    <div class="cover">
+        <section class="signup"> <!--Put a carousel here later on-->
+            <h2>Create your personal mail address</h2>
+            <h2>for only <span class="accent">$2</span> per month</h2>
+            <form method="post">
+                <div>
+                    <input id="enter-domain" type="text" placeholder="Enter your email address" name="domain"></input>
+                    <select name="tld">
+                        <option>.ch</option>
+                        <option>.com</option>
+                    </select>
+                    <input class="button" type="submit" name="submit" value="CREATE">
+                    </input>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="main">
+        <section class="features">
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/shield.svg" alt="Protected by Swiss laws" />
+                </div>
+                <div class="desc">
+                    <h3>Based in Switzerland</h3>
+                    <p>Mailgenic is incorporated in Switzerland and our servers are located in Switzerland.
+                    We are outside of US and EU jurisdiction and user data is protected by strict Swiss data protection laws.</p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/dollar.svg" alt="lowest price" />
+                </div>
+                <div class="desc">
+                    <h3>Lowest Price</h3>
+                    <p>We have the lowest price on the market.</p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/info.svg" alt="simplicity" />
+                </div>
+                <div class="desc">
+                    <h3>Simplicity</h3>
+                    <p>You don't have to be a technical person to create your own email address. We will take care of everything and
+                    if you do wan't to add a website later, we have all the options you need.</p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/infinity.svg" alt="no quotas" />
+                </div>
+                <div class="desc">
+                    <h3>Unlimited usage</h3>
+                    <p>We don't have quotas on mailbox size and amount of users.</p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/eye.svg" alt="transparency" />
+                </div>
+                <div class="desc">
+                    <h3>Transparency</h3>
+                    <p>We are using Open Source software and are very transparent about what we are doing. You can trust us. </p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/browser.svg" alt="Control Panel" />
+                </div>
+                <div class="desc">
+                    <h3>Fully fledged Webmail</h3>
+                    <p>We use RainLoop which is as good as Gmail.</p>
+                </div>
+            </article>
+        </section>
+        <section class="pricing">
+        </section>
+    </div>
+{% endblock %}

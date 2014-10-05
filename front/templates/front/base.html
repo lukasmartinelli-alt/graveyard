@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mailgenic - Create your personal Email Adress</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="shortcut icon" href="/static/img/favicon.ico" />-->
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/responsive-nav.css" type="text/css" />
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-55421043-1', 'auto');
+            ga('send', 'pageview');
+    </script>
+</head>
+<!--[if lt IE 9]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<body class="home">
+    <div class="top">
+        <header class="header">
+            <div class="branding">
+                <img class="icon-mailgenic" src="{{ STATIC_URL }}/svg/mailgenic.svg" alt="Mailgenic"></img>
+                <h1>Mailgenic</h2>
+                <a id="toggle" href="#nav" class="nav-toggle">
+                    <img class="icon icon-menu" src="{{ STATIC_URL }}/svg/menu.svg" alt="menu">
+                </a>
+            </div>
+            <nav id="nav" class="nav-collapse">
+                <ul>
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Features</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Pricing</a>
+                    </li>
+                    <li class="">
+                        <a href="/">Login</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+    {% block content %}{% endblock %}
+    <footer class="footer">
+    </footer>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/responsive-nav.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/svg-injector.js"></script>
+    <script>
+        var nav = responsiveNav(".nav-collapse", {
+            customToggle: "toggle"
+        });
+        var svgIcons = document.querySelectorAll('.icon');
+        SVGInjector(svgIcons);
+    </script>
+</body>
+
