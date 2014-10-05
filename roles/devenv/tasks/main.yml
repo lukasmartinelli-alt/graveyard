@@ -1,0 +1,12 @@
+- name: install packages for python development 
+  apt: pkg={{ item }} update-cache=yes cache_valid_time=3600
+  with_items:
+  - build-essential
+  - gcc
+  - g++
+  - python-dev
+  - python-setuptools
+  - python-pip
+
+- name: create /srv/www directory.
+  file: path=/srv/www state=directory group=www-data
