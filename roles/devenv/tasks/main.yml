@@ -11,6 +11,15 @@
   - python-virtualenv
   - python-psycopg2
 
+- name: install packages for ruby
+  apt: pkg={{ item }} update-cache=yes cache_valid_time=3600
+  with_items:
+  - ruby1.9.1
+  - ruby1.9.1-dev
+
+- name: install compass
+  gem: name=compass pre_release=yes state=present user_install=no include_dependencies=yes
+
 - name: create /srv/www directory.
   file: path=/srv/www state=directory group=www-data
 
