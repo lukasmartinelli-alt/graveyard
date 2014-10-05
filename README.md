@@ -4,6 +4,23 @@ Infrastructure Overview
 The idea behind the architecture of Mailgenic is to start small and
 scale out as soon as the need occurs.
 
+Developer Environment
+---------------------
+Vagrant is used to create virtual machines for development and testing deployment.
+
+Start a machine with all the infrastructure
+```
+vagrant up
+```
+
+Now connect to the machine, source the Python virtualenv and start the web interface
+```
+vagrant ssh
+source /var/venv/mailgenic/activate
+cd /srv/www/mailgenic
+python manage.py runserver 0.0.0.0:8000
+```
+
 Naming servers
 --------------
 

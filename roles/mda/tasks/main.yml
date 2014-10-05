@@ -30,8 +30,8 @@
   notify: restart Dovecot server
   template: src=10-ssl.conf dest=/etc/dovecot/conf.d/10-ssl.conf
 
-- name: set rights on dovecot directory
-  file: owner=mail group=dovecot mode=o+rwx path=/etc/dovecot recurse=yes
+#- name: set rights on dovecot directory
+#  file: owner=mail group=dovecot mode=o+rwx path=/etc/dovecot recurse=yes
 
 
 

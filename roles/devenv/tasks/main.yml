@@ -1,12 +1,24 @@
-- name: install packages for python development 
+- name: install packages for python development
   apt: pkg={{ item }} update-cache=yes cache_valid_time=3600
   with_items:
   - build-essential
   - gcc
   - g++
   - python-dev
+  - python3.4-dev
   - python-setuptools
   - python-pip
+  - python-virtualenv
+  - python-psycopg2
 
 - name: create /srv/www directory.
   file: path=/srv/www state=directory group=www-data
+
+- name: create venv directory.
+  file: path=/var/venv/mailgenic state=directory owner=vagrant recurse=yes
+
+- name: create virtualenv for project
+  shell: virtualenv -p /usr/bin/python3.4 /var/venv/mailgenic
+
+- name: install python requirements
+  pip: requirements=/srv/www/mailgenic/requirements.txt virtualenv=/var/venv/mailgenic

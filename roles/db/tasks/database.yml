@@ -19,9 +19,16 @@
 - name: create Dovecot user
   sudo_user: postgres
   postgresql_user: db={{ db_name }}
-              name={{ db_dovecot_user }}
-              password={{ db_dovecot_pass }}
-              state=present
+      name={{ db_dovecot_user }}
+      password={{ db_dovecot_pass }}
+      state=present
+
+- name: create web user
+  sudo_user: postgres
+  postgresql_user: db={{ db_name }}
+      name={{ db_web_user }}
+      password={{ db_web_pass }}
+      state=present
 
 - name: copy table setup script
   copy: src=tables.sql dest=/tmp/tables.sql
