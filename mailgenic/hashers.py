@@ -16,6 +16,7 @@ class SSHA512PasswordHasher(BasePasswordHasher):
         Checks if the given password is correct.
         All bytes after the first 64 Bytes belong to the salt.
         """
+        encoded = encoded.split("$")[1]
         decoded = bytearray(base64.b64decode(encoded))
         salt = decoded[64:].decode('utf-8')
         encoded2 = self.encode(password, salt)
@@ -35,7 +36,7 @@ class SSHA512PasswordHasher(BasePasswordHasher):
         sha.update(password)
         sha.update(salt)
         ssha512 = base64.b64encode(sha.digest() + salt)
-        return ssha512.decode('utf-8')
+        return self.algorithm + "$" + ssha512.decode('utf-8')
 
     def safe_summary(self, encoded):
         """
@@ -43,6 +44,7 @@ class SSHA512PasswordHasher(BasePasswordHasher):
         The result is a dictionary and will be used where the password field
         must be displayed to construct a safe representation of the password.
         """
+        encoded = encoded.split("$")[1]
         decoded = bytearray(base64.b64decode(encoded))
         hash = decoded[:64]
         salt = decoded[64:]

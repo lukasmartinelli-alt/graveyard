@@ -55,6 +55,7 @@ ROOT_URLCONF = 'mailgenic.urls'
 
 WSGI_APPLICATION = 'mailgenic.wsgi.application'
 
+PASSWORD_HASHERS = ("mailgenic.hashers.SSHA512PasswordHasher",)
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
