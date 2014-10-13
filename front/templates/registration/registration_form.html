@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Registrieren</h1>
+
+<form method="post" action="">
+    {% csrf_token %}
+
+    <label for="{{ form.username.name }}">{{ form.username.label }}</label>
+    <input type="text" name="{{ form.username.name }}" id="id_{{ form.username.name }}" placeholder="{{ form.username.label }}" required>
+    <label for="{{ form.password1.name }}">{{ form.password1.label }}</label>
+    <input type="password" name="{{ form.password1.name }}" id="id_{{ form.password1.name }}" placeholder="{{ form.password1.label }}" required>
+    <label for="{{ form.password2.name }}">{{ form.password2.label }}</label>
+    <input type="password" name="{{ form.password2.name }}" id="id_{{ form.password2.name }}" placeholder="{{ form.password2.label }}" required>
+
+    <button class="button-primary" type="submit">Submit</button>
+</form>
+
+{% endblock %}
+
