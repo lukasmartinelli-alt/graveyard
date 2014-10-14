@@ -1,7 +1,7 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mailgenic - Create your personal Email Adress</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link rel="shortcut icon" href="/static/img/favicon.ico" />-->
@@ -18,6 +18,9 @@
             ga('create', 'UA-55421043-1', 'auto');
             ga('send', 'pageview');
     </script>
+    {% block head %}
+        <title>{% trans "Mailgenic - Create your personal Email Adress" %}</title>
+    {% endblock %}
 </head>
 <!--[if lt IE 9]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -35,16 +38,16 @@
             <nav id="nav" class="nav-collapse">
                 <ul>
                     <li class="active">
-                        <a href="/">Home</a>
+                        <a href="/">{% trans "Home" %}</a>
                     </li>
                     <li class="">
-                        <a href="/">Features</a>
+                        <a href="/">{% trans "Features" %}</a>
                     </li>
                     <li class="">
-                        <a href="/">Pricing</a>
+                        <a href="/">{% trans "Pricing" %}</a>
                     </li>
                     <li class="">
-                        <a href="/">Login</a>
+                        <a href="/">{% trans "Login" %}</a>
                     </li>
                 </ul>
             </nav>

@@ -2,21 +2,7 @@
 
 {% block content %}
     <div class="cover">
-        <section class="signup"> <!--Put a carousel here later on-->
-            <h2>Create your personal mail address</h2>
-            <h2>for only <span class="accent">$2</span> per month</h2>
-            <form method="post">
-                <div>
-                    <input id="enter-domain" type="text" placeholder="Enter your email address" name="domain"></input>
-                    <select name="tld">
-                        <option>.ch</option>
-                        <option>.com</option>
-                    </select>
-                    <input class="button" type="submit" name="submit" value="CREATE">
-                    </input>
-                </div>
-            </form>
-        </section>
+        {% include 'signup.html' %}
     </div>
     <div class="main">
         <section class="features">

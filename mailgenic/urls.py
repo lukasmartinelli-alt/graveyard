@@ -8,6 +8,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'mailgenic.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', views.Home.as_view(), name="home"),
-    url(r'^register/$', views.Register.as_view(), name="register"),
     url(r'^admin/', include(admin.site.urls)),
 )
