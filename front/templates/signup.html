@@ -2,7 +2,8 @@
 <section class="signup">
     <h2>{% trans "Create your personal mail address" %}</h2>
     <h2>{% trans "for only" %} <span class="accent">{{ price }}</span> {% trans "per month" %}</h2>
-    <form method="post">
+    <form method="post" action="/registration/domain/">
+        {% csrf_token %}
         <div>
             <input id="enter-domain" type="text" placeholder="{% trans 'Enter your email domain' %}" name="domain"></input>
             <select name="tld">

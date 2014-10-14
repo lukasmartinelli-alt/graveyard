@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="main">
+    <h1>{% trans "Registration" %}</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <button class="button-primary" type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
