@@ -1,10 +1,14 @@
+import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 
 @pytest.fixture
 def browser(request):
-    browser = webdriver.Firefox()
+    if "DISPLAY" in os.environ:
+        browser = webdriver.Firefox()
+    else:
+        browser = webdriver.PhantomJS()
     request.addfinalizer(lambda: browser.quit())
     return browser
 
