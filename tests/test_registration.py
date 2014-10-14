@@ -2,16 +2,14 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 
-url = "localhost:8000"
-
 @pytest.fixture
 def browser(request):
     browser = webdriver.Firefox()
     request.addfinalizer(lambda: browser.quit())
     return browser
 
-def test_can_choose_domain(browser):
-    browser.get(url)
+def test_can_choose_domain(browser, live_server):
+    browser.get(live_server.url)
     domain_input = browser.find_element_by_name("domain")
     assert domain_input
 
