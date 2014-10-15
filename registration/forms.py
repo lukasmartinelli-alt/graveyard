@@ -1,4 +1,5 @@
-from django.forms import Form
+from django.forms import Form, CharField
 
-class RegistrationForm(Form): 
-    pass
+class RegistrationForm(Form):
+    domain = CharField()
+    tld = CharField()

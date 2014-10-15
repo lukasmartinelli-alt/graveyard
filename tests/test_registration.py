@@ -12,7 +12,7 @@ def browser(request):
     request.addfinalizer(lambda: browser.quit())
     return browser
 
-@pytest.mark.slow
+@pytest.mark.integration
 def test_can_choose_domain(browser, live_server):
     browser.get(live_server.url)
     domain_input = browser.find_element_by_name("domain")
