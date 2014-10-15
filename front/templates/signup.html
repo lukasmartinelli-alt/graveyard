@@ -7,8 +7,8 @@
         <div>
             <input id="enter-domain" type="text" placeholder="{% trans 'Enter your email domain' %}" name="domain"></input>
             <select name="tld">
-                {% for tld in tlds %}
-                    <option>{{tld}}</option>
+                {% for tld_value, tld_display in tlds %}
+                <option value="{{ tld_value }}">{{ tld_display }}</option>
                 {% endfor %}
             </select>
             <input class="button" type="submit" name="submit" value="{% trans 'Create' %}">

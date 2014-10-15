@@ -17,11 +17,16 @@ def test_register_domain_returns_view(rf):
 # FORMS TEST
 
 def test_registration_form_is_valid():
-    data = {"domain": "mailgenic", "tld": ".com"}
+    data = {"domain": "mailgenic", "tld": "com"}
     form = RegistrationForm(data=data)
     assert form.is_valid()
 
+def test_registration_for_unsupported_tld():
+    data = {"domain": "mailgenic", "tld": "swiss"}
+    form = RegistrationForm(data=data)
+    assert not form.is_valid()
+
 def test_registration_form_is_invalid():
-    data = {"domain": "", "tld": ".com"}
+    data = {"domain": "", "tld": "com"}
     form = RegistrationForm(data=data)
     assert not form.is_valid()
