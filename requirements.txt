@@ -3,3 +3,4 @@ psycopg2==2.5.4
 selenium==2.43.0
 pytest==2.6.3
 pytest-django==2.7.0
+pythonwhois==2.4.3

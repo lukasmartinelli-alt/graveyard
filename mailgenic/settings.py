@@ -21,6 +21,9 @@ PROJECT_ROOT = dirname(dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '340+d6911#a5-vob5%memk9)w5o9u5t7x@m(vgpq-namt19yi('
 
+NAMECHEAP_USER = "mailgenic"
+NAMECHEAP_KEY = "6220b770d3374e6482a0a8708364af13"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
