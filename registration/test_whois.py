@@ -3,8 +3,8 @@ import pytest
 
 @pytest.mark.integration
 def test_check_domain_works_for_ch():
-    free_domains = ["frischiwürscht.ch", "frischesfleisch.ch"]
-    reserved_domains = ["manuelroth.ch", "lukasmartinelli.ch", "mailgenic.ch"]
+    free_domains = ["frischiwürscht.ch", "hansiderudin.ch"]
+    reserved_domains = ["manuelroth.ch", "lukasmartinelli.ch", "hsr.ch"]
 
     for domain in free_domains:
         assert check_domain_availability(domain)
@@ -14,7 +14,7 @@ def test_check_domain_works_for_ch():
 
 @pytest.mark.integration
 def test_check_domain_works_for_com():
-    free_domains = ["mailgenic.com", "lukasmartinelli.com"]
+    free_domains = ["fastnixmehrfrei.com", "lukasmartinelli.com"]
     reserved_domains = ["fastmail.com", "google.com", "mailgenic.com"]
 
     for domain in free_domains:
