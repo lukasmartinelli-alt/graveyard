@@ -4,6 +4,11 @@
 {% block content %}
 <div class="main">
     <h1>{% trans "Registration" %}</h1>
+    <p class="domain-info">
+    {% trans "You are about to purchase" %}
+    </p>
+    <label class="domain">{{ domain }}<label>
+    {{ availability }}
     <form method="post" action="">
         {% csrf_token %}
         <button class="button-primary" type="submit">Submit</button>
