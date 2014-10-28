@@ -4,9 +4,10 @@ from .forms import RegistrationForm
 from .whois import check_domain_availability
 
 def register_domain(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
+    if request.method == "GET":
+        form = RegistrationForm(request.GET)
         if form.is_valid():
-            domain = form.cleaned_data["domain"] + form.cleaned_data["tld"]
+            domain = "{0}.{1}".format(form.cleaned_data["domain"],
+                                      form.cleaned_data["tld"])
             availability = check_domain_availability(domain)
             return render(request, "registration.html", {"domain": domain, "availability": availability})

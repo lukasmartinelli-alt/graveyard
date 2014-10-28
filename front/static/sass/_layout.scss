@@ -114,7 +114,7 @@ body { }
         color: #fff;
     }
 
-    input, select {
+    input, button, select {
         padding: $gutter;
         font-size: 2rem;
         border: none;
@@ -132,7 +132,7 @@ body { }
         box-shadow: 1px 3px 1px #808080;
     }
 
-    input[type="submit"] {
+    .button {
         box-shadow: 3px 3px 1px #808080;  
         background: none repeat scroll 0% 0% $color-accent1;
         border-radius: 0px 2px 2px 0px;
