@@ -27,12 +27,13 @@ h1 {
 h2 {
   font-size: 2.8rem;
   line-height: 1.3em;
+  margin-bottom: $gutter;
 }
 
 h3 {
   font-size: 2rem;
   line-height: 1.3em;
-  margin-bottom: 0.5rem;
+  margin-bottom: $gutter/2;
 }
 
 h4 {
@@ -99,6 +100,23 @@ button.button-primary, .button.button-primary {
   &:hover, &:active, &:focus {
     background: $color-accent2;
   }
+}
+/* ===FORMS=== */
+label {
+    display: block;
+}
+
+input[type="text"] {
+    font-size: 2rem;
+    border: 1px solid #EDEDED;
+    padding: 15px 30px;
+    width: 100%;
+    color: #999;
+    margin: 2px 0px;
+    font: inherit;
+    text-align: left;
+    outline: medium none;
+    border-radius: 3px;
 }
 
 /* ===MISC=== */

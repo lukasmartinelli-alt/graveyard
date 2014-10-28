@@ -162,10 +162,8 @@
 
 /* ===REGISTRATION=== */
 .domain-info {
-    margin-top: 4*$gutter;
     background: none repeat scroll 0% 0% $color-gray;
     padding: $gutter;
-    border: 7px solid $color-background;
 
     h3 {
         font-size: 2.8rem;
@@ -218,3 +216,35 @@
     }
 }
 
+.card-type {
+    margin-top: 2*$gutter;
+    display: block;
+}
+
+.billing {
+    input[type="radio"] {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+        cursor: pointer;
+    }
+}
+
+.creditcard {
+    width: 7rem;
+    margin-right: 2*$gutter;
+}
+
+@media(min-width: 40em) {
+    .contact {
+        float: left;
+        width: 49%;
+        margin-right: 2%;
+    }
+    .billing {
+        float: left;
+        width: 49%;
+    }
+}
