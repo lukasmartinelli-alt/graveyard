@@ -43,7 +43,7 @@ body { }
 /* ===HEADER=== */
 .header {
     padding: $gutter;
-    padding-top: $gutter/2;
+    padding-top: 0;
     @include clearfix;
 
     .branding {
@@ -64,7 +64,7 @@ body { }
             background-color: $color-navigation-background;
             color: $color-navigation-link;
             font: $font-navigation;
-            font-size: 1.8rem;;
+            font-size: 2rem;;
             padding: $gutter $gutter;
             display: block;
 
@@ -81,9 +81,9 @@ body { }
     }
 }
 
-@media(min-width: 40em) {
+@media(min-width: 44em) {
     .nav-collapse {
-        margin-top: 2.6rem;
+        margin-top: 3.2rem;
         float: right;
         width: 50%;
         li a {

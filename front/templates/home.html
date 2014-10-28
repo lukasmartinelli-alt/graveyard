@@ -9,23 +9,23 @@
         <section class="features">
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/shield.svg" alt="Protected by Swiss laws" />
-                </div>
-                <div class="desc">
-                    <h3>{% trans "Based in Switzerland" %}</h3>
-                    <p>
-                    {% trans "Our servers are located in Switzerland and we are outside of US and EU jurisdiction. User data is protected by strict Swiss data protection laws." %}
-                    </p>
-                </div>
-            </article>
-            <article class="feature">
-                <div class="circle">
                     <img class="icon" src="{{ STATIC_URL }}svg/dollar.svg" alt="lowest price" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Lowest Price" %}</h3>
                     <p>
-                    {% trans "We have the lowest price on the market." %}
+                    {% trans "We have the lowest price on the market and keep pushing the price down." %}
+                    </p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/shield.svg" alt="Protected by Swiss laws" />
+                </div>
+                <div class="desc">
+                    <h3>{% trans "Based in Switzerland" %}</h3>
+                    <p>
+                    {% trans "Our user data is protected by strict Swiss data protection laws." %}
                     </p>
                 </div>
             </article>
@@ -36,7 +36,18 @@
                 <div class="desc">
                     <h3>{% trans "Simplicity" %}</h3>
                     <p>
-                    {% trans "We are the email provider for non-technical persons. We will take care of everything for you." %}
+                    {% trans "We are the email provider for non-technical people. We will take care of everything for you." %}
+                    </p>
+                </div>
+            </article>
+            <article class="feature">
+                <div class="circle">
+                    <img class="icon" src="{{ STATIC_URL }}svg/browser.svg" alt="webmail" />
+                </div>
+                <div class="desc">
+                    <h3>{% trans "Fully fledged Webmail" %}</h3>
+                    <p>
+                    {% trans "A simple, modern and fast webmail as good as Gmail." %}
                     </p>
                 </div>
             </article>
@@ -58,18 +69,7 @@
                 <div class="desc">
                     <h3>{% trans "Transparency" %}</h3>
                     <p>
-                    {% trans "We are using Open Source software and have documented our infrastructure online." %}
-                    </p>
-                </div>
-            </article>
-            <article class="feature">
-                <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/browser.svg" alt="Control Panel" />
-                </div>
-                <div class="desc">
-                    <h3>{% trans "Fully fledged Webmail" %}</h3>
-                    <p>
-                    {% trans "A simple, modern and fast webmail as good as Gmail." %}
+                    {% trans "We are using Open Source software and want to be as transparent as possibly." %}
                     </p>
                 </div>
             </article>

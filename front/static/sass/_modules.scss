@@ -18,7 +18,7 @@
 
     .nav-toggle {
         float: right;
-        margin-top: 2.6rem;
+        margin-top: 3.2rem;
         padding-top: 0.5rem;
         padding-left: 0.5rem;
         width: 4rem;
@@ -49,9 +49,9 @@
 /* ===FEATURES=== */
 .feature {
     @include clearfix;
-    background: none repeat scroll 0% 0% #F0F0F0;
+    background: none repeat scroll 0% 0% $color-gray;
     padding: $gutter;
-    border: 5px solid #fff;
+    border: 7px solid $color-background;
 
     .circle {
         @include clearfix;
@@ -90,7 +90,7 @@
 
 @media(min-width: 55rem) {
     .feature {
-        height: 15rem;
+        height: 13rem;
         width: 50%;
         float:left;
     }
@@ -106,7 +106,7 @@
     border-radius: 2px;
     transition: all 0.5s ease 0s;
     text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.3);
-   
+
     &:hover {
         background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.25);
         border-radius: 2px;
@@ -125,7 +125,7 @@
     }
 
     input[type="text"] {
-        box-shadow: 3px 3px 1px #808080;  
+        box-shadow: 3px 3px 1px #808080;
         border-radius: 2px 0px 0px 2px;
         width: 100%;
         margin-right: -0.6rem;
@@ -136,7 +136,7 @@
     }
 
     .button {
-        box-shadow: 3px 3px 1px #808080;  
+        box-shadow: 3px 3px 1px #808080;
         background: none repeat scroll 0% 0% $color-accent1;
         border-radius: 0px 2px 2px 0px;
         min-width: 12rem;
@@ -146,13 +146,13 @@
         input[type="text"] {
             width: auto;
         }
-        select { 
+        select {
             margin-right: -0.6rem;
         }
     }
 }
 
-@media(min-width: 40em) {
+@media(min-width: 44em) {
     .signup {
         top: 8rem;
     }
