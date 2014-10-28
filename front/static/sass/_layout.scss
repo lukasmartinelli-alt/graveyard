@@ -22,7 +22,7 @@ body { }
 .top {
     min-height: 10rem;
     width: 100%;
-    background-color: $header-background-color;
+    background-color: $color-header-background;
 }
 
 .header {
@@ -32,7 +32,9 @@ body { }
 
 .main {
     @extend %wrapper;
-    margin-top: $gutter; }
+    padding: $gutter;
+    margin-top: $gutter;
+}
 
 .footer {
     @extend %wrapper;

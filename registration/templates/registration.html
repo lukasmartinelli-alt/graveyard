@@ -3,12 +3,19 @@
 
 {% block content %}
 <div class="main">
+    <h1>{% trans "Register a custom email address" %}</h1>
     <div class="domain-info">
     {% if available %}
-        <h3>{% trans "You are about to purchase" %}</h3>
+        <div class="circle circle-good">
+            <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+        </div>
+        <h3>{% trans "Your domain is available" %}</h3>
         <h2>{{ domain }}</h2>
     {% else %}
-        <h3>{% trans "Your domain is already registered" %}</h3>
+        <div class="circle circle-bad">
+            <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+        </div>
+        <h3>{% trans "Your domain is already taken" %}</h3>
         <h2 class="unavailable">{{ domain }}</h2>
     {% endif %}
     </div>

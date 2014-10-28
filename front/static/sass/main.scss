@@ -6,6 +6,8 @@ $color-background: #F9F9F9;
 $color-accent1: #FF6B6B;
 $color-accent2: #fff;
 $color-gray: #F0F0F0;
+$color-bad: #CF3030;
+$color-good: green;
 
 $color-text: #5A5A5A;
 $color-title: #000;
@@ -15,8 +17,7 @@ $color-navigation-background: $color-gray;
 $color-navigation-background-active: $color-accent1;
 $color-navigation-link: #000;
 $color-navigation-link-active: #fff;
-
-$header-background-color: #fff;
+$color-header-background: $color-background;
 
 // ===VARS=== //
 

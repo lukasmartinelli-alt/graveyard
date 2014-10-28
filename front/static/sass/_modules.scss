@@ -9,6 +9,8 @@
     }
 
     h1 {
+        font-size: 3.2rem;
+        color: $color-accent1;
         float: left;
         margin-top: 3rem;
         font-size: 4rem;
@@ -161,19 +163,58 @@
 /* ===REGISTRATION=== */
 .domain-info {
     margin-top: 4*$gutter;
+    background: none repeat scroll 0% 0% $color-gray;
+    padding: $gutter;
+    border: 7px solid $color-background;
 
     h3 {
         font-size: 2.8rem;
-        color: $color-gray;
     }
 
     h2 {
         font-size: 5rem;
-        color: $color-accent1;
+        color: $color-good;
     }
 
     h2.unavailable {
         text-decoration: line-through;
+        color: $color-bad;
+    }
+
+    .circle {
+        @include clearfix;
+        border-radius: 50%;
+        overflow: hidden;
+        background: none repeat scroll 0% 0% $color-accent1;
+        position: relative;
+        z-index: 99999;
+        text-align: center;
+        top: 1rem;
+        float: left;
+        margin-right: $gutter;
+        width: 8rem;
+        height: 8rem;
+        padding-top: 2rem;
+    }
+
+    .circle-bad {
+        background: none repeat scroll 0% 0% $color-bad;
+
+    }
+
+    .circle-good {
+        background: none repeat scroll 0% 0% $color-good;
+
+    }
+
+    .icon {
+        text-align: center;
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .icon * {
+        fill: #fff;
     }
 }
 
