@@ -237,6 +237,11 @@
     margin-right: 2*$gutter;
 }
 
+.button-buy {
+    font-size: 2.4rem;
+    padding: $gutter;
+}
+
 @media(min-width: 40em) {
     .contact {
         float: left;

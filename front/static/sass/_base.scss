@@ -88,9 +88,9 @@ button, .button {
   cursor: pointer;
 
   @include transition(background 0.2s);
-  background-color: darken($color-gray, 20%);
+  background-color: darken(#666, 20%);
   &:hover, &:focus, &:active {
-    background-color: darken($color-gray, 30%);
+    background-color: darken(#666, 30%);
     color: #fff;
   }
 }
@@ -117,6 +117,10 @@ input[type="text"] {
     text-align: left;
     outline: medium none;
     border-radius: 3px;
+}
+
+button, input[type="submit"] {
+    font-size: 2rem;
 }
 
 /* ===MISC=== */
