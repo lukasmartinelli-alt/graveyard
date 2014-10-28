@@ -3,16 +3,15 @@
 
 {% block content %}
 <div class="main">
-    <h1>{% trans "Registration" %}</h1>
-    <p class="domain-info">
-    {% trans "You are about to purchase" %}
-    </p>
-    <label class="domain">{{ domain }}<label>
-    {{ availability }}
-    <form method="post" action="">
-        {% csrf_token %}
-        <button class="button-primary" type="submit">Submit</button>
-    </form>
+    <div class="domain-info">
+    {% if available %}
+        <h3>{% trans "You are about to purchase" %}</h3>
+        <h2>{{ domain }}</h2>
+    {% else %}
+        <h3>{% trans "Your domain is already registered" %}</h3>
+        <h2 class="unavailable">{{ domain }}</h2>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}
 

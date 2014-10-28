@@ -10,4 +10,4 @@ def register_domain(request):
             domain = "{0}.{1}".format(form.cleaned_data["domain"],
                                       form.cleaned_data["tld"])
             availability = check_domain_availability(domain)
-            return render(request, "registration.html", {"domain": domain, "availability": availability})
+            return render(request, "registration.html", {"domain": domain, "available": availability})
