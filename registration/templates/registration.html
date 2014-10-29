@@ -18,14 +18,52 @@
         <h2 class="unavailable">{{ domain }}</h2>
     {% endif %}
     </div>
-    <br />
-    <div class="">
-
+    <div class="email-adresses">
+        <h2>
+            <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
+            <span>Email Adresses</span>
+        </h2>
+        <ul class="email-list">
+            <li>
+                mail@{{ domain }}
+                <a class="remove" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                </a>
+                <a class="edit" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                </a>
+            </li>
+            <li>
+                me@{{ domain }}
+                <a class="remove" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                </a>
+                <a class="edit" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                </a>
+            </li>
+            <li>
+                info@{{ domain }}
+                <a class="remove" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                </a>
+                <a class="edit" href="#">
+                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                </a>
+            </li>
+            <li>
+                <input type="text" placeholder="yourname@{{ domain }}"></input>
+            </li>
+        </ul>
     </div>
     <form method="post">
         <div class="contact">
-            <h2>Contact Details</h2>
-            <input name="contact" type="text" placeholder="{% trans "Enter your old email address" %}" /></input>
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
+                <span>Contact Details</span>
+            </h2>
+            <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
+            <input name="contact" type="text" placeholder="{% trans "Old email address" %}" /></input>
         </div>
         <div class="billing">
             <h2>
@@ -52,7 +90,10 @@
                 </label>
             </div>
         </div>
-        <button class="button button-primary button-buy">{% trans "Buy domain" %}</button>
+        <button class="button button-primary button-buy">
+            <img class="icon" src="{{ STATIC_URL }}svg/cart.svg">
+            <span>{% trans "Buy domain" %}</span>
+        </button>
     </form>
 </div>
 {% endblock %}
