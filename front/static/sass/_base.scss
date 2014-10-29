@@ -27,7 +27,7 @@ h1 {
 h2 {
   font-size: 2.8rem;
   line-height: 1.3em;
-  margin-bottom: $gutter;
+  margin-bottom: 2*$gutter;
 }
 
 h3 {
@@ -59,8 +59,11 @@ hr {
 
 /* ===ICON=== */
 .icon {
-    width: $font-size-browser;
-    height: $font-size-browser;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    vertical-align: bottom;
 }
 
 /* ===LISTS=== */
@@ -109,11 +112,11 @@ label {
 input[type="text"] {
     font-size: 2rem;
     border: 1px solid #EDEDED;
-    padding: 15px 30px;
+    padding: $gutter 2*$gutter;
     width: 100%;
     color: #999;
-    margin: 2px 0px;
     font: inherit;
+    margin-top: $gutter;
     text-align: left;
     outline: medium none;
     border-radius: 3px;

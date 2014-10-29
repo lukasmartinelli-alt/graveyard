@@ -9,6 +9,9 @@ def check_domain_availability(domain):
     Returns whether the domain available or not.
     The nametoolkit is used together with a local library to check
     concurrently whether the domain is available or not.
+    Using the local library there may be false Negatives therefore
+    it returns True if one of the providers thinks that the domain
+    is available.
     """
 
     def check_local():

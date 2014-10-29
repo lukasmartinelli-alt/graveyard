@@ -19,14 +19,25 @@
     {% endif %}
     </div>
     <br />
+    <div class="">
+
+    </div>
     <form method="post">
         <div class="contact">
-            <h2>Contact</h2>
+            <h2>Contact Details</h2>
             <input name="contact" type="text" placeholder="{% trans "Enter your old email address" %}" /></input>
         </div>
         <div class="billing">
-            <h2>Billing</h2>
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/lock-locked.svg">
+                <span>Billing</span>
+                <img class="verisign" src="{{ STATIC_URL }}img/verisign-secured.png">
+            </h2>
             <input name="creditcard" type="text" placeholder="{% trans "Card Number" %}" /></input>
+            <div class="creditcard-info">
+                <input name="expiration" type="text" placeholder="{% trans "MM/YY" %}" /></input>
+                <input name="cvc" type="text" placeholder="{% trans "CVC" %}" /></input>
+            </div>
             <div class="card-type">
                 <input type="radio" name="cardtype" id="visa"></input> <label for="visa">
                     <img class="creditcard" src="{{ STATIC_URL }}svg/visa.svg" />

@@ -222,6 +222,7 @@
 }
 
 .billing {
+    background-color: #FFF5ED;
     input[type="radio"] {
         display: none;
     }
@@ -242,14 +243,42 @@
     padding: $gutter;
 }
 
+.creditcard-info {
+    input {
+        width: 49.5%;
+        display: inline-block;
+    }
+
+    input + input {
+
+    }
+}
+
+.contact {
+    padding: $gutter;
+}
+
+.billing {
+    
+    .icon * {
+        fill: #E28B43;
+    }
+
+    .verisign {
+        height: 2em;
+        float: right;
+    }
+
+    padding: $gutter;
+}
+
 @media(min-width: 40em) {
     .contact {
         float: left;
-        width: 49%;
-        margin-right: 2%;
+        width: 50%;
     }
     .billing {
         float: left;
-        width: 49%;
+        width: 50%;
     }
 }
