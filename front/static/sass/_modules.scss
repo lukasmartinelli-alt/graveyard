@@ -297,6 +297,7 @@
 .email-adresses {
     margin-top: 2*$gutter;
     padding: $gutter;
+    max-width: 49rem;
 
     .icon * {
         fill: #222;
