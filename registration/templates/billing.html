@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="main">
+    <form>
+        {% csrf_token %}
+        <div class="domain-info">
+            <div class="circle circle-good">
+                <img class="icon" src="{{ STATIC_URL }}svg/cart.svg" alt="transparency" />
+            </div>
+            <h3>{% trans "You are buying" %}</h3>
+            <h2>{{ domain }}</h2>
+        </div>
+        <div class="pricing">
+            <h2>
+                <span>Pricing</span>
+            </h2>
+            <ul class="price-list">
+                <li>
+                    <div class="item">
+                        <em>Domain Registration</em>
+                        <br />for {{ domain }}
+                    </div>
+                    <div class="price">
+                        $10
+                    </div>
+                </li>
+                <li>
+                    <div class="item">
+                        <em>Email Hosting</em>
+                        <br />for {{ domain }}
+                    </div>
+                    <div class="price">
+                        $15
+                    </div>
+                </li>
+                <li class="total">
+                    <div class="item">
+                        <em>Total</em>
+                    </div>
+                    <div class="price">
+                        <em>$25</em>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="billing">
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/lock-locked.svg">
+                <span>Billing</span>
+                <img class="verisign" src="{{ STATIC_URL }}img/verisign-secured.png">
+            </h2>
+            <input name="creditcard" type="text" placeholder="{% trans "Card Number" %}" /></input>
+            <div class="creditcard-info">
+                <input name="expiration" type="text" placeholder="{% trans "MM/YY" %}" /></input>
+                <input name="cvc" type="text" placeholder="{% trans "CVC" %}" /></input>
+            </div>
+            <div class="card-type">
+                <input type="radio" name="cardtype" id="visa"></input> <label for="visa">
+                    <img class="creditcard" src="{{ STATIC_URL }}svg/visa.svg" />
+                </label>
+                <input type="radio" name="cardtype" id="mastercard"></input>
+                <label for="mastercard">
+                    <img class="creditcard" src="{{ STATIC_URL }}svg/mastercard.svg" />
+                </label>
+                <input type="radio" name="cardtype" id="american-express"></input>
+                <label for="american-express">
+                <img class="creditcard" src="{{ STATIC_URL }}svg/american-express.svg" />
+                </label>
+            </div>
+            </div>
+        <button class="button button-primary button-buy">
+            <img class="icon" src="{{ STATIC_URL }}svg/cart.svg">
+            <span>{% trans "Buy domain" %}</span>
+        </button>
+    </form>
+</div>
+{% endblock %}

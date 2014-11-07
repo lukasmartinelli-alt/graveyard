@@ -1,4 +1,4 @@
-from django.forms import Form, CharField, ChoiceField
+from django.forms import Form, CharField, ChoiceField, EmailField
 
 SUPPORTED_TLDS_CHOICES = (
     ("ch", ".ch"),
@@ -9,4 +9,8 @@ SUPPORTED_TLDS_CHOICES = (
 class RegistrationForm(Form):
     domain = CharField()
     tld = ChoiceField(SUPPORTED_TLDS_CHOICES)
+
+class ContactForm(Form):
+    name = CharField()
+    old_mail = EmailField()
 

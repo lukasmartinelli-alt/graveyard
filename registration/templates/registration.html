@@ -19,6 +19,7 @@
     {% endif %}
     </div>
     <form method="post">
+        {% csrf_token %}
         <div class="contact">
             <h2>
                 <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
@@ -51,7 +52,7 @@
                     </a>
                 </li>
                 <li>
-                    <input type="text" placeholder="yourname@{{ domain }}"></input>
+                    <input name="new_mail" type="text" placeholder="yourname@{{ domain }}"></input>
                 </li>
             </ul>
         </div>
