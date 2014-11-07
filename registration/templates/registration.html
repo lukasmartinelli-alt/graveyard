@@ -18,53 +18,63 @@
         <h2 class="unavailable">{{ domain }}</h2>
     {% endif %}
     </div>
-    <div class="email-adresses">
-        <h2>
-            <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
-            <span>Email Adresses</span>
-        </h2>
-        <ul class="email-list">
-            <li>
-                mail@{{ domain }}
-                <a class="remove" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
-                </a>
-                <a class="edit" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
-                </a>
-            </li>
-            <li>
-                me@{{ domain }}
-                <a class="remove" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
-                </a>
-                <a class="edit" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
-                </a>
-            </li>
-            <li>
-                info@{{ domain }}
-                <a class="remove" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
-                </a>
-                <a class="edit" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
-                </a>
-            </li>
-            <li>
-                <input type="text" placeholder="yourname@{{ domain }}"></input>
-            </li>
-        </ul>
-    </div>
     <form method="post">
         <div class="contact">
             <h2>
                 <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
                 <span>Contact Details</span>
             </h2>
+            <p>
+                We need your name and old email adress for contacting you
+                if something goes wrong or you forget your password.
+            </p>
             <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
-            <input name="contact" type="text" placeholder="{% trans "Old email address" %}" /></input>
+            <input name="contact" type="text" placeholder="{% trans "Current email address" %}" /></input>
         </div>
+        <div class="email-adresses">
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
+                <span>Email Adresses</span>
+            </h2>
+            <p>
+            Specify all email adresses you want to use with your custom domain.
+            You can always add more adresses later.
+            </p>
+            <ul class="email-list">
+                <li>
+                    <span>mail@{{ domain }}</span>
+                    <a class="remove" href="#">
+                        <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                    </a>
+                    <a class="edit" href="#">
+                        <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                    </a>
+                </li>
+                <li>
+                    <input type="text" placeholder="yourname@{{ domain }}"></input>
+                </li>
+            </ul>
+        </div>
+    <!--
+    <div class="email-info">
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/info.svg">
+                <span>Examples</span>
+            </h2>
+            <ul>
+                <li>
+                    <em>mail@{{ domain }}</em>
+                </li>
+                <li>
+                    <em>me@{{ domain }}</em>
+                </li>
+                <li>
+                    <em>firstname@{{ domain }}</em>
+                </li>
+            </p>
+
+    </div>-->
+        <!--
         <div class="billing">
             <h2>
                 <img class="icon" src="{{ STATIC_URL }}svg/lock-locked.svg">
@@ -89,10 +99,13 @@
                 <img class="creditcard" src="{{ STATIC_URL }}svg/american-express.svg" />
                 </label>
             </div>
-        </div>
-        <button class="button button-primary button-buy">
+            </div>-->
+        <!--<button class="button button-primary button-buy">
             <img class="icon" src="{{ STATIC_URL }}svg/cart.svg">
             <span>{% trans "Buy domain" %}</span>
+            </button>-->
+        <button class="button-continue button-primary">
+            {% trans "Register domain" %}
         </button>
     </form>
 </div>

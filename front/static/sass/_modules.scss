@@ -221,26 +221,25 @@
     display: block;
 }
 
-.billing {
-    background-color: #FFF5ED;
-    input[type="radio"] {
-        display: none;
-    }
-
-    label {
-        display: inline-block;
-        cursor: pointer;
-    }
-}
 
 .creditcard {
     width: 7rem;
     margin-right: 2*$gutter;
 }
 
-.button-buy {
+
+@mixin button-big {
     font-size: 3.5rem;
     padding: $gutter;
+}
+
+.button-continue {
+    margin-left: $gutter;
+    @include button-big;
+}
+
+.button-buy {
+    @include button-big;
     margin-top: 4*$gutter;
 
     .icon * {
@@ -268,36 +267,51 @@
     }
 }
 
+@media(min-width: 44em) {
+    .contact, .email-adresses {
+        width: 50%;
+        float: left;
+    }
+}
+
+.email-info {
+    margin-top: 2*$gutter;
+    background-color: #DBF2F2;
+    padding: $gutter;
+    padding-bottom: 0;
+
+    .icon * {
+        fill: #137373;
+    }
+}
+
 .billing {
     margin-top: 2*$gutter;
+    background-color: #FFF5ED;
+    padding: $gutter;
 
     .icon * {
         fill: #E28B43;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+        cursor: pointer;
     }
 
     .verisign {
         height: 2em;
         float: right;
     }
-
-    padding: $gutter;
-}
-
-@media(min-width: 40em) {
-    .contact {
-        float: left;
-        width: 50%;
-    }
-    .billing {
-        float: left;
-        width: 50%;
-    }
 }
 
 .email-adresses {
     margin-top: 2*$gutter;
     padding: $gutter;
-    max-width: 49rem;
 
     .icon * {
         fill: #222;
@@ -312,7 +326,7 @@ ul.email-list {
     padding: 0;
 
     li {
-        padding: $gutter;
+        padding: 1.5*$gutter $gutter;
         font-size: 2rem;
         list-style-type: none;
         border-bottom: 1px solid #ccc;
@@ -343,7 +357,6 @@ ul.email-list {
         }
 
         input {
-            padding: 1rem;
             margin-top: 0;
         }
 

@@ -101,21 +101,21 @@ button, .button {
 button.button-primary, .button.button-primary {
   background-color: $color-accent1;
   &:hover, &:active, &:focus {
-    background: $color-accent2;
+    background: darken($color-accent1, 10%);
   }
 }
 /* ===FORMS=== */
 label {
-    display: block;
+    display: inline-block;
+    margin-bottom: $gutter/2;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
     font-size: 2rem;
     border: 1px solid #EDEDED;
-    padding: $gutter 2*$gutter;
+    padding: $gutter;
     width: 100%;
     color: #999;
-    font: inherit;
     margin-top: $gutter;
     text-align: left;
     outline: medium none;
