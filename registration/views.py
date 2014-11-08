@@ -49,6 +49,6 @@ def payment(request):
             domain = "{0}.{1}".format(form.cleaned_data["domain"],
                                       form.cleaned_data["tld"])
             availability = check_domain_availability(domain)
-            return render(request, "billing.html", {"full_domain": domain, "available": availability})
+            return render(request, "payment.html", {"full_domain": domain, "available": availability})
 
 

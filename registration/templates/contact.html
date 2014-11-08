@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="main">
+    {% include "domain_info.html" %}
     <form method="post">
         {% csrf_token %}
         <div class="contact">
