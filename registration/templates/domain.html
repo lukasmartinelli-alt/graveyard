@@ -4,7 +4,6 @@
 {% block content %}
 <div class="main">
     {% include 'progress.html' with step=1 %}
-
     <div class="domain-info">
     {% if available %}
         <div class="circle circle-good">
@@ -22,18 +21,6 @@
     </div>
     <form method="post">
         {% csrf_token %}
-        <div class="contact">
-            <h2>
-                <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
-                <span>Contact Details</span>
-            </h2>
-            <p>
-                We need your name and old email adress for contacting you
-                if something goes wrong or you forget your password.
-            </p>
-            <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
-            <input name="contact" type="text" placeholder="{% trans "Current email address" %}" /></input>
-        </div>
         <div class="email-adresses">
             <h2>
                 <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">

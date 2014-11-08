@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="main">
+    <div class="domain-info">
+    {% if available %}
+        <div class="circle circle-good">
+            <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+        </div>
+        <h3>{% trans "Your domain is available" %}</h3>
+        <h2>{{ domain }}</h2>
+    {% else %}
+        <div class="circle circle-bad">
+            <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+        </div>
+        <h3>{% trans "Your domain is already taken" %}</h3>
+        <h2 class="unavailable">{{ domain }}</h2>
+    {% endif %}
+    </div>
+    {% include 'progress.html' with step=1 %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="contact">
+            <h2>
+                <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
+                <span>Contact Details</span>
+            </h2>
+            <p>
+                We need your name and old email adress for contacting you
+                if something goes wrong or you forget your password.
+            </p>
+            <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
+            <input name="contact" type="text" placeholder="{% trans "Current email address" %}" /></input>
+        </div>
+        <button class="button-continue button-primary">
+            {% trans "Register domain" %}
+        </button>
+    </form>
+</div>
+{% endblock %}
+

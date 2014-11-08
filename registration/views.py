@@ -10,16 +10,17 @@ def register_domain(request):
             domain = "{0}.{1}".format(form.cleaned_data["domain"],
                                       form.cleaned_data["tld"])
             availability = check_domain_availability(domain)
-            return render(request, "registration.html", {"domain": domain, "available": availability})
+            return render(request, "domain.html", {"domain": domain, "available": availability})
     elif request.method == "POST":
         form = ContactForm(request.POST)
         address_list = request.POST.getlist("new_mail")
         domain = request.GET["domain"]
         tld = request.GET["tld"]
         domain = "{0}.{1}".format(domain, tld)
+        availability = check_domain_availability(domain)
 
         if form.is_valid():
             print(form.cleaned_data)
             print(address_list)
 
-        return render(request, "billing.html", {"domain": domain})
+        return render(request, "contact.html", {"domain": domain, "available": availability})

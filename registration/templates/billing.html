@@ -3,16 +3,16 @@
 
 {% block content %}
 <div class="main">
+    <div class="domain-info">
+        <div class="circle circle-good">
+            <img class="icon" src="{{ STATIC_URL }}svg/cart.svg" alt="transparency" />
+        </div>
+        <h3>{% trans "You are buying" %}</h3>
+        <h2>{{ domain }}</h2>
+    </div>
     {% include 'progress.html' with step=2 %}
     <form>
         {% csrf_token %}
-        <div class="domain-info">
-            <div class="circle circle-good">
-                <img class="icon" src="{{ STATIC_URL }}svg/cart.svg" alt="transparency" />
-            </div>
-            <h3>{% trans "You are buying" %}</h3>
-            <h2>{{ domain }}</h2>
-        </div>
         <div class="pricing">
             <h2>
                 <span>Pricing</span>

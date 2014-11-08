@@ -1,10 +1,11 @@
 /* ===BRANDING=== */
 
 .branding {
+
     .icon-mailgenic {
         float: left;
-        width: 8rem;
-        height: 8rem;
+        width: 6rem;
+        height: 6rem;
         float: left;
     }
 
@@ -12,7 +13,7 @@
         font-size: 3.2rem;
         color: $color-accent1;
         float: left;
-        margin-top: 3rem;
+        margin-top: 1rem;
         font-size: 4rem;
         text-transform: uppercase;
         font-weight: 700;
@@ -20,13 +21,28 @@
 
     .nav-toggle {
         float: right;
-        margin-top: 3.2rem;
+        margin-top: 1.2rem;
         padding-top: 0.5rem;
         padding-left: 0.5rem;
         width: 4rem;
         height: 4rem;
         background-color: $color-accent1;
         margin-left: $gutter;
+    }
+
+    @media(min-width: 30rem) {
+        .icon-mailgenic {
+            width: 8rem;
+            height: 8rem;
+        }
+
+        h1 {
+            margin-top: 3rem;
+        }
+
+        .nav-toggle {
+            margin-top: 3.2rem;
+        }
     }
 
     .icon-menu {
@@ -38,18 +54,11 @@
     .icon-menu * {
          fill: #fff;
     }
-
-    @media(min-width: 27rem) {
-        .icon-mailgenic {
-        }
-
-        .branding-container {
-        }
-    }
 }
 
 /* ===PROGRESS INDICATOR=== */
 .progress {
+    background: $color-gray;
     margin-bottom: 2*$gutter;
 
     a, a:after {
@@ -64,22 +73,25 @@
     }
 
     a {
-        font-size: 2rem;
-        line-height: 4rem;
+        line-height: 2em;
         text-decoration: none;
         outline: none;
         display: inline-block;
-        padding: 0 4rem 0 7rem;
+        padding: 0 2em 0 4em;
         position: relative;
+
+        &:first-child {
+            padding-left: 3.5em;
+        }
     }
 
     a:after {
         content: '';
         position: absolute;
         top: 0;
-        right: -2rem;
-        width: 4rem;
-        height: 4rem;
+        right: -1em;
+        width: 2em;
+        height: 2em;
         transform: scale(0.707) rotate(45deg);
         z-index: 1;
         box-shadow: 2px -2px 0px 2px #ccc;
@@ -89,35 +101,65 @@
         content: none;
     }
 
-    span.name {
+    .name {
         visibility: hidden;
         display: block;
         width: 0rem;
     }
 
-    span.step {
+    a .step {
         display: block;
         background: white;
         box-shadow: 0 0 0 1px #ccc;
         color: $color-text;
         border-radius: 100%;
-        width: 3rem;
-        height: 3rem;
-        padding-left: 1rem;
-        line-height: 3rem;
-        margin: 0.5rem 0;
+        width: 1.5em;
+        height: 1.5em;
+        padding-left: 0.5em;
+        line-height: 1.5em;
+        margin: 0.25em 0;
         position: absolute;
         top: 0;
-        left: 3rem;
+        left: 2.5em;
         font-weight: bold;
+    }
+    
+    a:first-child .step {
+        left: 2em;
+    }
+
+a .step {
+        left: 2em;
+    }
+    
+    a:first-child .step {
+        left: 1em;
+    }
+
+    a {
+        width: 25%; 
+    }
+    
+    a.active {
+        width: 40%;
+    }
+
+    a.active .name {
+        visibility: visible;
+        display: inline;
+        width: auto;
     }
 
     @media(min-width: 40rem) {
         a {
-            width: 30%;
+            font-size: 2rem;
         }
 
-        span.name {
+        a, a.active {
+            width: 32%;
+        }
+
+        .name {
             visibility: visible;
             display: inline;
             width: auto;
@@ -343,13 +385,6 @@
     }
 }
 
-@media(min-width: 44em) {
-    .contact, .email-adresses {
-        width: 50%;
-        float: left;
-    }
-}
-
 .email-info {
     margin-top: 2*$gutter;
     background-color: #DBF2F2;
@@ -388,6 +423,7 @@
 .email-adresses {
     margin-top: 2*$gutter;
     padding: $gutter;
+    max-width: 70rem;
 
     .icon * {
         fill: #222;
