@@ -10,56 +10,91 @@
 {% block content %}
 <div class="main">
     {% include "domain_info.html" %}
+    {% if available %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="email-adresses">
+                <h2>
+                    <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
+                    <span>Email Adresses</span>
+                </h2>
+                <p>
+                Specify all email adresses you want to use with your custom domain.
+                You can always add more adresses later.
+                </p>
+                <ul class="email-list">
+                    <li>
+                        <span>mail@{{ full_domain }}</span>
+                        <a class="remove" href="#">
+                            <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                        </a>
+                        <a class="edit" href="#">
+                            <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                        </a>
+                    </li>
+                    <li>
+                        <input name="new_mail" type="text" placeholder="yourname@{{ full_domain }}"></input>
+                    </li>
+                </ul>
+            </div>
+        <!--
+        <div class="email-info">
+                <h2>
+                    <img class="icon" src="{{ STATIC_URL }}svg/info.svg">
+                    <span>Examples</span>
+                </h2>
+                <ul>
+                    <li>
+                        <em>mail@{{ full_domain }}</em>
+                    </li>
+                    <li>
+                        <em>me@{{ full_domain }}</em>
+                    </li>
+                    <li>
+                        <em>firstname@{{ domain }}</em>
+                    </li>
+                </p>
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="email-adresses">
-            <h2>
-                <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
-                <span>Email Adresses</span>
-            </h2>
-            <p>
-            Specify all email adresses you want to use with your custom domain.
-            You can always add more adresses later.
-            </p>
-            <ul class="email-list">
-                <li>
-                    <span>mail@{{ full_domain }}</span>
-                    <a class="remove" href="#">
-                        <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
-                    </a>
-                    <a class="edit" href="#">
-                        <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
-                    </a>
-                </li>
-                <li>
-                    <input name="new_mail" type="text" placeholder="yourname@{{ full_domain }}"></input>
-                </li>
-            </ul>
-        </div>
-    <!--
-    <div class="email-info">
-            <h2>
-                <img class="icon" src="{{ STATIC_URL }}svg/info.svg">
-                <span>Examples</span>
-            </h2>
-            <ul>
-                <li>
-                    <em>mail@{{ full_domain }}</em>
-                </li>
-                <li>
-                    <em>me@{{ full_domain }}</em>
-                </li>
-                <li>
-                    <em>firstname@{{ domain }}</em>
-                </li>
-            </p>
-
-    </div>-->
-        <button class="button-continue button-primary">
-            {% trans "Register domain" %}
-        </button>
-    </form>
+        </div>-->
+            <button class="button-continue button-primary">
+                {% trans "Register domain" %}
+            </button>
+        </form>
+    {% else %}
+        <form class="domain-search">
+            <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
+            <button class="button button-primary">
+                <img class="icon" src="{{ STATIC_URL }}svg/magnifying-glass.svg" alt="search" />
+                <span>Search</span>
+            </button>
+        </form>
+        <ul class="domain-results">
+            <li class="good">
+                <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
+                    <div class="circle circle-good">
+                        <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+                    </div>
+                    <span>lukasmartinel.li</span>
+                </a>
+            </li>
+            <li class="bad">
+                <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=ch">
+                    <div class="circle circle-bad">
+                        <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+                    </div>
+                    <span>lukasmartinelli.ch</span>
+                </a>
+            </li>
+            <li class="good">
+                <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=com">
+                    <div class="circle circle-good">
+                        <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+                    </div>
+                    <span>lukasmartinelli.com</span>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
 </div>
 {% endblock %}
 

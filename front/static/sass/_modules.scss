@@ -551,3 +551,99 @@ ul.price-list {
         }
     }
 }
+
+/*==== DOMAIN NAME SEARCH====*/
+.domain-search {
+    margin-top: 2*$gutter;
+
+    input[type="text"] {
+        width: 70%;
+        display: inline-block;
+    }
+
+    button {
+        margin: 0;
+        padding: 1rem;
+        font-size: 2rem;
+        width: 29%;
+        display: inline-block;
+    }
+    
+    .icon * {
+         fill: white;
+    }
+
+    @media(min-width: 50rem) {
+        input[type="text"] {
+            width: 80%;
+        }
+        button {
+            width: 19%;
+        }
+    }
+}
+
+.domain-results {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 2*$gutter;
+    padding: 0;
+
+    a {
+        display: block;
+        color: inherit;
+        padding: 1.5*$gutter $gutter;
+        font-size: 2rem;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .circle {
+        @include clearfix;
+        border-radius: 50%;
+        overflow: hidden;
+        background: none repeat scroll 0% 0% $color-accent1;
+        position: relative;
+        z-index: 99999;
+        text-align: center;
+        float: left;
+        margin-right: $gutter;
+        padding-top: 0.2em;
+        width: 1.5em;
+        height: 1.5em;
+    }
+ 
+    .circle-bad {
+        background: none repeat scroll 0% 0% $color-bad;
+
+    }
+
+    .circle-good {
+        background: none repeat scroll 0% 0% $color-good;
+
+    }
+    
+    .icon {
+        text-align: center;
+        height: 0.8em;
+        width: 0.8em;
+
+    }
+
+    .icon * {
+        fill: white;
+    }
+
+    li {
+        list-style-type: none;
+
+//        &:hover { cursor: pointer; }
+    }
+
+    li.good:hover {
+        background: rgba($color-good, .1);
+    }
+
+    li.bad:hover {
+        background: rgba($color-bad, .1);
+    }
+}
