@@ -1,13 +1,13 @@
 <div class="progress">
-    <a href="#" class="{% if step == 1 %}active{% endif %}">
+<a href="{% url 'domain' %}?{{ request.GET.urlencode }}" class="{% if step == 1 %}active{% endif %}">
         <span class="step">1</span>
         <span class="name">Domain</span>
     </a>
-    <a href="#" class="{% if step == 2 %}active{% endif %}">
+    <a href="{% url 'contact' %}?{{ request.GET.urlencode }}" class="{% if step == 2 %}active{% endif %}">
         <span class="step">2</span>
         <span class="name">Contact</span>
     </a>
-    <a href="#" class="{% if step == 3 %}active{% endif %}">
+    <a href="{% url 'payment' %}?{{ request.GET.urlencode }}" class="{% if step == 3 %}active{% endif %}">
         <span class="step">3</span>
         <span class="name">Payment</span>
     </a>

@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block header %}
+    {% include "branding.html" with hide_toggle=True %}
+    {% include "progress.html" with step=3 %}
+{% endblock %}
+
 {% block content %}
 <div class="main">
-    <div class="domain-info">
-        <div class="circle circle-good">
-            <img class="icon" src="{{ STATIC_URL }}svg/cart.svg" alt="transparency" />
-        </div>
-        <h3>{% trans "You are buying" %}</h3>
-        <h2>{{ domain }}</h2>
-    </div>
-    {% include 'progress.html' with step=2 %}
+    {% include "domain_info.html" %}
     <form>
         {% csrf_token %}
         <div class="pricing">
@@ -21,7 +19,7 @@
                 <li>
                     <div class="item">
                         <em>Domain Registration</em>
-                        <br />for {{ domain }}
+                        <br />for {{ full_domain }}
                     </div>
                     <div class="price">
                         $10
@@ -30,7 +28,7 @@
                 <li>
                     <div class="item">
                         <em>Email Hosting</em>
-                        <br />for {{ domain }}
+                        <br />for {{ full_domain }}
                     </div>
                     <div class="price">
                         $15

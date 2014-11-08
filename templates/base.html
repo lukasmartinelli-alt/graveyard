@@ -40,9 +40,12 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/responsive-nav.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/svg-injector.js"></script>
     <script>
-        var nav = responsiveNav(".nav-collapse", {
-            customToggle: "toggle"
-        });
+        toggle = document.getElementById("toggle");
+        if(toggle) {
+            var nav = responsiveNav(".nav-collapse", {
+                customToggle: "toggle" 
+            });
+        }
         var svgIcons = document.querySelectorAll('.icon');
         SVGInjector(svgIcons);
     </script>
