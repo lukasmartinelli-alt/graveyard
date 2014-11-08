@@ -28,29 +28,10 @@
 <body class="home">
     <div class="top">
         <header class="header">
-            <div class="branding">
-                <img class="icon-mailgenic" src="{{ STATIC_URL }}/svg/mailgenic.svg" alt="Mailgenic"></img>
-                <a href="/"><h1>Mailgenic</h2></a>
-                <a id="toggle" href="#nav" class="nav-toggle">
-                    <img class="icon icon-menu" src="{{ STATIC_URL }}/svg/menu.svg" alt="menu">
-                </a>
-            </div>
-            <nav id="nav" class="nav-collapse">
-                <ul>
-                    <li class="active">
-                        <a href="/">{% trans "Home" %}</a>
-                    </li>
-                    <li class="">
-                        <a href="/">{% trans "Features" %}</a>
-                    </li>
-                    <li class="">
-                        <a href="/">{% trans "Pricing" %}</a>
-                    </li>
-                    <li class="">
-                        <a href="/">{% trans "Login" %}</a>
-                    </li>
-                </ul>
-            </nav>
+            {% block header %}
+                {% include "branding.html" %}
+                {% include "nav.html" %}
+            {% endblock %}
         </header>
     </div>
     {% block content %}{% endblock %}

@@ -46,11 +46,20 @@ body { }
     padding: $gutter;
     padding-top: 0;
     @include clearfix;
+}
 
+.progress {
+    margin-top: 2rem;
+}
+
+@media(min-width: 902px) {
     .branding {
-        @media(min-width: 40em) {
-            padding-right: 10rem;
-        }
+        float: left;
+    }
+
+    .progress {
+        margin-top: 3.2rem;
+        float: right;
     }
 }
 

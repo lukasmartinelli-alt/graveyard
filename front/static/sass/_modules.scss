@@ -1,6 +1,7 @@
 /* ===BRANDING=== */
 
 .branding {
+    @include clearfix;
 
     .icon-mailgenic {
         float: left;
@@ -59,7 +60,6 @@
 /* ===PROGRESS INDICATOR=== */
 .progress {
     background: $color-gray;
-    margin-bottom: 2*$gutter;
 
     a, a:after {
         color: $color-text;

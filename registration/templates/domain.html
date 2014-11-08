@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+
+{% block header %}
+    {% include "branding.html" with hide_toggle=True %}
+    {% include "progress.html" with step=1 %}
+{% endblock %}
+
 {% block content %}
 <div class="main">
-    {% include 'progress.html' with step=1 %}
     <div class="domain-info">
     {% if available %}
         <div class="circle circle-good">
