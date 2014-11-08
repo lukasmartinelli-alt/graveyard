@@ -1,0 +1,33 @@
+<form class="domain-search">
+    <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
+    <button class="button button-primary">
+        <img class="icon" src="{{ STATIC_URL }}svg/magnifying-glass.svg" alt="search" />
+        <span>Search</span>
+    </button>
+</form>
+<ul class="domain-results">
+    <li class="good">
+        <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
+            <div class="circle circle-good">
+                <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+            </div>
+            <span>lukasmartinel.li</span>
+        </a>
+    </li>
+    <li class="bad">
+        <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=ch">
+            <div class="circle circle-bad">
+                <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+            </div>
+            <span>lukasmartinelli.ch</span>
+        </a>
+    </li>
+    <li class="good">
+        <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=com">
+            <div class="circle circle-good">
+                <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+            </div>
+            <span>lukasmartinelli.com</span>
+        </a>
+    </li>
+</ul>
