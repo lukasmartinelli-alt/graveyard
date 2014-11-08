@@ -48,6 +48,83 @@
     }
 }
 
+/* ===PROGRESS INDICATOR=== */
+.progress {
+    margin-bottom: 2*$gutter;
+
+    a, a:after {
+        color: $color-text;
+        background: $color-gray;
+        transition: all 0.5s;
+    }
+
+    a:hover, a.active, a:hover:after, a.active:after{
+        background: $color-accent1;
+        color: white;
+    }
+
+    a {
+        font-size: 2rem;
+        line-height: 4rem;
+        text-decoration: none;
+        outline: none;
+        display: inline-block;
+        padding: 0 4rem 0 7rem;
+        position: relative;
+    }
+
+    a:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -2rem;
+        width: 4rem;
+        height: 4rem;
+        transform: scale(0.707) rotate(45deg);
+        z-index: 1;
+        box-shadow: 2px -2px 0px 2px #ccc;
+    }
+
+    a:last-child:after {
+        content: none;
+    }
+
+    span.name {
+        visibility: hidden;
+        display: block;
+        width: 0rem;
+    }
+
+    span.step {
+        display: block;
+        background: white;
+        box-shadow: 0 0 0 1px #ccc;
+        color: $color-text;
+        border-radius: 100%;
+        width: 3rem;
+        height: 3rem;
+        padding-left: 1rem;
+        line-height: 3rem;
+        margin: 0.5rem 0;
+        position: absolute;
+        top: 0;
+        left: 3rem;
+        font-weight: bold;
+    }
+
+    @media(min-width: 40rem) {
+        a {
+            width: 30%;
+        }
+
+        span.name {
+            visibility: visible;
+            display: inline;
+            width: auto;
+        }
+    }
+}
+
 /* ===FEATURES=== */
 .feature {
     @include clearfix;

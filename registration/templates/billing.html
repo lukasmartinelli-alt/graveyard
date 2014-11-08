@@ -3,6 +3,7 @@
 
 {% block content %}
 <div class="main">
+    {% include 'progress.html' with step=2 %}
     <form>
         {% csrf_token %}
         <div class="domain-info">
