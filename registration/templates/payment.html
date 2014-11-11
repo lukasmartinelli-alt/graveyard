@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% load i18n %}
 
 {% block header %}
@@ -46,9 +47,9 @@
         </div>
         <div class="billing">
             <h2>
-                <img class="icon" src="{{ STATIC_URL }}svg/lock-locked.svg">
+                <img class="icon" src="{% static 'svg/lock-locked.svg' %}">
                 <span>Billing</span>
-                <img class="verisign" src="{{ STATIC_URL }}img/verisign-secured.png">
+                <img class="verisign" src="{% static 'img/verisign-secured.png' %}">
             </h2>
             <input name="creditcard" type="text" placeholder="{% trans "Card Number" %}" /></input>
             <div class="creditcard-info">
@@ -57,20 +58,20 @@
             </div>
             <div class="card-type">
                 <input type="radio" name="cardtype" id="visa"></input> <label for="visa">
-                    <img class="creditcard" src="{{ STATIC_URL }}svg/visa.svg" />
+                    <img class="creditcard" src="{% static 'svg/visa.svg' %}">
                 </label>
                 <input type="radio" name="cardtype" id="mastercard"></input>
                 <label for="mastercard">
-                    <img class="creditcard" src="{{ STATIC_URL }}svg/mastercard.svg" />
+                    <img class="creditcard" src="{% static 'svg/mastercard.svg' %}">
                 </label>
                 <input type="radio" name="cardtype" id="american-express"></input>
                 <label for="american-express">
-                <img class="creditcard" src="{{ STATIC_URL }}svg/american-express.svg" />
+                    <img class="creditcard" src="{% static 'svg/american-express.svg' %}">
                 </label>
             </div>
             </div>
         <button class="button button-primary button-buy">
-            <img class="icon" src="{{ STATIC_URL }}svg/cart.svg">
+            <img class="icon" src="{% static 'svg/cart.svg' %}">
             <span>{% trans "Buy domain" %}</span>
         </button>
     </form>

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block content %}
     <div class="cover">
@@ -9,7 +10,7 @@
         <section class="features">
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/dollar.svg" alt="lowest price" />
+                    <img class="icon" src="{% static 'svg/dollar.svg' %}" alt="lowest price" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Lowest Price" %}</h3>
@@ -20,7 +21,7 @@
             </article>
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/shield.svg" alt="Protected by Swiss laws" />
+                    <img class="icon" src="{% static 'svg/shield.svg' %}" alt="Protected by Swiss laws" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Based in Switzerland" %}</h3>
@@ -31,7 +32,7 @@
             </article>
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/info.svg" alt="simplicity" />
+                    <img class="icon" src="{% static 'svg/info.svg' %}" alt="Simplicity" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Simplicity" %}</h3>
@@ -42,7 +43,7 @@
             </article>
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/browser.svg" alt="webmail" />
+                    <img class="icon" src="{% static 'svg/browser.svg' %}" alt="Webmail" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Fully fledged Webmail" %}</h3>
@@ -53,7 +54,7 @@
             </article>
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/infinity.svg" alt="no quotas" />
+                    <img class="icon" src="{% static 'svg/infinity.svg' %}" alt="no quotas" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Unlimited usage" %}</h3>
@@ -64,7 +65,7 @@
             </article>
             <article class="feature">
                 <div class="circle">
-                    <img class="icon" src="{{ STATIC_URL }}svg/eye.svg" alt="transparency" />
+                    <img class="icon" src="{% static 'svg/eye.svg' %}" alt="transparency" />
                 </div>
                 <div class="desc">
                     <h3>{% trans "Transparency" %}</h3>

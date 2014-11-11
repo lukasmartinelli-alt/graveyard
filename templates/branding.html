@@ -1,10 +1,12 @@
+{% load staticfiles %}
+
 <div class="branding">
-    <img class="icon-mailgenic" src="{{ STATIC_URL }}/svg/mailgenic.svg" alt="Mailgenic"></img>
+    <img class="icon-mailgenic" src="{% static 'svg/mailgenic.svg' %}" alt="Mailgenic"></img>
     <a href="/"><h1>Mailgenic</h2></a>
 
     {% if not hide_toggle %}
     <a id="toggle" href="#nav" class="nav-toggle">
-        <img class="icon icon-menu" src="{{ STATIC_URL }}/svg/menu.svg" alt="menu">
+        <img class="icon icon-menu" src="{% static 'svg/menu.svg' %}" alt="menu">
     </a>
     {% endif %}
 </div>
