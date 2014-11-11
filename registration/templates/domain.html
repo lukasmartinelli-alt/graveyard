@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
+{% load staticfiles %}
 
 {% block header %}
     {% include "branding.html" with hide_toggle=True %}
@@ -13,8 +13,54 @@
     {% if available %}
         {% include "domain_email.html" %}
     {% else %}
-        {% include "domain_search.html" %}
+        <div id="domsearch">
+            {% include "domain_search.html" %}
+        </div>
     {% endif %}
 </div>
 {% endblock %}
 
+{% block scripts %}
+    <script type="text/jsx">
+        var Hello = React.createClass({
+            render: function() {
+                return (
+                    <div>Hello {this.props.name}</div>
+                );
+            }
+        });
+
+        var DomainSearch = React.createClass({
+            render: function() {
+                return (
+            <form class="domain-search">
+                    <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
+                    <button class="button button-primary">
+                        <img class="icon" src="{% static 'svg/magnifying-glass.svg' %}" alt="search" />
+                        <span>Search</span>
+                    </button>
+                </form>
+                );
+            }
+        });
+
+        var DomainResults = React.createClass({
+            render: function() {
+                return (
+                <ul class="domain-results" id="domain-results">
+                    <li class="good">
+                        <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
+                            <div class="circle circle-good">
+                                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
+                            </div>
+                            <span>lukasmartinel.li</span>
+                        </a>
+                    </li>
+                </ul>
+                );
+            }
+        });
+
+        React.render(<DomainSearch /><DomainResults />, document.getElementById("domsearch"));
+    </script>
+{% endblock %}

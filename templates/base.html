@@ -38,6 +38,8 @@
     <footer class="footer">
     </footer>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/responsive-nav.js/1.0.32/responsive-nav.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react-with-addons.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js"></script>
     <script type="text/javascript" src="{% static 'js/svg-injector.js' %}"></script>
     <script>
         toggle = document.getElementById("toggle");
@@ -49,5 +51,6 @@
         var svgIcons = document.querySelectorAll('.icon');
         SVGInjector(svgIcons);
     </script>
+    {% block scripts %}{% endblock %}
 </body>
 
