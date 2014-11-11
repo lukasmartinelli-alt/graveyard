@@ -1,9 +1,10 @@
 {% load i18n %}
+{% load staticfiles %}
 <form method="post">
     {% csrf_token %}
     <div class="email-adresses">
         <h2>
-            <img class="icon" src="{{ STATIC_URL }}svg/envelope-closed.svg">
+            <img class="icon" src="{% static 'svg/envelope-closed.svg' %}">
             <span>Email Adresses</span>
         </h2>
         <p>
@@ -14,10 +15,10 @@
             <li>
                 <span>mail@{{ full_domain }}</span>
                 <a class="remove" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/trash.svg">
+                    <img class="icon" src="{% static 'svg/trash.svg' %}">
                 </a>
                 <a class="edit" href="#">
-                    <img class="icon" src="{{ STATIC_URL }}svg/pencil.svg">
+                <img class="icon" src="{% static 'svg/pencil.svg' %}">
                 </a>
             </li>
             <li>
@@ -28,7 +29,7 @@
 <!--
 <div class="email-info">
         <h2>
-            <img class="icon" src="{{ STATIC_URL }}svg/info.svg">
+            <img class="icon" src="{% static 'svg/info.svg' %}">
             <span>Examples</span>
         </h2>
         <ul>

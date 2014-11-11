@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load staticfiles %}
 
 {% block header %}
     {% include "branding.html" with hide_toggle=True %}
@@ -13,7 +14,7 @@
         {% csrf_token %}
         <div class="contact">
             <h2>
-                <img class="icon" src="{{ STATIC_URL }}svg/person.svg">
+                <img class="icon" src="{% 'svg/person.svg' %}">
                 <span>Contact Details</span>
             </h2>
             <p>

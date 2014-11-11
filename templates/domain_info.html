@@ -1,15 +1,16 @@
 {% load i18n %}
+{% load staticfiles %}
 
 <div class="domain-info">
 {% if available %}
     <div class="circle circle-good">
-        <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+        <img class="icon" src"{% static 'svg/thumb-up.svg' %}" alt="transparency" />
     </div>
     <h3>{% trans "Your domain is available" %}</h3>
     <h2>{{ full_domain }}</h2>
 {% else %}
     <div class="circle circle-bad">
-        <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+        <img class="icon" src"{% static 'svg/thumb-down.svg' %}" alt="transparency" />
     </div>
     <h3>{% trans "Your domain is already taken" %}</h3>
     <h2 class="unavailable">{{ full_domain }}</h2>

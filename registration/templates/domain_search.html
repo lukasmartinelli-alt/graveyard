@@ -1,7 +1,8 @@
+{% load staticfiles %}
 <form class="domain-search">
     <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
     <button class="button button-primary">
-        <img class="icon" src="{{ STATIC_URL }}svg/magnifying-glass.svg" alt="search" />
+        <img class="icon" src="{% static 'svg/magnifying-glass.svg' %}" alt="search" />
         <span>Search</span>
     </button>
 </form>
@@ -9,7 +10,7 @@
     <li class="good">
         <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
             <div class="circle circle-good">
-                <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
             </div>
             <span>lukasmartinel.li</span>
         </a>
@@ -17,7 +18,7 @@
     <li class="bad">
         <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=ch">
             <div class="circle circle-bad">
-                <img class="icon" src="{{ STATIC_URL }}svg/thumb-down.svg" alt="transparency" />
+                <img class="icon" src="{% static 'svg/thumb-down.svg' %}" alt="thumb down" />
             </div>
             <span>lukasmartinelli.ch</span>
         </a>
@@ -25,7 +26,7 @@
     <li class="good">
         <a href="{% url 'domain' %}?domain=lukasmartinelli&tld=com">
             <div class="circle circle-good">
-                <img class="icon" src="{{ STATIC_URL }}svg/thumb-up.svg" alt="transparency" />
+                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
             </div>
             <span>lukasmartinelli.com</span>
         </a>
