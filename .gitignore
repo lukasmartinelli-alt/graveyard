@@ -6,4 +6,5 @@
 .sass-cache
 *.pyc
 *.log
+static/css/main.css
 
