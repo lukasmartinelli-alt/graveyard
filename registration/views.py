@@ -1,8 +1,18 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
-from .forms import RegistrationForm, ContactForm
+from django.http import JsonResponse
+from .forms import RegistrationForm, ContactForm, DomainForm
 from .whois import check_domain_availability
+
+
+def domain_available(request):
+    if request.method == "GET":
+        form = DomainForm(request.GET)
+        if form.is_valid():
+            availability = check_domain_availability(form.full_domain())
+            return JsonResponse(availability, safe=False)
+
 
 def domain(request):
     if request.method == "GET":
