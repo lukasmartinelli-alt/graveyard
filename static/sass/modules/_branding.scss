@@ -1,0 +1,58 @@
+/* ===BRANDING=== */
+
+.branding {
+    @include clearfix;
+
+    .icon-mailgenic {
+        float: left;
+        width: 6rem;
+        height: 6rem;
+        float: left;
+    }
+
+    h1 {
+        font-size: 3.2rem;
+        color: $color-accent1;
+        float: left;
+        margin-top: 1rem;
+        font-size: 4rem;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .nav-toggle {
+        float: right;
+        margin-top: 1.2rem;
+        padding-top: 0.5rem;
+        padding-left: 0.5rem;
+        width: 4rem;
+        height: 4rem;
+        background-color: $color-accent1;
+        margin-left: $gutter;
+    }
+
+    @media(min-width: 30rem) {
+        .icon-mailgenic {
+            width: 8rem;
+            height: 8rem;
+        }
+
+        h1 {
+            margin-top: 3rem;
+        }
+
+        .nav-toggle {
+            margin-top: 3.2rem;
+        }
+    }
+
+    .icon-menu {
+        padding-bottom: 0.7rem;
+        width: 3.2rem;
+        height: 3.2rem;
+    }
+
+    .icon-menu * {
+         fill: #fff;
+    }
+}

@@ -1,0 +1,141 @@
+/* ===REGISTRATION=== */
+.domain-info {
+    background: none repeat scroll 0% 0% $color-gray;
+    padding: $gutter;
+
+    h3 {
+        font-size: 2.8rem;
+    }
+
+    h2 {
+        font-size: 5rem;
+        color: $color-good;
+    }
+
+    h2.unavailable {
+        text-decoration: line-through;
+        color: $color-bad;
+    }
+
+    .circle {
+        @include clearfix;
+        border-radius: 50%;
+        overflow: hidden;
+        background: none repeat scroll 0% 0% $color-accent1;
+        position: relative;
+        z-index: 99999;
+        text-align: center;
+        top: 1rem;
+        float: left;
+        margin-right: $gutter;
+        width: 8rem;
+        height: 8rem;
+        padding-top: 2rem;
+    }
+
+    .circle-bad {
+        background: none repeat scroll 0% 0% $color-bad;
+
+    }
+
+    .circle-good {
+        background: none repeat scroll 0% 0% $color-good;
+
+    }
+
+    .icon {
+        text-align: center;
+        height: 4rem;
+        width: 4rem;
+    }
+
+    .icon * {
+        fill: #fff;
+    }
+}
+
+.card-type {
+    margin-top: 2*$gutter;
+    display: block;
+}
+
+
+.creditcard {
+    width: 7rem;
+    margin-right: 2*$gutter;
+}
+
+
+@mixin button-big {
+    font-size: 3.5rem;
+    padding: $gutter;
+}
+
+.button-continue {
+    @include button-big;
+}
+
+.button-buy {
+    @include button-big;
+    margin-top: 4*$gutter;
+
+    .icon * {
+        fill: #fff;
+    }
+}
+
+.creditcard-info {
+    input {
+        width: 49.5%;
+        display: inline-block;
+    }
+
+    input + input {
+
+    }
+}
+
+.contact {
+    margin-top: 2*$gutter;
+    padding: $gutter;
+    max-width: 60rem;
+
+    .icon * {
+        fill: #222;
+    }
+}
+
+.email-info {
+    margin-top: 2*$gutter;
+    background-color: #DBF2F2;
+    padding: $gutter;
+    padding-bottom: 0;
+
+    .icon * {
+        fill: #137373;
+    }
+}
+
+.billing {
+    margin-top: 2*$gutter;
+    background-color: #FFF5ED;
+    padding: $gutter;
+
+    .icon * {
+        fill: #E28B43;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .verisign {
+        height: 2em;
+        float: right;
+    }
+}

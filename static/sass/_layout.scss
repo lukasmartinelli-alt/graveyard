@@ -1,0 +1,111 @@
+@import "compass";
+@import "compass/utilities/general/clearfix";
+@import "compass/css3";
+
+/* ===LAYOUT MIXINS=== */
+
+// Wrapper defines the max width something text-based should see
+// While the site background is fully responsive we shouldn't scale
+// all the way up %wrapper { padding: 0 $gutter;
+%wrapper {
+    @media(min-width: rem-to-em($wrapper-width, $font-size-browser)) {
+        max-width: $wrapper-width;
+        margin: 0 auto;
+    }
+}
+
+
+/* ===LAYOUT STRUCTURE=== */
+
+body { }
+
+.top {
+    width: 100%;
+    background-color: $color-header-background;
+}
+
+.header {
+    @include clearfix;
+    @extend %wrapper;
+}
+
+.main {
+    @extend %wrapper;
+    padding: $gutter;
+    margin-top: $gutter;
+}
+
+.footer {
+    @extend %wrapper;
+    margin-top: 3*$gutter;
+    margin-bottom: $gutter;
+}
+
+/* ===HEADER=== */
+.header {
+    padding: $gutter;
+    padding-top: 0;
+    @include clearfix;
+}
+
+.progress {
+    margin-top: 2rem;
+}
+
+@media(min-width: 902px) {
+    .branding {
+        float: left;
+    }
+
+    .progress {
+        margin-top: 3.2rem;
+        float: right;
+    }
+}
+
+/* ===NAVIGATION=== */
+.nav-collapse {
+    @include clearfix;
+    width: 100%;
+    li {
+        margin: 0;
+        padding: 0;
+        a {
+            background-color: $color-navigation-background;
+            color: $color-navigation-link;
+            font: $font-navigation;
+            font-size: 2rem;;
+            padding: $gutter $gutter;
+            display: block;
+
+        }
+    }
+
+    li.active a {
+        background-color: $color-navigation-background-active;
+        color: $color-navigation-link-active;
+    }
+
+    &:before {
+        clear: left;
+    }
+}
+
+@media(min-width: 44em) {
+    .nav-collapse {
+        margin-top: 3.2rem;
+        float: right;
+        width: 50%;
+        li a {
+            float: left;
+        }
+    }
+}
+
+/* ===COVER=== */
+.cover {
+    background: url('../img/alps.jpg') no-repeat;
+    background-position: top center;
+        min-height: 45rem;
+    @include background-size(cover);
+}

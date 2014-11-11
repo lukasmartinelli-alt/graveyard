@@ -5,6 +5,5 @@
 *.swo
 .sass-cache
 *.pyc
-static
 *.log
 

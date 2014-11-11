@@ -1,0 +1,62 @@
+/*=== EMAIL ADRESSES ===*/
+.email-adresses {
+    margin-top: 2*$gutter;
+    padding: $gutter;
+    max-width: 60rem;
+
+    .icon * {
+        fill: #222;
+    }
+}
+
+@import "compass/css3/transition";
+
+ul.email-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        padding: 1.5*$gutter $gutter;
+        font-size: 2rem;
+        list-style-type: none;
+        border-bottom: 1px solid #ccc;
+
+        a {
+            float: right;
+            margin-left: $gutter;
+        }
+
+        .remove .icon * {
+            fill: #CF3030;
+        }
+
+        .edit .icon * {
+            fill: #111;
+        }
+
+        .icon {
+            visibility:hidden;
+            opacity:0;
+            @include transition(opacity 0.3s linear)
+        }
+
+        &:last-child {
+            padding-left: 0;
+            padding-right: 0;
+            border-bottom: none;
+        }
+
+        input {
+            margin-top: 0;
+        }
+
+        &:hover {
+            .icon {
+                visibility:visible;
+                opacity:1;
+            }
+        }
+    }
+}
+

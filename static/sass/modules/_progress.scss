@@ -1,0 +1,110 @@
+/* ===PROGRESS INDICATOR=== */
+
+.progress {
+    background: $color-gray;
+
+    a, a:after {
+        color: $color-text;
+        background: $color-gray;
+        transition: all 0.5s;
+    }
+
+    a:hover, a.active, a:hover:after, a.active:after{
+        background: $color-accent1;
+        color: white;
+    }
+
+    a {
+        line-height: 2em;
+        text-decoration: none;
+        outline: none;
+        display: inline-block;
+        padding: 0 2em 0 4em;
+        position: relative;
+
+        &:first-child {
+            padding-left: 3.5em;
+        }
+    }
+
+    a:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -1em;
+        width: 2em;
+        height: 2em;
+        transform: scale(0.707) rotate(45deg);
+        z-index: 1;
+        box-shadow: 2px -2px 0px 2px #ccc;
+    }
+
+    a:last-child:after {
+        content: none;
+    }
+
+    .name {
+        visibility: hidden;
+        display: block;
+        width: 0rem;
+    }
+
+    a .step {
+        display: block;
+        background: white;
+        box-shadow: 0 0 0 1px #ccc;
+        color: $color-text;
+        border-radius: 100%;
+        width: 1.5em;
+        height: 1.5em;
+        padding-left: 0.5em;
+        line-height: 1.5em;
+        margin: 0.25em 0;
+        position: absolute;
+        top: 0;
+        left: 2.5em;
+        font-weight: bold;
+    }
+    
+    a:first-child .step {
+        left: 2em;
+    }
+
+a .step {
+        left: 2em;
+    }
+    
+    a:first-child .step {
+        left: 1em;
+    }
+
+    a {
+        width: 25%; 
+    }
+    
+    a.active {
+        width: 40%;
+    }
+
+    a.active .name {
+        visibility: visible;
+        display: inline;
+        width: auto;
+    }
+
+    @media(min-width: 40rem) {
+        a {
+            font-size: 2rem;
+        }
+
+        a, a.active {
+            width: 32%;
+        }
+
+        .name {
+            visibility: visible;
+            display: inline;
+            width: auto;
+        }
+    }
+}

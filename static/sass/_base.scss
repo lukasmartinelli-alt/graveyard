@@ -1,0 +1,132 @@
+html {
+  //Make the old sizing trick
+  //All other sizes will use rem to refer to this measure
+  //http://snook.ca/archives/html_and_css/font-size-with-rem
+  font-size: 62.5%;
+}
+
+body {
+    background: $color-background;
+    font-size: $font-size-base;
+    line-height: $font-size-base * 1.3;
+    font-family: $font-text;
+    color: $color-text;
+}
+
+h1, h2, h3, h4, h5, h6, nav a {
+  color: $color-title;
+  font-family: $font-title;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1.3em;
+}
+
+h2 {
+  font-size: 2.8rem;
+  line-height: 1.3em;
+  margin-bottom: 2*$gutter;
+}
+
+h3 {
+  font-size: 2rem;
+  line-height: 1.3em;
+  margin-bottom: $gutter/2;
+}
+
+h4 {
+  font-size: 1.6rem;
+  line-height: 1.3em;
+}
+
+em, strong {
+    font-weight: 700;
+}
+
+p {
+    margin: 0 auto 0.5em;
+}
+
+hr {
+  border: solid $color-border;
+  border-width: 1px 0 0;
+  clear: both;
+  margin: $gutter 0 1.5 * $gutter;
+  height: 0;
+}
+
+/* ===ICON=== */
+.icon {
+    width: 1em;
+    height: 1em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    vertical-align: bottom;
+}
+
+/* ===LISTS=== */
+ul > li {
+  list-style: disc inside;
+  padding-left: $gutter;
+}
+
+/* ===LINKS=== */
+
+a {
+  color: $color-accent1;
+  text-decoration: none;
+  outline: 0;
+}
+a:hover, a:focus { color: $color-accent2; }
+
+/* ===BUTTONS=== */
+button, .button {
+  border: 0;
+  display: inline-block;
+  margin: $gutter;
+  margin-left: 0;
+  color: #fff;
+  cursor: pointer;
+
+  @include transition(background 0.2s);
+  background-color: darken(#666, 20%);
+  &:hover, &:focus, &:active {
+    background-color: darken(#666, 30%);
+    color: #fff;
+  }
+}
+
+button.button-primary, .button.button-primary {
+  background-color: $color-accent1;
+  &:hover, &:active, &:focus {
+    background: darken($color-accent1, 10%);
+  }
+}
+/* ===FORMS=== */
+label {
+    display: inline-block;
+    margin-bottom: $gutter/2;
+}
+
+input[type="text"], input[type="password"] {
+    font-size: 2rem;
+    border: 1px solid #EDEDED;
+    padding: $gutter;
+    width: 100%;
+    color: #999;
+    margin-top: $gutter;
+    text-align: left;
+    outline: medium none;
+    border-radius: 3px;
+}
+
+button, input[type="submit"] {
+    font-size: 2rem;
+}
+
+/* ===MISC=== */
+.hidden { display: none; }
+.readonly { opacity: .7; }
+.accent { color: $color-accent1; }

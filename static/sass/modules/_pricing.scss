@@ -1,0 +1,70 @@
+/*=== PRICING ===*/
+.pricing {
+    //background-color: #DBF2F2;
+    background-color: #fff;
+    padding: $gutter;
+    margin-top: 2*$gutter;
+
+    .icon * {
+        fill: #222;
+    }
+}
+
+@media(min-width: 50em) {
+    .pricing {
+        margin-right: 2%;
+    }
+
+    .pricing, .billing {
+        width: 49%;
+        float: left;
+        min-height: 30rem;
+    }
+}
+
+
+ul.price-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        padding: 1.5*$gutter $gutter;
+        padding-left: 0;
+        font-size: 2rem;
+        line-height: 1.3 * 2rem;
+        list-style-type: none;
+        border-bottom: 1px solid #ccc;
+        @include clearfix;
+
+        a {
+            float: right;
+            margin-left: $gutter;
+        }
+
+        .item {
+            float: left;
+        }
+
+        .price {
+            float: right;
+            font-size: 4rem;
+            line-height: 1.3 * 4rem;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        input {
+            margin-top: 0;
+        }
+    }
+
+    li.total {
+        .item {
+            font-size: 4rem;
+            line-height: 1.3 * 4rem;
+        }
+    }
+}
