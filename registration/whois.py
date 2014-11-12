@@ -1,8 +1,19 @@
+from exceptions import ConnectionRefusedError
+from multiprocessing.dummy import Pool as ThreadPool
 from pythonwhois import get_whois
 import requests
 
 MASHAPE_KEY = "jOXU2vI0pRmshlgTGynBOs1jMX8lp1M9cYCjsnMASwXg2rg3jA"
 MASHAPE_URL = "https://nametoolkit-name-toolkit.p.mashape.com/beta/whois/"
+
+
+def check_domain_availability_parallel(domains):
+    """
+    Check availability of multiple domains in parallel
+    """
+    pool = ThreadPool()
+    return pool.map(check_domain_availability, domains)
+
 
 def check_domain_availability(domain):
     """
@@ -37,5 +48,3 @@ def check_domain_availability(domain):
         return response.json()["available"]
 
     return check_local() or check_extern()
-
-
