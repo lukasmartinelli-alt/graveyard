@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from .forms import RegistrationForm, ContactForm, DomainForm
+from .forms import ContactForm, DomainForm
 from .whois import check_domain_availability
 
 
@@ -26,14 +26,14 @@ def domain(request):
 def contact(request):
     domain_form = DomainForm(request.GET)
     if request.method == "GET":
-        form = RegistrationForm(request.GET)
+        form = DomainForm(request.GET)
         if form.is_valid() and domain_form.is_valid():
             context = {
                 "full_domain": domain_form.full_domain(),
                 "available": check_domain_availability(domain_form.full_domain())
             }
             return render(request, "contact.html", context)
-    elif request.method == "POST":
+    elif request.method == "POST" and domain_form.is_valid():
         return redirect("{0}?domain={1}&tld={2}".format(
             reverse("payment"),
             domain_form.cleaned_data["domain"],
