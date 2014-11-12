@@ -22,18 +22,26 @@
 
 {% block scripts %}
     <script type="text/jsx">
-        var Hello = React.createClass({
+        
+        var DomainResult = React.createClass({
             render: function() {
                 return (
-                    <div>Hello {this.props.name}</div>
+                    <li class="good">
+                        <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
+                            <div class="circle circle-good">
+                                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
+                            </div>
+                            <span>{this.props.domain}</span>
+                        </a>
+                    </li>
                 );
-            }
+            };
         });
 
         var DomainSearch = React.createClass({
             render: function() {
                 return (
-            <form class="domain-search">
+                <form class="domain-search">
                     <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
                     <button class="button button-primary">
                         <img class="icon" src="{% static 'svg/magnifying-glass.svg' %}" alt="search" />
@@ -48,14 +56,6 @@
             render: function() {
                 return (
                 <ul class="domain-results" id="domain-results">
-                    <li class="good">
-                        <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
-                            <div class="circle circle-good">
-                                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
-                            </div>
-                            <span>lukasmartinel.li</span>
-                        </a>
-                    </li>
                 </ul>
                 );
             }
