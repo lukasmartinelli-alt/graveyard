@@ -13,54 +13,7 @@
     {% if available %}
         {% include "domain_email.html" %}
     {% else %}
-        <div id="domsearch">
-            {% include "domain_search.html" %}
-        </div>
+        {% include "domain_search.html" %}
     {% endif %}
 </div>
-{% endblock %}
-
-{% block scripts %}
-    <script type="text/jsx">
-        
-        var DomainResult = React.createClass({
-            render: function() {
-                return (
-                    <li class="good">
-                        <a href="{% url 'domain' %}?domain=lukasmartinel&tld=li">
-                            <div class="circle circle-good">
-                                <img class="icon" src="{% static 'svg/thumb-up.svg' %}" alt="thumb up" />
-                            </div>
-                            <span>{this.props.domain}</span>
-                        </a>
-                    </li>
-                );
-            };
-        });
-
-        var DomainSearch = React.createClass({
-            render: function() {
-                return (
-                <form class="domain-search">
-                    <input id="domain" type="text" name="domain" placeholder="Type to search for a domain name"></input>
-                    <button class="button button-primary">
-                        <img class="icon" src="{% static 'svg/magnifying-glass.svg' %}" alt="search" />
-                        <span>Search</span>
-                    </button>
-                </form>
-                );
-            }
-        });
-
-        var DomainResults = React.createClass({
-            render: function() {
-                return (
-                <ul class="domain-results" id="domain-results">
-                </ul>
-                );
-            }
-        });
-
-        React.render(<DomainSearch /><DomainResults />, document.getElementById("domsearch"));
-    </script>
 {% endblock %}
