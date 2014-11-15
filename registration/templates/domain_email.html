@@ -18,11 +18,14 @@
                     <img class="icon" src="{% static 'svg/trash.svg' %}">
                 </a>
                 <a class="edit" href="#">
-                <img class="icon" src="{% static 'svg/pencil.svg' %}">
+                    <img class="icon" src="{% static 'svg/pencil.svg' %}">
                 </a>
             </li>
             <li>
                 <input name="new_mail" type="text" placeholder="yourname@{{ full_domain }}"></input>
+                <button class="button button-primary">
+                    {% trans "Add" %}
+                </button>
             </li>
         </ul>
     </div>

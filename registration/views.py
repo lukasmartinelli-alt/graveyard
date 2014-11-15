@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from .forms import ContactForm, DomainForm
+from .forms import DomainForm
 from .whois import check_domain_availability
 from .suggestion import suggest_domains
 
@@ -15,17 +15,12 @@ def domain(request):
             "full_domain": full_domain,
             "available": available
         }
-
-        if not available:
-            initial_domain = (domain_form.cleaned_data["domain"],
-                              domain_form.cleaned_data["tld"])
-            context["suggested_domains"] = suggest_domains(initial_domain)
+        initial_domain = (domain_form.cleaned_data["domain"],
+                          domain_form.cleaned_data["tld"])
+        context["suggested_domains"] = suggest_domains(initial_domain)
         return render(request, "domain.html", context)
     elif request.method == "POST":
-        form = ContactForm(request.POST)
-        address_list = request.POST.getlist("new_mail")
-
-        if form.is_valid() and domain_form.is_valid():
+        if domain_form.is_valid():
             return redirect("{0}?domain={1}&tld={2}".format(
                 reverse("contact"),
                 domain_form.cleaned_data["domain"],

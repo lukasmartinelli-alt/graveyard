@@ -10,10 +10,18 @@
 {% block content %}
 <div class="main">
     {% include "domain_info.html" %}
-    {% if available %}
-        {% include "domain_email.html" %}
-    {% else %}
-        {% include "domain_search.html" %}
-    {% endif %}
+    {% include "domain_search.html" %}
+    <form method="post">
+        {% csrf_token %}
+        {% if available %}
+            <button type="submit" class="button-continue button-primary">
+                {% trans "Register domain" %}
+            </button>
+        {% else %}
+            <button type="submit" class="button-continue button-primary">
+                {% trans "Transfer domain" %}
+            </button>
+        {% endif %}
+    </form>
 </div>
 {% endblock %}

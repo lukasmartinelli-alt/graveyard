@@ -1,6 +1,7 @@
 /*=== EMAIL ADRESSES ===*/
 .email-adresses {
     margin-top: 2*$gutter;
+    margin-bottom: 2*$gutter;
     padding: $gutter;
     max-width: 60rem;
 
@@ -15,6 +16,7 @@ ul.email-list {
     list-style-type: none;
     margin: 0;
     padding: 0;
+
 
     li {
         padding: 1.5*$gutter $gutter;
@@ -56,6 +58,20 @@ ul.email-list {
                 visibility:visible;
                 opacity:1;
             }
+        }
+    }
+
+    li:last-child {
+        @include clearfix;
+
+        input {
+            float: left;
+            width: 80%;
+        }
+        button {
+            float: right;
+            width: 18%;
+
         }
     }
 }

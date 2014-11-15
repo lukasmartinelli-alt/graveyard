@@ -17,15 +17,29 @@
                 <img class="icon" src="{% static 'svg/person.svg' %}">
                 <span>Contact Details</span>
             </h2>
+          
+            <label for="name">{% trans "Name" %}</label>
+            <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
+           
+            <label for="contact">{% trans "Email" %}</label>
+            <input name="contact" type="text" placeholder="{% trans "Current email address" %}" /></input>
+            
+            <label for="password">{% trans "Password" %}</label>
+            <input name="password" type="password" placeholder="{% trans "Password" %}" /></input>
+        </div>
+        <div class="email-info">
+            <h3>
+                <img class="icon" src="{% static 'svg/shield.svg' %}">
+                <span>Protected Privacy!</span>
+            </h3>
             <p>
-                We need your name and old email adress for contacting you
+                We need your name and and email adress only for contacting you
                 if something goes wrong or you forget your password.
             </p>
-            <input name="name" type="text" placeholder="{% trans "Name" %}" /></input>
-            <input name="contact" type="text" placeholder="{% trans "Current email address" %}" /></input>
         </div>
+        <br clear="all" />
         <button class="button-continue button-primary">
-            {% trans "Register domain" %}
+            {% trans "Create Account" %}
         </button>
     </form>
 </div>

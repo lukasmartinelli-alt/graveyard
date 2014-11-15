@@ -85,8 +85,7 @@ a:hover, a:focus { color: $color-accent2; }
 button, .button {
   border: 0;
   display: inline-block;
-  margin: $gutter;
-  margin-left: 0;
+  padding: $gutter;
   color: #fff;
   cursor: pointer;
 

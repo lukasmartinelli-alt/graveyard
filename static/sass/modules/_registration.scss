@@ -67,12 +67,13 @@
 
 
 @mixin button-big {
-    font-size: 3.5rem;
+    font-size: 3rem;
     padding: $gutter;
 }
 
 .button-continue {
     @include button-big;
+    margin-top: 2*$gutter;
 }
 
 .button-buy {
@@ -95,10 +96,32 @@
     }
 }
 
+
 .contact {
+    float: left;
+    width: 69%;
     margin-top: 2*$gutter;
+    margin-bottom: 2*$gutter;
     padding: $gutter;
-    max-width: 60rem;
+//    max-width: 60rem;
+    
+    label {
+//        text-align: right;
+        font-weight: 700;
+        display: inline-block;
+        width: 10%;
+        margin-right: 5%;
+        font-size: 2rem;
+    }
+
+    input {
+        width: 80%;
+        display: inline-block;
+    }
+
+    button {
+        float: right;
+    }
 
     .icon * {
         fill: #222;
@@ -106,13 +129,18 @@
 }
 
 .email-info {
-    margin-top: 2*$gutter;
+    margin-top: 6 * $gutter + 1.3 * 2.8rem; 
     background-color: #DBF2F2;
     padding: $gutter;
-    padding-bottom: 0;
+    float: right; 
+    width: 30%;
 
     .icon * {
         fill: #137373;
+    }
+
+    h3 {
+        color: #137373;
     }
 }
 
