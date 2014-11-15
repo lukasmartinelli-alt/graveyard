@@ -130,6 +130,7 @@
 
 .email-info {
     margin-top: 6 * $gutter + 1.3 * 2.8rem; 
+    height: 3 * (4 * $gutter + 2rem) -$gutter;
     background-color: #DBF2F2;
     padding: $gutter;
     float: right; 
