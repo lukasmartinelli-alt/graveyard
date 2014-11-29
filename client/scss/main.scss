@@ -1,37 +1,10 @@
 /*===TITLES AND FONTS===*/
+$gutter: 0.5rem;
+
 body {
+    background: #EDEDED;
     font-family: 'PT Sans', sans-serif;
-}
-
-h1 {
-    font-size: 5em;
-    font-weight: 900;
-    line-height: 1.2em;
-    font-family: 'Alegreya Sans SC', sans-serif;
-    color: #324d5b;
-    margin: 0;
-}
-
-h2 {
-    font-family: 'Alegreya Sans SC', sans-serif;
-    font-weight: 300;
-    font-size: 1.8em;
-    margin: 0;
-}
-
-h3 {
-    font-family: 'Alegreya Sans SC', sans-serif;
-    font-weight: 300;
-    font-size: 1.8em;
-    margin: 0;
-}
-
-h4 {
-    font-family: 'Alegreya Sans SC', sans-serif;
-    text-align: center;
-    margin: 0;
-    font-size: 1.8em;
-    font-weight: 300;
+    font-size: 1.2rem;
 }
 
 pre {
@@ -40,6 +13,77 @@ pre {
 
 section {
     padding: 0.5em;
+}
+
+h3 {
+    font-weight: 400;
+    font-size: 2em;
+    line-height: 1.2em;
+    margin: 0;
+}
+
+/*===CIRCULAR===*/
+@mixin circular($diameter) {
+    width: $diameter;
+    height: $diameter;
+    border-radius: $diameter/2;
+}
+
+/*===PAPER===*/
+@mixin paper {
+    background: white;
+    padding: $gutter;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2)
+}
+
+/*===STUDENT===*/
+$profile-diameter: 48px;
+.student-header {
+    @include paper;
+    font-weight: 700;
+
+    > div { 
+        display: inline-block;
+        margin-right: $gutter;
+    }
+
+    .profile {
+        width: $profile-diameter;
+    }
+
+    .name {
+        width: 15rem;
+    }
+
+    .major {
+        width: 10rem;   
+    }
+
+    .met {
+
+    }
+}
+
+.student {
+    @include paper;
+    
+    > div {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: $gutter;
+    }
+
+    .name {
+        width: 15rem;
+    }
+
+    .major {
+        width: 10rem;   
+    }
+
+    .profile {
+        @include circular($profile-diameter);
+    }
 }
 
 /*===BUTTONS===*/
