@@ -10,38 +10,34 @@
     <body>
         <header class="branding">
             <h1>Talent Pool</h1>
+            <nav>
+                <ul>
+                    <li class="active"><a href="#">
+                        <svg class="icon">
+                            <use xlink:href="img/sprite.svg#people"></use>
+                        </svg>
+                        Students
+                    </a></li>
+                    <li><a href="#">
+                        <svg class="icon">
+                            <use xlink:href="img/sprite.svg#people"></use>
+                        </svg>
+                        Employees
+                    </a></li>
+                </ul>
+            </nav>
         </header>
         <section>
-            <h2>Pools</h2>
-            <div class="pools">
-            <article class="pool">
-                <img src="img/graduate.jpg" />
-                <div class="pool-wrapper">
-                    <h3>Students</h3>
-                    <p>
-                        Talent: 12
-                    </p>
-                    <div class="pool-actions">
-                        <a href="#">View</a>
-                    </div>
-                </div>
-            </article>
-            <article class="pool">
-                <img src="img/employee.jpg" />
-                <div class="pool-wrapper">
-                    <h3>Employees</h3>
-                    <p>
-                        Talent: 5
-                    </p>
-                    <div class="pool-actions">
-                        <a href="#">View</a>
-                    </div>
-                </div>
-            </article>
+            <h2>Talents</h2>
+            <div class="search">
+                <input type="text" placeholder="Type to search for name, skills or anything"></input>
+                <a href="#" class="button">
+                    <svg class="icon">
+                        <use xlink:href="img/sprite.svg#magnifying-glass"></use>
+                    </svg>
+                    Search
+                </a>
             </div>
-        </section>
-        <section>
-            <h2>Talent</h2>
             <div class="talents">
             <div class="talent-header">
                 <div class="profile"></div>
@@ -54,7 +50,7 @@
                 <div class="row">
                     <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
                     <div class="rating-a">A</div>
-                    <div class="name">Alfredo Spaghetti</div>
+                    <div class="name"><h3>Alfredo Spaghetti</h3></div>
                     <div class="major">
                         Informatik
                     </div>
@@ -103,7 +99,7 @@
                     </a>
                     <a href="#" class="button">
                         <svg class="icon">
-                            <use xlink:href="img/sprite.svg#data-transfer-download"></use>
+                            <use xlink:href="img/sprite.svg#document"></use>
                         </svg>
                         Download CV
                     </a>
