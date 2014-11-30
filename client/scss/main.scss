@@ -1,9 +1,9 @@
 /*===TITLES AND FONTS===*/
-$gutter: 0.5rem;
+$gutter: 1rem;
 
 body {
-    background: #EDEDED;
-    font-family: 'PT Sans', sans-serif;
+    //background: #EDEDED;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.2rem;
 }
 
@@ -12,13 +12,29 @@ pre {
 }
 
 section {
-    padding: 0.5em;
+    margin: 2*$gutter;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: 400;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: 400;
 }
 
 h3 {
     font-weight: 400;
-    font-size: 2em;
+    font-size: 1.4em;
     line-height: 1.2em;
+    margin: 0;
+}
+
+body {
     margin: 0;
 }
 
@@ -29,18 +45,30 @@ h3 {
     border-radius: $diameter/2;
 }
 
-/*===PAPER===*/
-@mixin paper {
-    background: white;
-    padding: $gutter;
-    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2)
+/*===BRANDING===*/
+.branding {
+    margin: 0;
+    color: white;
+    padding: 2*$gutter;
+    padding-bottom: 2*$gutter; 
+    background-color: #2A36B1;
+}
+/*===STUDENT===*/
+
+
+.students {
+    margin-top: 4*$gutter;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12);
 }
 
-/*===STUDENT===*/
 $profile-diameter: 48px;
 .student-header {
-    @include paper;
-    font-weight: 700;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12);
+    //font-weight: 700;
+    padding: $gutter;
+    background-color: #5677FC;
+    color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.067);
 
     > div { 
         display: inline-block;
@@ -65,7 +93,13 @@ $profile-diameter: 48px;
 }
 
 .student {
-    @include paper;
+    padding: $gutter;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.067);
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.035);
+        cursor: pointer;
+    }
     
     > div {
         display: inline-block;

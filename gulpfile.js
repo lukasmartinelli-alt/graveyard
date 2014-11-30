@@ -6,8 +6,7 @@ var livereload = require('gulp-livereload');
 gulp.task('sass', function() {
     return gulp.src('client/scss/*.scss')
         .pipe(sass())
-        .pipe(gulp.dest('client/css'))
-        .pipe(livereload());
+        .pipe(gulp.dest('client/css'));
 });
 
 gulp.task('lint', function() {
@@ -18,7 +17,7 @@ gulp.task('lint', function() {
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('client/scss/*.scss', ['sass']);
+    gulp.watch('client/scss/*.scss', ['sass']).on('change', livereload.changed);
     gulp.watch('{server,client}/**/*.js', ['lint']);
     gulp.watch('client/*.html').on('change', livereload.changed);
 });
