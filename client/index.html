@@ -2,56 +2,102 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Student Talent Pool</title>
+        <title>Talent Pool</title>
         <link rel="stylesheet" href="css/main.css">
         <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <header class="branding">
-            <h1>Student Talent Pool</h1>
+            <h1>Talent Pool</h1>
         </header>
-        <section class="students">
-            <div class="student-header">
+        <section>
+            <h2>Pools</h2>
+            <div class="pools">
+            <article class="pool">
+                <img src="img/graduate.jpg" />
+                <div class="pool-wrapper">
+                    <h3>Students</h3>
+                    <p>
+                        Talent: 12
+                    </p>
+                    <div class="pool-actions">
+                        <a href="#">View</a>
+                    </div>
+                </div>
+            </article>
+            <article class="pool">
+                <img src="img/employee.jpg" />
+                <div class="pool-wrapper">
+                    <h3>Employees</h3>
+                    <p>
+                        Talent: 5
+                    </p>
+                    <div class="pool-actions">
+                        <a href="#">View</a>
+                    </div>
+                </div>
+            </article>
+            </div>
+        </section>
+        <section>
+            <h2>Talent</h2>
+            <div class="talents">
+            <div class="talent-header">
                 <div class="profile"></div>
                 <div class="name">Name</div>
                 <div class="major">Major</div>
                 <div class="met-where">Known from</div>
                 <div class="interests">Interested in</div>
             </div>
-            <article class="student">
-                <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
-                <div class="name">Lukas Martinelli</div>
-                <div class="major">
-                    <span>Major: </span>
-                    Informatik
-                </div>
-                <div class="met-where">
-                    <span>Met at: </span>
-                    ETH Seminar
-                </div>
-                <div class="interests">
-                    Praktika
-                </div>
-            </article>
-            <article class="student">
-                <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
-                <div class="name">Lukas Martinelli</div>
-                <div class="major">Food Chemistry</div>
-                <div class="met-where">Forum EPFL</div>
-                <div class="interests">
-                    Praktika, BA-Arbeit
+            <article class="talent">
+                <div class="row">
+                    <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
+                    <div class="name">Alfredo Spaghetti</div>
+                    <div class="major">
+                        Informatik
+                    </div>
+                    <div class="met-where">
+                        ETH Seminar
+                    </div>
+                    <div class="interests">
+                        Praktika
+                    </div>
                 </div>
             </article>
-            <article class="student">
-                <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
-                <div class="name">Lukas Martinelli</div>
-                <div class="major">Management, Technology and Economics</div>
-                <div class="met-where">Armiv Kontakt</div>
-                <div class="interests">
-                    Direkteinstieg
+            <article class="talent selected">
+                <div class="row">
+                    <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
+                    <div class="name">Silvio Berlusconi</div>
+                    <div class="major">Food Chemistry</div>
+                    <div class="met-where">Forum EPFL</div>
+                    <div class="interests">
+                        Praktika, BA-Arbeit
+                    </div>
+                </div>
+                <div class="details">
+                    <p class="remarks">
+                    Perfektes Profil, hat beim Swisscom Innovationspreis mitgemacht. Aktuell bei Credit Suisse angestellt.
+
+                    </p>
+                    <div class="talent-actions">
+                        <a href="#" class="button">Contact</a>
+                        <a href="#" class="button">Download CV</a>
+                    </div>
                 </div>
             </article>
+            <article class="talent">
+                <div class="row">
+                    <div class="profile" style="background: url(img/lukasmartinelli.jpg)"></div>
+                    <div class="name">Lukas Martinelli</div>
+                    <div class="major">Management, Technology and Economics</div>
+                    <div class="met-where">Armiv Kontakt</div>
+                    <div class="interests">
+                        Direkteinstieg
+                    </div>
+                </div>
+            </article>
+            </div>
         </section>
         <script src="//cdn.jsdelivr.net/angularjs/1.3.4/angular-1.0.1.js"></script>
         <script src="js/main.js"></script>
