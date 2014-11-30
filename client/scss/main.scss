@@ -3,6 +3,7 @@ $gutter: 1rem;
 $color-a: #259B24;
 $color-b: #9CCC65; 
 $color-c: #CDDC39;
+$profile-diameter: 3rem;
 
 body {
     //background: #EDEDED;
@@ -74,48 +75,7 @@ h3 {
 @mixin paper {
     box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12);
 }
-/*===POOLS===*/
-.pool {
-    @include paper;
-    width: 49%;
-    max-width: 30rem;
-    display: inline-block;
-    box-sizing: border-box;
 
-    .pool-wrapper {
-       padding: $gutter;
-       display: inline-block;
-       vertical-align: top;
-       box-sizing: border-box;
-       width: 70%;
-    }
-
-    .pool-actions {
-        border-top: 1px solid rgba(0, 0, 0, 0.067);
-        width: 100%;
-        padding-top: $gutter;
-
-        a {
-            text-decoration: none;
-            text-transform: uppercase;
-            color: #5677FC;
-            font-weight: 700;
-        }
-    }
-
-    img {
-        display: inline-block;
-        width: 6rem; 
-    }
-
-    p {
-        color: gray;
-    }
-
-    &:last-child {
-        margin-left: 1%;
-    }
-}
 /*===SEARCH===*/
 .search {
     margin-bottom: 4*$gutter;
@@ -170,41 +130,42 @@ nav {
 }
 
 /*===TALENT===*/
-
 .talents {
     @include paper;
 }
 
-$profile-diameter: 48px;
+.row {
+    .rating {
+        width: $profile-diameter;
+    }
+    .profile {
+        width: $profile-diameter;
+    }
+    .name {
+        width: 15rem;
+    }
+    .field-of-study {
+        width: 10rem;
+    }
+    .met-where {
+        width: 10rem;
+    }
+}
+
+.row > div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: $gutter;
+}
+
 .talent-header {
+    @include paper;
     font-weight: 700;
     padding: $gutter;
     background-color: #3F51B5;
     border-radius: 2px;
-    @include paper;
     color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.067);
-
-    > div { 
-        display: inline-block;
-        margin-right: $gutter;
-    }
-
-    .profile {
-        width: $profile-diameter;
-    }
-
-    .name {
-        width: 15rem;
-    }
-
-    .major {
-        width: 10rem;   
-    }
-
-    .met {
-
-    }
 }
 
 .talent {
@@ -215,37 +176,53 @@ $profile-diameter: 48px;
         background: rgba(0, 0, 0, 0.035);
         cursor: pointer;
     }
+
+    .row {
+        .profile {
+            @include circular($profile-diameter);
+        }
+    } 
+}
+
+.talent.selected {
+    @include paper;
+    cursor: default;
+    background-color: white;
+    margin-left: -$gutter/2;
+    margin-right: -$gutter/2;
+    border-left: 5px solid #5677FC;
     
-    .row > div {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: $gutter;
-    }
-
-    .name {
-        width: 15rem;
-    }
-
-    .major {
-        width: 10rem;   
-    }
-
-    .profile {
-        @include circular($profile-diameter);
-    }
-
     .details {
+        margin-top: $gutter;
+    }
+
+    .properties {
         display: inline-block;
-        vertical-align: top;
-        width: 49%;
-        margin-top: 3*$gutter;
-        margin-bottom: $gutter;
+        width: 2*$profile-diameter + 15rem + 3*$gutter;
+        table-layout: fixed;
+        border-collapse: collapse;
+        border-spacing: 0px;
+
+        td {
+            vertical-align: top;
+            padding: 0.5rem 1rem;
+            border-right: 1px dashed #91ACC0;
+            word-wrap: break-word;
+            width: 10rem;
+        }
+
+        td + td {
+            border: medium none;
+            width: auto;
+        }
     }
 
     .remarks {
+        vertical-align: top;
+        display: inline-block;
+        width: 50%;
         padding: $gutter;
         color: #777;
-        display: block;
         background: rgba(0, 0, 0, 0.035);
     }
 
@@ -260,33 +237,6 @@ $profile-diameter: 48px;
         }
     }
 
-    &.selected {
-        .major, .met-where {
-            display: block;
-            width: auto;
-        }
-
-        .major {
-            margin-top: $gutter;
-        }
-
-        b {
-            width: 9rem;
-            display: inline-block;
-        }
-
-        .row {
-            display: inline-block;
-            width: 50%;
-        }
-
-        @include paper;
-        cursor: default;
-        background-color: white;
-        margin-left: -$gutter/2;
-        margin-right: -$gutter/2;
-        border-left: 5px solid #5677FC;
-    }
 }
 
 .icon {
