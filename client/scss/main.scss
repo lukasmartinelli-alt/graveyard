@@ -1,5 +1,8 @@
 /*===TITLES AND FONTS===*/
 $gutter: 1rem;
+$color-a: #259B24;
+$color-b: #9CCC65; 
+$color-c: #CDDC39;
 
 body {
     //background: #EDEDED;
@@ -113,7 +116,6 @@ h3 {
         margin-left: 1%;
     }
 }
-
 /*===TALENT===*/
 
 .talents {
@@ -122,7 +124,7 @@ h3 {
 
 $profile-diameter: 48px;
 .talent-header {
-    //font-weight: 700;
+    font-weight: 700;
     padding: $gutter;
     background-color: #FAFAFA;
     border-bottom: 1px solid rgba(0, 0, 0, 0.067);
@@ -177,7 +179,10 @@ $profile-diameter: 48px;
     }
 
     .details {
-        margin-top: $gutter;
+        display: inline-block;
+        vertical-align: top;
+        width: 49%;
+        margin-top: 3*$gutter;
         margin-bottom: $gutter;
     }
 
@@ -185,10 +190,40 @@ $profile-diameter: 48px;
         padding: $gutter;
         color: #777;
         display: block;
-        background: #FAFAFA;
+        background: rgba(0, 0, 0, 0.035);
+    }
+
+    .talent-actions {
+        @extend clearfix;
+        overflow: hidden;
+        margin-top: $gutter;
+
+        a {
+            float: right;
+            margin-left: $gutter;
+        }
     }
 
     &.selected {
+        .major, .met-where {
+            display: block;
+            width: auto;
+        }
+
+        .major {
+            margin-top: $gutter;
+        }
+
+        b {
+            width: 9rem;
+            display: inline-block;
+        }
+
+        .row {
+            display: inline-block;
+            width: 50%;
+        }
+
         @include paper;
         cursor: default;
         background-color: white;
@@ -208,6 +243,30 @@ a {
     text-decoration: none;
 }
 
+/*===RATING===*/
+.rating {
+    @include circular($profile-diameter);
+    color: white;
+    font-size: 0.6 * $profile-diameter;
+    line-height: $profile-diameter;
+    text-align: center;
+}
+
+.rating-a {
+    @extend .rating;
+    background-color: $color-a;
+}
+
+.rating-b {
+    @extend .rating;
+    background-color: $color-b;
+}
+
+.rating-c {
+    @extend .rating;
+    background-color: $color-c;
+}
+
 /*===BUTTONS===*/
 .button {
     padding: 0.5em;
@@ -218,6 +277,11 @@ a {
     border-radius: 2px;
     color: white;
     text-transform: uppercase;
+
+    .icon {
+        fill: white;
+        margin-bottom: -0.1em;
+    }
 }
 
 .button:hover {
