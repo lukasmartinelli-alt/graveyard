@@ -17,7 +17,8 @@ gulp.task('lint', function() {
 
 gulp.task('watch', function() {
     livereload.listen();
-    gulp.watch('client/scss/*.scss', ['sass']).on('change', livereload.changed);
     gulp.watch('{server,client}/**/*.js', ['lint']);
     gulp.watch('client/*.html').on('change', livereload.changed);
+    gulp.watch('client/scss/**/*.scss', ['sass'])
+        .on('change', livereload.changed);
 });
