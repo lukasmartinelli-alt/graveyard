@@ -1,0 +1,27 @@
+/*===NAV===*/
+nav {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        margin-right: 2*$gutter;
+        font-size: 1.4em;
+        display: inline-block;
+        &.active { 
+            border-bottom: 5px solid #FFF9C4;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: #fff;
+        transition: .3s background-color;
+
+        .icon {
+            fill: #fff;
+        }
+    }
+}

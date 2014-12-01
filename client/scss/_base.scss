@@ -1,0 +1,66 @@
+/*===TITLES AND FONTS===*/
+body {
+    //background: #EDEDED;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+    color: #222;
+}
+
+pre {
+    margin: 0;
+}
+
+section {
+    margin: 2*$gutter;
+}
+
+p {
+    margin: 0;
+    margin-bottom: $gutter;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: 400;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    margin: 0;
+    margin-bottom: $gutter; 
+    font-size: 2em;
+    font-weight: 400;
+    color: #3F51B5;
+}
+
+h3 {
+    font-weight: 400;
+    font-size: 1.6em;
+    line-height: 1.2em;
+    margin: 0;
+}
+
+/*===BUTTONS===*/
+.button, button {
+    font-size: 1em;
+    padding: 0.5em;
+    text-decoration: none;
+    background-color: #3F51B5;
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.24);
+    border-radius: 2px;
+    color: white;
+    text-transform: uppercase;
+
+    .icon {
+        fill: white;
+        margin-bottom: -0.1em;
+    }
+}
+
+.button:hover {
+    background-color: #1A237E;
+}
+

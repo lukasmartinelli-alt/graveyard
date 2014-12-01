@@ -1,0 +1,23 @@
+/*===RATING===*/
+.rating {
+    @include circular($profile-diameter);
+    color: white;
+    font-size: 0.6 * $profile-diameter;
+    line-height: $profile-diameter;
+    text-align: center;
+}
+
+.rating-a {
+    @extend .rating;
+    background-color: $color-a;
+}
+
+.rating-b {
+    @extend .rating;
+    background-color: $color-b;
+}
+
+.rating-c {
+    @extend .rating;
+    background-color: $color-c;
+}
