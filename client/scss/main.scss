@@ -83,7 +83,7 @@ h3 {
     input[type="text"] {
         font-size: 1.4em;
         display: inline-block;
-        width: 73%;
+        width: 75%;
         padding: 0.5em; 
         color: #999;
         outline: medium none;
@@ -134,6 +134,10 @@ nav {
     @include paper;
 }
 
+section {
+    max-width: 90rem;
+}
+
 .row {
     .rating {
         width: $profile-diameter;
@@ -142,7 +146,7 @@ nav {
         width: $profile-diameter;
     }
     .name {
-        width: 15rem;
+        width: 20rem;
     }
     .field-of-study {
         width: 10rem;
@@ -198,7 +202,7 @@ nav {
 
     .properties {
         display: inline-block;
-        width: 2*$profile-diameter + 15rem + 3*$gutter;
+        width: 2*$profile-diameter + 20rem + 3*$gutter;
         table-layout: fixed;
         border-collapse: collapse;
         border-spacing: 0px;
@@ -220,19 +224,18 @@ nav {
     .remarks {
         vertical-align: top;
         display: inline-block;
-        width: 50%;
+        max-width: 3 * 10rem + 3 * $gutter;
+        min-height: 5rem;
         padding: $gutter;
         color: #777;
         background: rgba(0, 0, 0, 0.035);
     }
 
     .talent-actions {
-        @extend clearfix;
-        overflow: hidden;
-        margin-top: $gutter;
+        margin-top: 2*$gutter;
+        margin-bottom: $gutter;
 
         a {
-            float: right;
             margin-left: $gutter;
         }
     }
