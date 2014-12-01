@@ -1,10 +1,8 @@
-/*===TALENT===*/
-.talents {
-    @include paper;
-}
-
-section {
-    max-width: 90rem;
+/*===TALENT ROW===*/
+.row > div {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: $gutter;
 }
 
 .row {
@@ -19,75 +17,63 @@ section {
     }
     .field-of-study {
         width: 10rem;
+        display: none;
+        @media(min-width: 45rem) {
+            display: inline-block;
+        }
     }
+
     .met-where {
         width: 10rem;
+        display: none;
+        @media(min-width: 55rem) {
+            display: inline-block;
+        }
+    }
+
+    .interests {
+        display: none;
+            @media(min-width: 65rem) {
+            display: inline-block;
+        }
     }
 }
 
-.row > div {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: $gutter;
+/*===TALENT===*/
+.talents {
+    @include paper;
+}
+
+.talent-header, .talent {
+    padding: $gutter;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.067);
 }
 
 .talent-header {
     @include paper;
     font-weight: 700;
-    padding: $gutter;
     background-color: #3F51B5;
     border-radius: 2px;
     color: white;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.067);
 }
 
 .talent {
-    padding: $gutter;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.067);
-
     &:hover {
         background: rgba(0, 0, 0, 0.035);
         cursor: pointer;
     }
-
-    .row {
-        .profile {
-            @include circular($profile-diameter);
-        }
-    } 
 }
 
 .talent.selected {
     @include paper;
-    cursor: default;
     background-color: white;
+    cursor: default;
     margin-left: -$gutter/2;
     margin-right: -$gutter/2;
     border-left: 5px solid #5677FC;
-    
+
     .details {
         margin-top: $gutter;
-    }
-
-    .properties {
-        display: inline-block;
-        width: 2*$profile-diameter + 20rem + 3*$gutter;
-        table-layout: fixed;
-        border-collapse: collapse;
-        border-spacing: 0px;
-
-        td {
-            vertical-align: top;
-            padding: 0.5rem 1rem;
-            border-right: 1px dashed #91ACC0;
-            word-wrap: break-word;
-            width: 10rem;
-        }
-
-        td + td {
-            border: medium none;
-            width: auto;
-        }
     }
 
     .remarks {
@@ -99,25 +85,36 @@ section {
         color: #777;
         background: rgba(0, 0, 0, 0.035);
     }
+}
 
-    .talent-actions {
-        margin-top: 2*$gutter;
-        margin-bottom: $gutter;
-
-        a {
-            margin-left: $gutter;
+.talent-actions {
+    a {
+        margin-top: $gutter;
+        margin-left: $gutter;
+        display: block;
+        @media(min-width: 35rem) {
+            display: inline-block;
         }
     }
-
 }
 
-.icon {
+.properties {
     display: inline-block;
-    width: 1em;
-    height: 1em;
-}
+    width: 2*$profile-diameter + 20rem + 3*$gutter;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0px;
 
-a {
-    text-decoration: none;
-}
+    td {
+        vertical-align: top;
+        padding: 0.5rem 1rem;
+        border-right: 1px dashed #91ACC0;
+        word-wrap: break-word;
+        width: 10rem;
+    }
 
+    td + td {
+        border: medium none;
+        width: auto;
+    }
+}
