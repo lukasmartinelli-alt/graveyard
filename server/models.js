@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
 
 module.exports.Student = mongoose.Model('Student', {
-    firstname: String,
-    lastname: String,
+    firstName: String,
+    lastName: String,
+    fieldOfStudy: String,
+    knownFrom: String,
+    interests: String,
     mail: String,
-    major: String,
-    description: String,
+    remarks: String,
+    birthday: Date
 });

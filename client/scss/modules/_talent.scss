@@ -80,7 +80,7 @@ $talent-hover-color: rgba(0, 0, 0, 0.035);
         background: rgba(0, 0, 0, 0.035);
     }
 
-    .details, .remarks {
+    .details, .remarks, .talent-actions {
         display: none;
     }
 }
@@ -93,7 +93,7 @@ $talent-hover-color: rgba(0, 0, 0, 0.035);
     margin-right: -$gutter/2;
     border-left: 5px solid $talent-highlight-color;
 
-    .details {
+    .details, .talent-actions {
         display: block;
     }
 
