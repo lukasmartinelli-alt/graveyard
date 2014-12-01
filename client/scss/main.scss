@@ -1,9 +1,8 @@
 /*===VARS===*/
 $gutter: 1rem;
-$color-a: #259B24;
-$color-b: #9CCC65; 
-$color-c: #CDDC39;
 $profile-diameter: 3rem;
+$accent-color: #3F51B5;
+$accent-light-color: #5677FC;
 
 /*===MIXINS===*/
 %clearfix {
@@ -31,3 +30,4 @@ $profile-diameter: 3rem;
 @import 'modules/branding';
 @import 'modules/search';
 @import 'modules/rating';
+@import 'modules/properties';

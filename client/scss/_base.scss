@@ -1,4 +1,4 @@
-/*===TITLES AND FONTS===*/
+/*===TEXT===*/
 body {
     //background: #EDEDED;
     font-family: 'Roboto', sans-serif;
@@ -11,15 +11,12 @@ pre {
     margin: 0;
 }
 
-section {
-    margin: 2*$gutter;
-}
-
 p {
     margin: 0;
     margin-bottom: $gutter;
 }
 
+/*===HEADERS===*/
 h1 {
     font-size: 2.5em;
     font-weight: 400;
@@ -47,7 +44,7 @@ h3 {
     font-size: 1em;
     padding: 0.5em;
     text-decoration: none;
-    background-color: #3F51B5;
+    background-color: $accent-color;
     transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.24);
     border-radius: 2px;
@@ -64,17 +61,14 @@ h3 {
     background-color: #1A237E;
 }
 
+/*===ICON===*/
 .icon {
     display: inline-block;
     width: 1em;
     height: 1em;
 }
 
+/*===LINK===*/
 a {
     text-decoration: none;
 }
-
-section {
-    max-width: 90rem;
-}
-

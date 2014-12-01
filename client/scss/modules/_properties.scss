@@ -1,0 +1,21 @@
+/*===PROPERTIES TABLE===*/
+table.properties {
+    display: inline-block;
+    width: 2*$profile-diameter + 20rem + 3*$gutter;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0px;
+
+    td {
+        vertical-align: top;
+        padding: 0.5rem 1rem;
+        border-right: 1px dashed $accent-light-color;
+        word-wrap: break-word;
+        width: 10rem;
+    }
+
+    td + td {
+        border: medium none;
+        width: auto;
+    }
+}

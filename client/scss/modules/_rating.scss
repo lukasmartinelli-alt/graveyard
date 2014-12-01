@@ -1,4 +1,8 @@
 /*===RATING===*/
+$color-a: #259B24;
+$color-b: #9CCC65;
+$color-c: #CDDC39;
+
 .rating {
     @include circular($profile-diameter);
     color: white;

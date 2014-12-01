@@ -10,7 +10,7 @@ nav {
         margin-right: 2*$gutter;
         font-size: 1.4em;
         display: inline-block;
-        &.active { 
+        &.active {
             border-bottom: 5px solid #FFF9C4;
         }
     }
@@ -26,7 +26,10 @@ nav {
     }
 }
 
+/*===NAV===*/
+
 section {
+    margin: 2*$gutter;
     max-width: 90rem;
 }
 
