@@ -17,23 +17,47 @@
  */
 package org.syncany.plugins.googledrive;
 
-import java.util.Locale;
-
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import org.syncany.plugins.transfer.TransferPlugin;
-import com.dropbox.core.DbxAppInfo;
-import com.dropbox.core.DbxRequestConfig;
 
-/**
- * @author Christian Roth <christian.roth@port17.de>
- */
+import java.io.IOException;
+import java.util.Arrays;
+
 public class GoogleDriveTransferPlugin extends TransferPlugin {
-	private static final String APP_KEY = "dlg8wdfpf3xa5jv";
-	private static final String APP_SECRET = "ya9t3c6xk9o3ndg";
+	private static final String CLIENT_ID = "143404779943-76gn8gao2qoii3cnmiiji6g6qc2msaj6.apps.googleusercontent.com";
+	private static final String CLIENT_SECRET = "hNQwo8i-0P0x5KN8cZ6aBMK3";
+	private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
 
-	public static final DbxAppInfo DROPBOX_APP_INFO = new DbxAppInfo(APP_KEY, APP_SECRET);
-	public static final DbxRequestConfig DROPBOX_REQ_CONFIG = new DbxRequestConfig("syncany", Locale.ENGLISH.toString());
+	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
+	private static final GoogleAuthorizationCodeFlow FLOW = new GoogleAuthorizationCodeFlow.Builder(
+			HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, Arrays.asList(DriveScopes.DRIVE))
+			.setAccessType("online")
+			.setApprovalPrompt("auto").build();
+
 
 	public GoogleDriveTransferPlugin() {
-		super("dropbox");
+		super("googledrive");
+	}
+
+	public static Drive createClient(String authorizationCode) throws IOException {
+		GoogleTokenResponse response = FLOW
+				.newTokenRequest(authorizationCode)
+				.setRedirectUri(GoogleDriveTransferPlugin.REDIRECT_URI)
+				.execute();
+		GoogleCredential credential = new GoogleCredential().setFromTokenResponse(response);
+		return new Drive.Builder(GoogleDriveTransferPlugin.HTTP_TRANSPORT, GoogleDriveTransferPlugin.JSON_FACTORY, credential).build();
+	}
+
+	public static String getAuthorizationUrl() {
+		return FLOW.newAuthorizationUrl().setRedirectUri(GoogleDriveTransferPlugin.REDIRECT_URI).build();
 	}
 }

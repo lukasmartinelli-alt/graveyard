@@ -17,52 +17,35 @@
  */
 package org.syncany.plugins.googledrive;
 
-import java.io.File;
-
-import org.simpleframework.xml.Element;
 import org.syncany.plugins.transfer.Encrypted;
 import org.syncany.plugins.transfer.Setup;
 import org.syncany.plugins.transfer.TransferPluginOptionCallback;
-import org.syncany.plugins.transfer.TransferPluginOptionConverter;
 import org.syncany.plugins.transfer.TransferSettings;
 
-import com.dropbox.core.DbxClient;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxWebAuthNoRedirect;
+import com.google.api.services.drive.Drive;
+import org.simpleframework.xml.Element;
 
-/**
- * @author Christian Roth <christian.roth@port17.de>
- */
+import java.io.File;
+import java.io.IOException;
+
 public class GoogleDriveTransferSettings extends TransferSettings {
-	private static DbxWebAuthNoRedirect webAuth;
-
-	@Element(name = "accessToken", required = true)
-	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = DropboxAuthPluginOptionCallback.class, converter = DropboxAuthPluginOptionConverter.class)
+	@Element(name = "authorizationCode", required = true)
+	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = GoogleDriveAuthPluginOptionCallback.class)
 	@Encrypted
-	public String accessToken;
+	public String authorizationCode;
 
 	@Element(name = "path", required = true)
 	@Setup(order = 2, description = "Path relative to syncany's app root")
 	public File path;
 
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public File getPath() {
-		return path;
-	}
-
-	public static class DropboxAuthPluginOptionCallback implements TransferPluginOptionCallback {
+	public static class GoogleDriveAuthPluginOptionCallback implements TransferPluginOptionCallback {
 		@Override
 		public String preQueryCallback() {
-			webAuth = new DbxWebAuthNoRedirect(GoogleDriveTransferPlugin.DROPBOX_REQ_CONFIG, GoogleDriveTransferPlugin.DROPBOX_APP_INFO);
-			String authorizeUrl = webAuth.start();
-
+			String authorizeUrl = GoogleDriveTransferPlugin.getAuthorizationUrl();
 			return String.format(
 				      "\n"
-					+ "The Dropbox plugin needs to obtain an access token from Dropbox\n"
-					+ "to read and write to your Dropbox. Please follow the instructions\n"
+					+ "The Google Drive plugin needs to obtain an access token from Google\n"
+					+ "to read and write to your Google Drive. Please follow the instructions\n"
 					+ "on the following site to authorize Syncany:\n"
 					+ "\n"
 					+ "    %s\n", authorizeUrl);
@@ -71,23 +54,11 @@ public class GoogleDriveTransferSettings extends TransferSettings {
 		@Override
 		public String postQueryCallback(String optionValue) {
 			try {
-				DbxClient client = new DbxClient(GoogleDriveTransferPlugin.DROPBOX_REQ_CONFIG, optionValue);
-				return String.format("\nSuccessfully linked with %s's account!\n", client.getAccountInfo().displayName);
+				Drive client = GoogleDriveTransferPlugin.createClient(optionValue);
+				return String.format("\nSuccessfully linked with %s's account!\n", client.about().get().execute().getName());
 			}
-			catch (DbxException e) {
-				throw new RuntimeException("Error requesting dropbox data: " + e.getMessage());
-			}
-		}
-	}
-
-	public static class DropboxAuthPluginOptionConverter implements TransferPluginOptionConverter {
-		@Override
-		public String convert(String input) {
-			try {
-				return webAuth.finish(input).accessToken;
-			}
-			catch (DbxException e) {
-				throw new RuntimeException("Unable to extract oauth token: " + e.getMessage());
+			catch (IOException e) {
+				throw new RuntimeException("Error requesting googledrive data: " + e.getMessage());
 			}
 		}
 	}

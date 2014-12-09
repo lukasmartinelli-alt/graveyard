@@ -22,11 +22,10 @@ project.ext {
 
 dependencies {
 	compile		project(":syncany-lib")
-	compile		project(":syncany-util")	
+	compile		project(":syncany-util")
 
-	compile		"com.dropbox.core:dropbox-core-sdk:1.7.7"
-
-	pluginjar	"com.dropbox.core:dropbox-core-sdk:1.7.7"
+	compile 'com.google.apis:google-api-services-drive:v2-rev154-1.19.0'
+	pluginjar 'com.google.apis:google-api-services-drive:v2-rev154-1.19.0'
 
 	testCompile	project(path: ":syncany-lib", configuration: "tests")      
 	testCompile	project(path: ":syncany-util", configuration: "tests")

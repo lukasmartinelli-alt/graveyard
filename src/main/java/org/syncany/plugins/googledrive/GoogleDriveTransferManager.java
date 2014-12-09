@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.api.services.drive.Drive;
 import org.apache.commons.io.FileUtils;
 import org.syncany.config.Config;
 import org.syncany.plugins.transfer.AbstractTransferManager;
@@ -44,16 +45,12 @@ import org.syncany.plugins.transfer.files.TempRemoteFile;
 import org.syncany.plugins.transfer.files.TransactionRemoteFile;
 import org.syncany.util.FileUtil;
 
-import com.dropbox.core.DbxClient;
-import com.dropbox.core.DbxEntry;
-import com.dropbox.core.DbxException;
-import com.dropbox.core.DbxWriteMode;
-
 /**
- * Implements a {@link TransferManager} based on an Dropbox storage backend for the
+ * <p>
+ * Implements a {@link TransferManager} based on an Google Drive storage backend for the
  * {@link GoogleDriveTransferPlugin}.
  * <p/>
- * <p>Using an {@link GoogleDriveTransferSettings}, the transfer manager is configured and uses
+ * <p>Using a {@link GoogleDriveTransferSettings}, the transfer manager is configured and uses
  * a well defined Samba share and folder to store the Syncany repository data. While repo and
  * master file are stored in the given folder, databases and multichunks are stored
  * in special sub-folders:
@@ -71,9 +68,6 @@ import com.dropbox.core.DbxWriteMode;
 public class GoogleDriveTransferManager extends AbstractTransferManager {
 	private static final Logger logger = Logger.getLogger(GoogleDriveTransferManager.class.getSimpleName());
 
-	private static final String ROOT_FOLDER_NAME = "syncany-connector";
-
-	private final DbxClient client;
 	private final String path;
 	private final String multichunksPath;
 	private final String databasesPath;
@@ -81,37 +75,38 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	private final String transactionsPath;
 	private final String tempPath;
 
+	private final String authorizationCode;
+	private Drive client;
+
 	public GoogleDriveTransferManager(GoogleDriveTransferSettings settings, Config config) {
 		super(settings, config);
 
-		this.path = ("/" + settings.getPath().getPath()).replaceAll("[/]{2,}", "/");
+		this.path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
 		this.multichunksPath = new File(this.path, "/multichunks/").getPath();
 		this.databasesPath = new File(this.path, "/databases/").getPath();
 		this.actionsPath = new File(this.path, "/actions/").getPath();
 		this.transactionsPath = new File(this.path, "/transactions/").getPath();
 		this.tempPath = new File(this.path, "/temporary/").getPath();
 
-		this.client = new DbxClient(GoogleDriveTransferPlugin.DROPBOX_REQ_CONFIG, settings.getAccessToken());
+		this.authorizationCode = settings.authorizationCode;
 	}
 
 	@Override
 	public void connect() throws StorageException {
-		// make a connect
 		try {
-			logger.log(Level.INFO, "Using dropbox account from {0}", new Object[] { this.client.getAccountInfo().displayName });
+			this.client = GoogleDriveTransferPlugin.createClient(authorizationCode);
+			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().get().execute().getName() });
 		}
-		catch (DbxException.InvalidAccessToken e) {
-			throw new StorageException("The accessToken in use is invalid", e);
-		}
-		catch (Exception e) {
+		catch (IOException e) {
 			throw new StorageException("Unable to connect to dropbox", e);
 		}
 	}
 
 	@Override
 	public void disconnect() {
-		// Nothing
 	}
+
+
 
 	@Override
 	public void init(boolean createIfRequired) throws StorageException {
@@ -119,16 +114,17 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 		try {
 			if (!testTargetExists() && createIfRequired) {
-				this.client.createFolder(this.path);
+
+				this.client.files().insert(folder);
 			}
 
-			this.client.createFolder(this.multichunksPath);
-			this.client.createFolder(this.databasesPath);
-			this.client.createFolder(this.actionsPath);
-			this.client.createFolder(this.transactionsPath);
-			this.client.createFolder(this.tempPath);
+			createFolder(this.multichunksPath);
+			createFolder(this.databasesPath);
+			createFolder(this.actionsPath);
+			createFolder(this.transactionsPath);
+			createFolder(this.tempPath);
 		}
-		catch (DbxException e) {
+		catch (IOException e) {
 			throw new StorageException("init: Cannot create required directories", e);
 		}
 		finally {
