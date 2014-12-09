@@ -6,11 +6,11 @@ import com.google.api.services.drive.model.ParentReference;
 import java.io.IOException;
 import java.util.*;
 
-public class GoogleDrivePathMap extends HashMap<String, String> {
+public class PathMap extends HashMap<String, String> {
     private final static String ROOT_ID = "root";
     private List<File> files = new ArrayList<>();
 
-    public GoogleDrivePathMap build(List<File> files) throws IOException {
+    public PathMap build(List<File> files) throws IOException {
         this.files = files;
         populateRecursive("/", ROOT_ID);
         return this;

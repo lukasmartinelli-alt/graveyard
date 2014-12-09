@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GoogleDriveClientTest {
+public class PathMapTest {
 
     @Test
     public void testRecursiveLookup() throws IOException {
@@ -26,7 +26,7 @@ public class GoogleDriveClientTest {
         File bar = new File().setId("bar").setTitle("bar.txt").setParents(barParents);
         files.add(bar);
 
-        Map<String, String> pathMap = new GoogleDrivePathMap().build(files);
+        Map<String, String> pathMap = new PathMap().build(files);
 
 
         String[] paths = { "/foolo/bar.txt", "/foolo" };

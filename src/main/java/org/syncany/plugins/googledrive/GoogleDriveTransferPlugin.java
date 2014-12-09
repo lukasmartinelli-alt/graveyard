@@ -48,13 +48,13 @@ public class GoogleDriveTransferPlugin extends TransferPlugin {
 		super("googledrive");
 	}
 
-	public static Drive createClient(String authorizationCode) throws IOException {
+	public static GoogleDriveClient createClient(String authorizationCode) throws IOException {
 		GoogleTokenResponse response = FLOW
 				.newTokenRequest(authorizationCode)
 				.setRedirectUri(GoogleDriveTransferPlugin.REDIRECT_URI)
 				.execute();
 		GoogleCredential credential = new GoogleCredential().setFromTokenResponse(response);
-		return new Drive.Builder(GoogleDriveTransferPlugin.HTTP_TRANSPORT, GoogleDriveTransferPlugin.JSON_FACTORY, credential).build();
+		return new GoogleDriveClient(Drive.Builder(GoogleDriveTransferPlugin.HTTP_TRANSPORT, GoogleDriveTransferPlugin.JSON_FACTORY, credential).build());
 	}
 
 	public static String getAuthorizationUrl() {

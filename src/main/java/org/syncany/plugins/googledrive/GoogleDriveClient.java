@@ -1,6 +1,7 @@
 package org.syncany.plugins.googledrive;
 
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.About;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.ParentReference;
@@ -8,10 +9,8 @@ import com.google.api.services.drive.model.ParentReference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GoogleDriveClient {
-    private static final String ROOT_FOLDER = "syncany-connector";
     private static final String FOLDER_MIMETYPE = "application/vnd.google-apps.folder";
     private final Drive client;
 
@@ -19,6 +18,51 @@ public class GoogleDriveClient {
         this.client = client;
     }
 
+    public About accountInfo() throws IOException {
+        return client.about().get().execute();
+    }
+
+    public List<File> getAllFiles() throws IOException {
+        Drive.Files.List listRequest = this.client.files().list().setQ("'appfolder' in parents");
+
+        FileList partialResults = listRequest.execute();
+        List<File> allResults = new ArrayList<File>(partialResults.getItems());
+
+        String pageToken = partialResults.getNextPageToken();
+        while(!pageToken.isEmpty()) {
+            partialResults = listRequest.setPageToken(pageToken).execute();
+            allResults.addAll(partialResults.getItems());
+        }
+
+        return allResults;
+    }
+
+    public boolean folderExists(String path) throws IOException {
+        PathMap paths = new PathMap().build(getAllFiles());
+
+        if(paths.containsKey(path)) {
+            String fileId = paths.get(path);
+            File folder = this.client.files().get(fileId).execute();
+            return folder.getMimeType().equals(FOLDER_MIMETYPE);
+        }
+
+        return false;
+    }
+
+    public void createFolder(String path) throws IOException {
+        PathMap paths = new PathMap().build(getAllFiles());
+
+        String parentPath = new java.io.File(path).getParentFile().getPath();
+        String parentId = paths.get(parentPath);
+        List<ParentReference> parents = new ArrayList<>();
+        parents.add(new ParentReference().setId(parentId));
+
+        File folder = new File()
+                .setTitle(new java.io.File(path).getName())
+                .setParents(parents)
+                .setMimeType(FOLDER_MIMETYPE);
+        client.files().insert(folder).execute();
+    }
 }
 
 

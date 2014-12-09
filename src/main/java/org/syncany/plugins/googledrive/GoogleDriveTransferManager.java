@@ -77,7 +77,7 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	private final String tempPath;
 
 	private final String authorizationCode;
-	private Drive client;
+	private GoogleDriveClient client;
 
 	public GoogleDriveTransferManager(GoogleDriveTransferSettings settings, Config config) {
 		super(settings, config);
@@ -96,7 +96,7 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	public void connect() throws StorageException {
 		try {
 			this.client = GoogleDriveTransferPlugin.createClient(authorizationCode);
-			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().get().execute().getName() });
+			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.accountInfo().getName() });
 		}
 		catch (IOException e) {
 			throw new StorageException("Unable to connect to dropbox", e);
@@ -112,25 +112,24 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	@Override
 	public void init(boolean createIfRequired) throws StorageException {
 		connect();
-/*
+
 		try {
 			if (!testTargetExists() && createIfRequired) {
-
-				this.client.files().insert(folder);
+				this.client.createFolder(this.path);
 			}
 
-			createFolder(this.multichunksPath);
-			createFolder(this.databasesPath);
-			createFolder(this.actionsPath);
-			createFolder(this.transactionsPath);
-			createFolder(this.tempPath);
+			this.client.createFolder(this.multichunksPath);
+			this.client.createFolder(this.databasesPath);
+			this.client.createFolder(this.actionsPath);
+			this.client.createFolder(this.transactionsPath);
+			this.client.createFolder(this.tempPath);
 		}
 		catch (IOException e) {
 			throw new StorageException("init: Cannot create required directories", e);
 		}
 		finally {
 			disconnect();
-		}*/
+		}
 	}
 
 
@@ -318,23 +317,13 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public boolean testTargetExists() {
-		throw new NotImplementedException();
-//		try {
-//			DbxEntry metadata = this.client.getMetadata(this.path);
-//
-//			if (metadata != null && metadata.isFolder()) {
-//				logger.log(Level.INFO, "testTargetExists: Target does exist.");
-//				return true;
-//			}
-//			else {
-//				logger.log(Level.INFO, "testTargetExists: Target does NOT exist.");
-//				return false;
-//			}
-//		}
-//		catch (DbxException e) {
-//			logger.log(Level.WARNING, "testTargetExists: Target does NOT exist, error occurred.", e);
-//			return false;
-//		}
+		try {
+			return this.client.folderExists(this.path);
+		}
+		catch (IOException e) {
+			logger.log(Level.WARNING, "testTargetExists: Target does NOT exist, error occurred.", e);
+			return false;
+		}
 	}
 
 	@Override
