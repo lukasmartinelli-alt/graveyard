@@ -1,0 +1,13 @@
+bin
+build
+.gradle
+.idea
+.settings
+.classpath
+.project
+.metadata
+*.bak
+*.iml
+gradle/arch/syncany/pkg
+gradle/arch/syncany/src
+gradle/arch/syncany/syncany*.tar*
