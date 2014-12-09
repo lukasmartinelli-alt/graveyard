@@ -19,20 +19,6 @@ public class GoogleDriveClient {
         this.client = client;
     }
 
-
-    private void ensureStructure() {
-        Map<String, String> pathMap = new GoogleDrivePathMap(client).build();
-
-        String rootId = pathMap.get("/");
-
-
-
-    }
-    private void createFolder(File parent) {
-        File folder = new File().setMimeType(FOLDER_MIMETYPE);
-        folder.setParents()
-        this.client.files().insert(folder);
-    }
 }
 
 
