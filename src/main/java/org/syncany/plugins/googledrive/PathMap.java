@@ -10,12 +10,18 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class PathMap extends HashMap<String, String> {
-    private final static String ROOT_ID = "root";
+    private final String rootId;
     private List<File> files = new ArrayList<>();
+
+    public PathMap(String rootId) {
+        super();
+        this.rootId = rootId;
+    }
 
     public PathMap build(List<File> files) throws IOException {
         this.files = files;
-        populateRecursive("/", ROOT_ID);
+        put("/", rootId);
+        populateRecursive("/", rootId);
         return this;
     }
 
@@ -34,7 +40,7 @@ public class PathMap extends HashMap<String, String> {
         List<File> children = new ArrayList<>();
         for(File entry : files) {
             for(ParentReference parent : entry.getParents()) {
-                if(parent.getId().equals(parentId) || parent.getIsRoot() && parentId.equals(ROOT_ID)) {
+                if(parent.getId().equals(parentId) || parent.getIsRoot() && parentId.equals(rootId)) {
                     children.add(entry);
                 }
             }

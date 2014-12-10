@@ -26,11 +26,9 @@ public class PathMapTest {
         File bar = new File().setId("bar").setTitle("bar.txt").setParents(barParents);
         files.add(bar);
 
-        Map<String, String> pathMap = new PathMap().build(files);
+        Map<String, String> pathMap = new PathMap("appfolder").build(files);
 
-
-        String[] paths = { "/foolo/bar.txt", "/foolo" };
-        Assert.assertArrayEquals(paths, pathMap.keySet().toArray());
+        Assert.assertEquals("appfolder", pathMap.get("/"));
         Assert.assertEquals("foo", pathMap.get("/foolo"));
         Assert.assertEquals("bar", pathMap.get("/foolo/bar.txt"));
     }

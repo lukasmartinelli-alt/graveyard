@@ -39,7 +39,7 @@ public class GoogleDriveClient {
     }
 
     public boolean folderExists(Path path) throws IOException {
-        PathMap paths = new PathMap().build(allFiles());
+        PathMap paths = new PathMap("appfolder").build(allFiles());
 
         if(paths.containsKey(path)) {
             String fileId = paths.get(path);
@@ -70,7 +70,7 @@ public class GoogleDriveClient {
     }
 
     private List<ParentReference> createParents(String path) throws IOException {
-        PathMap paths = new PathMap().build(allFiles());
+        PathMap paths = new PathMap("appfolder").build(allFiles());
 
         String parentPath = Paths.get(path).getParent().toString();
         String parentId = paths.get(parentPath);
@@ -81,7 +81,7 @@ public class GoogleDriveClient {
     }
 
     private String find(Path remotePath) throws IOException {
-        PathMap paths = new PathMap().build(allFiles());
+        PathMap paths = new PathMap("appfolder").build(allFiles());
 
         if(paths.containsKey(remotePath)) {
             return paths.get(remotePath);
