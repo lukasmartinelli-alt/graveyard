@@ -40,16 +40,14 @@ public class GoogledriveClient {
         return results;
     }
 
-    public boolean folderExists(Path path) throws IOException {
-        PathMap paths = new PathMap(rootId).build(allFiles());
-
-        if(paths.containsKey(path.toString())) {
-            String fileId = paths.get(path.toString());
-            File folder = this.client.files().get(fileId).execute();
+    public boolean folderExists(Path remotePath) {
+        try {
+            String remoteId = find(remotePath);
+            File folder = this.client.files().get(remoteId).execute();
             return folder.getMimeType().equals(FOLDER_MIMETYPE);
+        } catch(IOException e) {
+            return false;
         }
-
-        return false;
     }
 
     public boolean fileExists(Path remotePath) {
@@ -89,8 +87,8 @@ public class GoogledriveClient {
     private String find(Path remotePath) throws IOException {
         PathMap paths = new PathMap(rootId).build(allFiles());
 
-        if(paths.containsKey(remotePath)) {
-            return paths.get(remotePath);
+        if(paths.containsKey(remotePath.toString())) {
+            return paths.get(remotePath.toString());
         }
         throw new FileNotFoundException(remotePath + " does not exist.");
     }

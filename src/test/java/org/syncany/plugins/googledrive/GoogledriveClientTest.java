@@ -1,6 +1,7 @@
 package org.syncany.plugins.googledrive;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -11,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,10 +20,20 @@ import java.nio.file.Paths;
 public class GoogledriveClientTest {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final String ACCESS_TOKEN = "ya29.2AAYUsf_PcIGLPzNHw2ST78g5BeKquoD4xCqXT4yqmTFbxUuJ43vUda10y3iqI4mmZ_o-wGLXRI-YQ";
+    private static final String ACCESS_TOKEN = "ya29.2ADwZer2iUjkFRV4wKkwSwP6aFZUpRwrDCeRlr1Q-yqjHOHLavko5J6XNJwewsciFao7w8oyltuAHg";
 
     private GoogledriveClient client;
     private Path rootPath;
+
+    /*
+    private void printAccessToken() throws IOException {
+        String authorizationToken = "4/WagjLkw6fFDruMBwJE27aiwFfZYgbn-h156Y80G9AK4.8nTWns_4T6ITYFZr95uygvW5-uxrlAI";
+        GoogleTokenResponse response = GoogledriveTransferPlugin.FLOW
+                .newTokenRequest(authorizationToken)
+                .setRedirectUri(GoogledriveTransferPlugin.REDIRECT_URI)
+                .execute();
+        System.out.println(response.getAccessToken());
+    }*/
 
     @Before
     public void setUp() throws IOException {
