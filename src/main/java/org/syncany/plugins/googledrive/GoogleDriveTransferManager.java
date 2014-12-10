@@ -17,23 +17,24 @@
  */
 package org.syncany.plugins.googledrive;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.commons.io.FileUtils;
 import org.syncany.config.Config;
 import org.syncany.plugins.transfer.AbstractTransferManager;
 import org.syncany.plugins.transfer.StorageException;
 import org.syncany.plugins.transfer.StorageMoveException;
 import org.syncany.plugins.transfer.TransferManager;
 import org.syncany.plugins.transfer.files.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -124,68 +125,60 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public void download(RemoteFile remoteFile, File localFile) throws StorageException {
-		throw new NotImplementedException();
-//		String remotePath = getRemoteFile(remoteFile);
-//
-//		if (!remoteFile.getName().equals(".") && !remoteFile.getName().equals("..")) {
-//			try {
-//				// Download file
-//				File tempFile = createTempFile(localFile.getName());
-//				OutputStream tempFOS = new FileOutputStream(tempFile);
-//
-//				if (logger.isLoggable(Level.INFO)) {
-//					logger.log(Level.INFO, "Dropbox: Downloading {0} to temp file {1}", new Object[] { remotePath, tempFile });
-//				}
-//
-//				this.client.getFile(remotePath, null, tempFOS);
-//
-//				tempFOS.close();
-//
-//				// Move file
-//				if (logger.isLoggable(Level.INFO)) {
-//					logger.log(Level.INFO, "Dropbox: Renaming temp file {0} to file {1}", new Object[] { tempFile, localFile });
-//				}
-//
-//				localFile.delete();
-//				FileUtils.moveFile(tempFile, localFile);
-//				tempFile.delete();
-//			}
-//			catch (DbxException | IOException ex) {
-//				logger.log(Level.SEVERE, "Error while downloading file " + remoteFile.getName(), ex);
-//				throw new StorageException(ex);
-//			}
-//		}
+		String remotePath = getRemoteFile(remoteFile);
+
+		if (!remoteFile.getName().equals(".") && !remoteFile.getName().equals("..")) {
+			try {
+				// Download file
+				File tempFile = createTempFile(localFile.getName());
+				OutputStream tempFOS = new FileOutputStream(tempFile);
+
+				if (logger.isLoggable(Level.INFO)) {
+					logger.log(Level.INFO, "Dropbox: Downloading {0} to temp file {1}", new Object[] { remotePath, tempFile });
+				}
+
+				this.client.downloadFile(remotePath, tempFOS);
+				tempFOS.close();
+
+				// Move file
+				if (logger.isLoggable(Level.INFO)) {
+					logger.log(Level.INFO, "Dropbox: Renaming temp file {0} to file {1}", new Object[] { tempFile, localFile });
+				}
+
+				localFile.delete();
+				FileUtils.moveFile(tempFile, localFile);
+				tempFile.delete();
+			}
+			catch (IOException ex) {
+				logger.log(Level.SEVERE, "Error while downloading file " + remoteFile.getName(), ex);
+				throw new StorageException(ex);
+			}
+		}
 	}
 
 	@Override
 	public void upload(File localFile, RemoteFile remoteFile) throws StorageException {
-		throw new NotImplementedException();
-//		String remotePath = getRemoteFile(remoteFile);
-//		String tempRemotePath = this.path + "/temp-" + remoteFile.getName();
-//
-//		try {
-//			// Upload to temp file
-//			InputStream fileFIS = new FileInputStream(localFile);
-//
-//			if (logger.isLoggable(Level.INFO)) {
-//				logger.log(Level.INFO, "Dropbox: Uploading {0} to temp file {1}", new Object[] { localFile, tempRemotePath });
-//			}
-//
-//			this.client.uploadFile(tempRemotePath, DbxWriteMode.add(), localFile.length(), fileFIS);
-//
-//			fileFIS.close();
-//
-//			// Move
-//			if (logger.isLoggable(Level.INFO)) {
-//				logger.log(Level.INFO, "Dropbox: Renaming temp file {0} to file {1}", new Object[] { tempRemotePath, remotePath });
-//			}
-//
-//			this.client.move(tempRemotePath, remotePath);
-//		}
-//		catch (DbxException | IOException ex) {
-//			logger.log(Level.SEVERE, "Could not upload file " + localFile + " to " + remoteFile.getName(), ex);
-//			throw new StorageException(ex);
-//		}
+		String remotePath = getRemoteFile(remoteFile);
+		String tempRemotePath = this.path + "/temp-" + remoteFile.getName();
+
+		try {
+			if (logger.isLoggable(Level.INFO)) {
+				logger.log(Level.INFO, "Dropbox: Uploading {0} to temp file {1}", new Object[] { localFile, tempRemotePath });
+			}
+
+			this.client.uploadFile(tempRemotePath, localFile);
+
+			// Move
+			if (logger.isLoggable(Level.INFO)) {
+				logger.log(Level.INFO, "Dropbox: Renaming temp file {0} to file {1}", new Object[] { tempRemotePath, remotePath });
+			}
+
+			this.client.move(tempRemotePath, remotePath);
+		}
+		catch (IOException ex) {
+			logger.log(Level.SEVERE, "Could not upload file " + localFile + " to " + remoteFile.getName(), ex);
+			throw new StorageException(ex);
+		}
 	}
 
 	@Override

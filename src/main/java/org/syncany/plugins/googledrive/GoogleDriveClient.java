@@ -99,6 +99,11 @@ public class GoogleDriveClient {
         return client.files().insert(remoteMetadata, remoteMedia).execute();
     }
 
+    public void downloadFile(String remoteFilePath, java.io.OutputStream localStream) throws IOException {
+        String remoteId = find(remoteFilePath);
+        client.files().get(remoteId).executeMediaAndDownloadTo(localStream);
+    }
+
     public void delete(String remotePath) throws IOException {
         String remoteId = find(remotePath);
         client.files().delete(remoteId);
