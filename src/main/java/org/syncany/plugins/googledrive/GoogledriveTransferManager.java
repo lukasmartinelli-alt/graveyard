@@ -66,7 +66,7 @@ public class GoogledriveTransferManager extends CloudStorageTransferManager {
 		super(settings, config, ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/"));
 		String path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
 		this.path = path;
-		this.authorizationCode = settings.authorizationCode;
+		this.authorizationCode = settings.accessToken;
 	}
 
 	@Override

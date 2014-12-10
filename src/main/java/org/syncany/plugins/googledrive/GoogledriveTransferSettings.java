@@ -17,20 +17,18 @@
  */
 package org.syncany.plugins.googledrive;
 
-import org.syncany.plugins.transfer.Encrypted;
-import org.syncany.plugins.transfer.Setup;
-import org.syncany.plugins.transfer.TransferPluginOptionCallback;
-import org.syncany.plugins.transfer.TransferSettings;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import org.syncany.plugins.transfer.*;
 import org.simpleframework.xml.Element;
 
 import java.io.File;
 import java.io.IOException;
 
 public class GoogledriveTransferSettings extends TransferSettings {
-	@Element(name = "authorizationCode", required = true)
-	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = GoogleDriveAuthPluginOptionCallback.class)
+	@Element(name = "accessToken", required = true)
+	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = GoogleDriveAuthPluginOptionCallback.class, converter = GoogledriveAuthPluginOptionConverter.class)
 	@Encrypted
-	public String authorizationCode;
+	public String accessToken;
 
 	@Element(name = "path", required = true)
 	@Setup(order = 2, description = "Path relative to syncany's app root")
@@ -50,13 +48,29 @@ public class GoogledriveTransferSettings extends TransferSettings {
 		}
 
 		@Override
-		public String postQueryCallback(String optionValue) {
+		public String postQueryCallback(String accessToken) {
 			try {
-				GoogledriveClient client = GoogledriveTransferPlugin.createClient(optionValue);
+				GoogledriveClient client = GoogledriveTransferPlugin.createClient(accessToken);
 				return String.format("\nSuccessfully linked with %s's account!\n", client.about().getName());
 			}
 			catch (IOException e) {
 				throw new RuntimeException("Error requesting googledrive data: " + e.getMessage());
+			}
+		}
+	}
+
+	public static class GoogledriveAuthPluginOptionConverter implements TransferPluginOptionConverter {
+		@Override
+		public String convert(String input) {
+			try {
+				GoogleTokenResponse response = GoogledriveTransferPlugin.FLOW
+						.newTokenRequest(input)
+						.setRedirectUri(GoogledriveTransferPlugin.REDIRECT_URI)
+						.execute();
+				return response.getAccessToken();
+			}
+			catch (IOException e) {
+				throw new RuntimeException("Unable to extract oauth token: " + e.getMessage());
 			}
 		}
 	}

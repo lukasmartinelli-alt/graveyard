@@ -4,7 +4,6 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.*;
 import com.google.api.services.drive.model.File;
-import org.syncany.plugins.transfer.StorageException;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -16,9 +15,11 @@ public class GoogledriveClient {
     private static final String FOLDER_MIMETYPE = "application/vnd.google-apps.folder";
     private static final String FILE_MIMETYPE = "application/x-syncany";
     private final Drive client;
+    private final String rootId;
 
-    public GoogledriveClient(Drive client) {
+    public GoogledriveClient(Drive client) throws IOException {
         this.client = client;
+        this.rootId = client.files().get("appfolder").execute().getId();
     }
 
     public About about() throws IOException {
@@ -27,7 +28,7 @@ public class GoogledriveClient {
 
     public List<File> allFiles() throws IOException {
         List<File> results = new ArrayList<>();
-        Drive.Files.List request = this.client.files().list().setQ("'appfolder' in parents");
+        Drive.Files.List request = this.client.files().list();
 
         do {
             FileList files = request.execute();
@@ -40,10 +41,10 @@ public class GoogledriveClient {
     }
 
     public boolean folderExists(Path path) throws IOException {
-        PathMap paths = new PathMap("appfolder").build(allFiles());
+        PathMap paths = new PathMap(rootId).build(allFiles());
 
-        if(paths.containsKey(path)) {
-            String fileId = paths.get(path);
+        if(paths.containsKey(path.toString())) {
+            String fileId = paths.get(path.toString());
             File folder = this.client.files().get(fileId).execute();
             return folder.getMimeType().equals(FOLDER_MIMETYPE);
         }
@@ -71,18 +72,22 @@ public class GoogledriveClient {
     }
 
     private List<ParentReference> createParents(String path) throws IOException {
-        PathMap paths = new PathMap("appfolder").build(allFiles());
+        PathMap paths = new PathMap(rootId).build(allFiles());
 
         String parentPath = Paths.get(path).getParent().toString();
-        String parentId = paths.get(parentPath);
-        List<ParentReference> parents = new ArrayList<>();
-        parents.add(new ParentReference().setId(parentId));
+        if(paths.containsKey(parentPath)) {
+            String parentId = paths.get(parentPath);
+            List<ParentReference> parents = new ArrayList<>();
+            parents.add(new ParentReference().setId(parentId));
 
-        return parents;
+            return parents;
+        } else {
+            throw new IndexOutOfBoundsException(path + " is not found in path map");
+        }
     }
 
     private String find(Path remotePath) throws IOException {
-        PathMap paths = new PathMap("appfolder").build(allFiles());
+        PathMap paths = new PathMap(rootId).build(allFiles());
 
         if(paths.containsKey(remotePath)) {
             return paths.get(remotePath);
@@ -106,7 +111,14 @@ public class GoogledriveClient {
 
     public void delete(Path remotePath) throws IOException {
         String remoteId = find(remotePath);
-        client.files().delete(remoteId);
+        deleteRecursive(remoteId);
+    }
+
+    private void deleteRecursive(String remoteId) throws IOException {
+        for(ChildReference child : client.children().list(remoteId).execute().getItems()) {
+            deleteRecursive(child.getId());
+        }
+        client.files().delete(remoteId).execute();
     }
 
     public List<File> list(Path remotePath) throws IOException {

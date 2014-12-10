@@ -34,29 +34,27 @@ import java.util.Arrays;
 public class GoogledriveTransferPlugin extends TransferPlugin {
 	private static final String CLIENT_ID = "143404779943-76gn8gao2qoii3cnmiiji6g6qc2msaj6.apps.googleusercontent.com";
 	private static final String CLIENT_SECRET = "hNQwo8i-0P0x5KN8cZ6aBMK3";
-	private static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
+	public static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
 
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private static final GoogleAuthorizationCodeFlow FLOW = new GoogleAuthorizationCodeFlow.Builder(
-			HTTP_TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, Arrays.asList(DriveScopes.DRIVE))
-			.setAccessType("online")
-			.setApprovalPrompt("auto").build();
-
+	public static final GoogleAuthorizationCodeFlow FLOW = new GoogleAuthorizationCodeFlow.Builder(
+			HTTP_TRANSPORT,
+			JSON_FACTORY,
+			CLIENT_ID,
+			CLIENT_SECRET,
+			Arrays.asList(DriveScopes.DRIVE_APPDATA)
+	).setAccessType("online").setApprovalPrompt("auto").build();
 
 	public GoogledriveTransferPlugin() {
 		super("googledrive");
 	}
 
-	public static GoogledriveClient createClient(String authorizationCode) throws IOException {
-		GoogleTokenResponse response = FLOW
-				.newTokenRequest(authorizationCode)
-				.setRedirectUri(GoogledriveTransferPlugin.REDIRECT_URI)
-				.execute();
-		GoogleCredential credential = new GoogleCredential().setFromTokenResponse(response);
-		Drive wrappedClient = new Drive.Builder(GoogledriveTransferPlugin.HTTP_TRANSPORT,
-				GoogledriveTransferPlugin.JSON_FACTORY, credential).build();
-
+	public static GoogledriveClient createClient(String accessToken) throws IOException {
+		GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
+		Drive wrappedClient = new Drive.Builder(HTTP_TRANSPORT, GoogledriveTransferPlugin.JSON_FACTORY, credential)
+				.setApplicationName("Syncany")
+				.build();
 		return new GoogledriveClient(wrappedClient);
 	}
 
