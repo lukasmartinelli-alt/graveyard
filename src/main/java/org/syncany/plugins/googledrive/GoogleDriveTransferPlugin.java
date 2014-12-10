@@ -54,7 +54,10 @@ public class GoogleDriveTransferPlugin extends TransferPlugin {
 				.setRedirectUri(GoogleDriveTransferPlugin.REDIRECT_URI)
 				.execute();
 		GoogleCredential credential = new GoogleCredential().setFromTokenResponse(response);
-		return new GoogleDriveClient(Drive.Builder(GoogleDriveTransferPlugin.HTTP_TRANSPORT, GoogleDriveTransferPlugin.JSON_FACTORY, credential).build());
+		Drive wrappedClient = new Drive.Builder(GoogleDriveTransferPlugin.HTTP_TRANSPORT,
+				GoogleDriveTransferPlugin.JSON_FACTORY, credential).build();
+
+		return new GoogleDriveClient(wrappedClient);
 	}
 
 	public static String getAuthorizationUrl() {

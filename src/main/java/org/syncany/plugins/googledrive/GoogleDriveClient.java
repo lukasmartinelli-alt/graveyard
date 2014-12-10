@@ -3,11 +3,11 @@ package org.syncany.plugins.googledrive;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.*;
+import com.google.api.services.drive.model.File;
 import org.syncany.plugins.transfer.StorageException;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class GoogleDriveClient {
         return results;
     }
 
-    public boolean folderExists(String path) throws IOException {
+    public boolean folderExists(Path path) throws IOException {
         PathMap paths = new PathMap().build(allFiles());
 
         if(paths.containsKey(path)) {
@@ -50,7 +50,7 @@ public class GoogleDriveClient {
         return false;
     }
 
-    public boolean fileExists(String remotePath) {
+    public boolean fileExists(Path remotePath) {
         try {
             String remoteId = find(remotePath);
             File file = this.client.files().get(remoteId).execute();
@@ -60,10 +60,10 @@ public class GoogleDriveClient {
         }
     }
 
-    public void createFolder(String path) throws IOException {
+    public void createFolder(Path path) throws IOException {
         File folder = new File()
-                .setTitle(new java.io.File(path).getName())
-                .setParents(createParents(path))
+                .setTitle(path.getFileName().toString())
+                .setParents(createParents(path.toString()))
                 .setMimeType(FOLDER_MIMETYPE);
 
         client.files().insert(folder).execute();
@@ -80,7 +80,7 @@ public class GoogleDriveClient {
         return parents;
     }
 
-    private String find(String remotePath) throws IOException {
+    private String find(Path remotePath) throws IOException {
         PathMap paths = new PathMap().build(allFiles());
 
         if(paths.containsKey(remotePath)) {
@@ -89,27 +89,27 @@ public class GoogleDriveClient {
         throw new FileNotFoundException(remotePath + " does not exist.");
     }
 
-    public File uploadFile(String remoteFilePath, java.io.File localFile) throws IOException {
+    public File uploadFile(Path remoteFilePath, java.io.File localFile) throws IOException {
         String mimeType = "foo";
         File remoteMetadata = new File()
-                .setTitle(Paths.get(remoteFilePath).toString())
-                .setParents(createParents(remoteFilePath));
+                .setTitle(remoteFilePath.getFileName().toString())
+                .setParents(createParents(remoteFilePath.toString()));
         FileContent remoteMedia = new FileContent(mimeType, localFile);
 
         return client.files().insert(remoteMetadata, remoteMedia).execute();
     }
 
-    public void downloadFile(String remoteFilePath, java.io.OutputStream localStream) throws IOException {
+    public void downloadFile(Path remoteFilePath, OutputStream localStream) throws IOException {
         String remoteId = find(remoteFilePath);
         client.files().get(remoteId).executeMediaAndDownloadTo(localStream);
     }
 
-    public void delete(String remotePath) throws IOException {
+    public void delete(Path remotePath) throws IOException {
         String remoteId = find(remotePath);
         client.files().delete(remoteId);
     }
 
-    public List<File> list(String remotePath) throws IOException {
+    public List<File> list(Path remotePath) throws IOException {
         String remoteId = find(remotePath);
         ChildList children = client.children().list(remoteId).execute();
         List<File> results = new ArrayList<>();
@@ -121,7 +121,7 @@ public class GoogleDriveClient {
         return results;
     }
 
-    public void move(String sourceRemotePath, String targetRemotePath) throws IOException {
+    public void move(Path sourceRemotePath, Path targetRemotePath) throws IOException {
         String sourceRemoteId = find(sourceRemotePath);
         String targetRemoteId = find(targetRemotePath);
 

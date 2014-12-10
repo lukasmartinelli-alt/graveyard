@@ -19,7 +19,6 @@ package org.syncany.plugins.googledrive;
 
 import org.apache.commons.io.FileUtils;
 import org.syncany.config.Config;
-import org.syncany.plugins.transfer.AbstractTransferManager;
 import org.syncany.plugins.transfer.StorageException;
 import org.syncany.plugins.transfer.StorageMoveException;
 import org.syncany.plugins.transfer.TransferManager;
@@ -29,9 +28,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,29 +54,18 @@ import java.util.logging.Logger;
  *
  * @author Christian Roth <christian.roth@port17.de>
  */
-public class GoogleDriveTransferManager extends AbstractTransferManager {
+public class GoogleDriveTransferManager extends CloudStorageTransferManager {
 	private static final Logger logger = Logger.getLogger(GoogleDriveTransferManager.class.getSimpleName());
 
 	private final String path;
-	private final String multichunksPath;
-	private final String databasesPath;
-	private final String actionsPath;
-	private final String transactionsPath;
-	private final String tempPath;
-
 	private final String authorizationCode;
+
 	private GoogleDriveClient client;
 
 	public GoogleDriveTransferManager(GoogleDriveTransferSettings settings, Config config) {
-		super(settings, config);
-
-		this.path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
-		this.multichunksPath = new File(this.path, "/multichunks/").getPath();
-		this.databasesPath = new File(this.path, "/databases/").getPath();
-		this.actionsPath = new File(this.path, "/actions/").getPath();
-		this.transactionsPath = new File(this.path, "/transactions/").getPath();
-		this.tempPath = new File(this.path, "/temporary/").getPath();
-
+		super(settings, config, ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/"));
+		String path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
+		this.path = path;
 		this.authorizationCode = settings.authorizationCode;
 	}
 
@@ -97,48 +84,21 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	public void disconnect() {
 	}
 
-
-
-	@Override
-	public void init(boolean createIfRequired) throws StorageException {
-		connect();
-
-		try {
-			if (!testTargetExists() && createIfRequired) {
-				this.client.createFolder(this.path);
-			}
-
-			this.client.createFolder(this.multichunksPath);
-			this.client.createFolder(this.databasesPath);
-			this.client.createFolder(this.actionsPath);
-			this.client.createFolder(this.transactionsPath);
-			this.client.createFolder(this.tempPath);
-		}
-		catch (IOException e) {
-			throw new StorageException("init: Cannot create required directories", e);
-		}
-		finally {
-			disconnect();
-		}
-	}
-
-
 	@Override
 	public void download(RemoteFile remoteFile, File localFile) throws StorageException {
-		String remotePath = getRemoteFile(remoteFile);
+		Path remotePath = getRemoteFilePath(remoteFile);
 
 		if (!remoteFile.getName().equals(".") && !remoteFile.getName().equals("..")) {
 			try {
-				// Download file
 				File tempFile = createTempFile(localFile.getName());
-				OutputStream tempFOS = new FileOutputStream(tempFile);
+				OutputStream tempLocalOutputStream = new FileOutputStream(tempFile);
 
 				if (logger.isLoggable(Level.INFO)) {
 					logger.log(Level.INFO, "Dropbox: Downloading {0} to temp file {1}", new Object[] { remotePath, tempFile });
 				}
 
-				this.client.downloadFile(remotePath, tempFOS);
-				tempFOS.close();
+				this.client.downloadFile(remotePath, tempLocalOutputStream);
+				tempLocalOutputStream.close();
 
 				// Move file
 				if (logger.isLoggable(Level.INFO)) {
@@ -158,22 +118,13 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public void upload(File localFile, RemoteFile remoteFile) throws StorageException {
-		String remotePath = getRemoteFile(remoteFile);
-		String tempRemotePath = this.path + "/temp-" + remoteFile.getName();
+		Path remotePath = getRemoteFilePath(remoteFile);
 
 		try {
 			if (logger.isLoggable(Level.INFO)) {
-				logger.log(Level.INFO, "Dropbox: Uploading {0} to temp file {1}", new Object[] { localFile, tempRemotePath });
+				logger.log(Level.INFO, "GoogleDrive: Uploading {0} to temp file {1}", new Object[] { localFile, remotePath });
 			}
-
-			this.client.uploadFile(tempRemotePath, localFile);
-
-			// Move
-			if (logger.isLoggable(Level.INFO)) {
-				logger.log(Level.INFO, "Dropbox: Renaming temp file {0} to file {1}", new Object[] { tempRemotePath, remotePath });
-			}
-
-			this.client.move(tempRemotePath, remotePath);
+			this.client.uploadFile(remotePath, localFile);
 		}
 		catch (IOException ex) {
 			logger.log(Level.SEVERE, "Could not upload file " + localFile + " to " + remoteFile.getName(), ex);
@@ -183,7 +134,7 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public boolean delete(RemoteFile remoteFile) throws StorageException {
-		String remotePath = getRemoteFile(remoteFile);
+		Path remotePath = getRemoteFilePath(remoteFile);
 
 		try {
 			this.client.delete(remotePath);
@@ -197,8 +148,8 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public void move(RemoteFile sourceFile, RemoteFile targetFile) throws StorageException {
-		String sourceRemotePath = getRemoteFile(sourceFile);
-		String targetRemotePath = getRemoteFile(targetFile);
+		Path sourceRemotePath = getRemoteFilePath(sourceFile);
+		Path targetRemotePath = getRemoteFilePath(targetFile);
 
 		try {
 			this.client.move(sourceRemotePath, targetRemotePath);
@@ -212,15 +163,10 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	@Override
 	public <T extends RemoteFile> Map<String, T> list(Class<T> remoteFileClass) throws StorageException {
 		try {
-			// List folder
-			String remoteFilePath = getRemoteFilePath(remoteFileClass);
+			Path remoteFilePath = getRemoteFileSubfolder(remoteFileClass);
+			Map<String, T> remoteFiles = new HashMap<>();
 
-			List<com.google.api.services.drive.model.File> listing = this.client.list(remoteFilePath);
-
-			// Create RemoteFile objects
-			Map<String, T> remoteFiles = new HashMap<String, T>();
-
-			for (com.google.api.services.drive.model.File child : listing) {
+			for (com.google.api.services.drive.model.File child : this.client.list(remoteFilePath)) {
 				try {
 					T remoteFile = RemoteFile.createRemoteFile(child.getTitle(), remoteFileClass);
 					remoteFiles.put(child.getTitle(), remoteFile);
@@ -230,115 +176,29 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 							+ "; maybe invalid file name pattern. Ignoring file.");
 				}
 			}
-
 			return remoteFiles;
 		}
 		catch (IOException ex) {
 			disconnect();
 
-			logger.log(Level.SEVERE, "Unable to list Dropbox directory.", ex);
+			logger.log(Level.SEVERE, "Unable to list Google Drive directory.", ex);
 			throw new StorageException(ex);
 		}
 	}
 
-	private String getRemoteFile(RemoteFile remoteFile) {
-		return getRemoteFilePath(remoteFile.getClass()) + "/" + remoteFile.getName();
-	}
-
-	private String getRemoteFilePath(Class<? extends RemoteFile> remoteFile) {
-		if (remoteFile.equals(MultichunkRemoteFile.class)) {
-			return multichunksPath;
-		}
-		else if (remoteFile.equals(DatabaseRemoteFile.class)) {
-			return databasesPath;
-		}
-		else if (remoteFile.equals(ActionRemoteFile.class)) {
-			return actionsPath;
-		}
-		else if (remoteFile.equals(TransactionRemoteFile.class)) {
-			return transactionsPath;
-		}
-		else if (remoteFile.equals(TempRemoteFile.class)) {
-			return tempPath;
-		}
-		else {
-			return path;
-		}
+	@Override
+	public boolean folderExists(Path path) throws IOException {
+		return client.folderExists(path);
 	}
 
 	@Override
-	public boolean testTargetCanWrite() {
-		try {
-			if (testTargetExists()) {
-				String tempRemoteFile = this.path + "/syncany-write-test";
-				File tempFile = File.createTempFile("syncany-write-test", "tmp");
-
-				this.client.uploadFile(tempRemoteFile, tempFile);
-				this.client.delete(tempRemoteFile);
-
-				tempFile.delete();
-
-				logger.log(Level.INFO, "testTargetCanWrite: Can write, test file created/deleted successfully.");
-				return true;
-			}
-			else {
-				logger.log(Level.INFO, "testTargetCanWrite: Can NOT write, target does not exist.");
-				return false;
-			}
-		}
-		catch (IOException e) {
-			logger.log(Level.INFO, "testTargetCanWrite: Can NOT write to target.", e);
-			return false;
-		}
+	public boolean fileExists(Path repoRemotePath) {
+		return client.fileExists(repoRemotePath);
 	}
 
 	@Override
-	public boolean testTargetExists() {
-		try {
-			return this.client.folderExists(this.path);
-		}
-		catch (IOException e) {
-			logger.log(Level.WARNING, "testTargetExists: Target does NOT exist, error occurred.", e);
-			return false;
-		}
-	}
+	public void createFolder(Path tempPath) throws IOException {
+		client.createFolder(tempPath);
 
-	@Override
-	public boolean testTargetCanCreate() {
-		String parentPath = Paths.get(this.path).getParent().toString();
-
-		try {
-			if(this.client.folderExists(parentPath)) {
-				logger.log(Level.INFO, "testTargetCanCreate: Can create target at " + parentPath);
-				return true;
-			} else {
-				logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target (parent does not exist)");
-				return false;
-			}
-		}
-		catch (IOException e) {
-			logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target at " + parentPath, e);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean testRepoFileExists() {
-		try {
-			String repoFilePath = getRemoteFile(new SyncanyRemoteFile());
-
-			if(client.fileExists(repoFilePath)) {
-				logger.log(Level.INFO, "testRepoFileExists: Repo file exists at " + repoFilePath);
-				return true;
-			}
-			else {
-				logger.log(Level.INFO, "testRepoFileExists: Repo file DOES NOT exist at " + repoFilePath);
-				return false;
-			}
-		}
-		catch (Exception e) {
-			logger.log(Level.INFO, "testRepoFileExists: Exception when trying to check repo file existence.", e);
-			return false;
-		}
 	}
 }

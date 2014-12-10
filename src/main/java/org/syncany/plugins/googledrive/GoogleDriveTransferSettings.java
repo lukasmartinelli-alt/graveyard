@@ -54,8 +54,8 @@ public class GoogleDriveTransferSettings extends TransferSettings {
 		@Override
 		public String postQueryCallback(String optionValue) {
 			try {
-				Drive client = GoogleDriveTransferPlugin.createClient(optionValue);
-				return String.format("\nSuccessfully linked with %s's account!\n", client.about().get().execute().getName());
+				GoogleDriveClient client = GoogleDriveTransferPlugin.createClient(optionValue);
+				return String.format("\nSuccessfully linked with %s's account!\n", client.about().getName());
 			}
 			catch (IOException e) {
 				throw new RuntimeException("Error requesting googledrive data: " + e.getMessage());
