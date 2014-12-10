@@ -4,6 +4,9 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class PathMap extends HashMap<String, String> {
@@ -14,6 +17,17 @@ public class PathMap extends HashMap<String, String> {
         this.files = files;
         populateRecursive("/", ROOT_ID);
         return this;
+    }
+
+    @Override
+    public String get(Object o) {
+        Path path = Paths.get((String) o);
+        return super.get(path.normalize().toString());
+    }
+
+    @Override
+    public String put(String key, String value) {
+        return super.put(Paths.get(key).normalize().toString(), value);
     }
 
     private List<File> getChildren(String parentId) {
@@ -31,8 +45,7 @@ public class PathMap extends HashMap<String, String> {
     private void populateRecursive(String path, String parentId) {
         for(File child : getChildren(parentId)) {
             if(!child.getTitle().isEmpty()) {
-                String childPath = new java.io.File(path, child.getTitle()).getPath();
-
+                String childPath = Paths.get(path, child.getTitle()).toString();
                 put(childPath, child.getId());
                 populateRecursive(childPath, child.getId());
             }

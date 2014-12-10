@@ -17,8 +17,10 @@
  */
 package org.syncany.plugins.googledrive;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,8 +29,7 @@ import org.syncany.config.Config;
 import org.syncany.plugins.transfer.AbstractTransferManager;
 import org.syncany.plugins.transfer.StorageException;
 import org.syncany.plugins.transfer.TransferManager;
-import org.syncany.plugins.transfer.files.DatabaseRemoteFile;
-import org.syncany.plugins.transfer.files.RemoteFile;
+import org.syncany.plugins.transfer.files.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -252,52 +253,50 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	}
 
 	private String getRemoteFilePath(Class<? extends RemoteFile> remoteFile) {
-		throw new NotImplementedException();
-//		if (remoteFile.equals(MultichunkRemoteFile.class)) {
-//			return multichunksPath;
-//		}
-//		else if (remoteFile.equals(DatabaseRemoteFile.class)) {
-//			return databasesPath;
-//		}
-//		else if (remoteFile.equals(ActionRemoteFile.class)) {
-//			return actionsPath;
-//		}
-//		else if (remoteFile.equals(TransactionRemoteFile.class)) {
-//			return transactionsPath;
-//		}
-//		else if (remoteFile.equals(TempRemoteFile.class)) {
-//			return tempPath;
-//		}
-//		else {
-//			return path;
-//		}
+		if (remoteFile.equals(MultichunkRemoteFile.class)) {
+			return multichunksPath;
+		}
+		else if (remoteFile.equals(DatabaseRemoteFile.class)) {
+			return databasesPath;
+		}
+		else if (remoteFile.equals(ActionRemoteFile.class)) {
+			return actionsPath;
+		}
+		else if (remoteFile.equals(TransactionRemoteFile.class)) {
+			return transactionsPath;
+		}
+		else if (remoteFile.equals(TempRemoteFile.class)) {
+			return tempPath;
+		}
+		else {
+			return path;
+		}
 	}
 
 	@Override
 	public boolean testTargetCanWrite() {
-		throw new NotImplementedException();
-//		try {
-//			if (testTargetExists()) {
-//				String tempRemoteFile = this.path + "/syncany-write-test";
-//				File tempFile = File.createTempFile("syncany-write-test", "tmp");
-//
-//				this.client.uploadFile(tempRemoteFile, DbxWriteMode.add(), 0, new ByteArrayInputStream(new byte[0]));
-//				this.client.delete(tempRemoteFile);
-//
-//				tempFile.delete();
-//
-//				logger.log(Level.INFO, "testTargetCanWrite: Can write, test file created/deleted successfully.");
-//				return true;
-//			}
-//			else {
-//				logger.log(Level.INFO, "testTargetCanWrite: Can NOT write, target does not exist.");
-//				return false;
-//			}
-//		}
-//		catch (DbxException | IOException e) {
-//			logger.log(Level.INFO, "testTargetCanWrite: Can NOT write to target.", e);
-//			return false;
-//		}
+		try {
+			if (testTargetExists()) {
+				String tempRemoteFile = this.path + "/syncany-write-test";
+				File tempFile = File.createTempFile("syncany-write-test", "tmp");
+
+				this.client.uploadFile(tempRemoteFile, tempFile);
+				this.client.delete(tempRemoteFile);
+
+				tempFile.delete();
+
+				logger.log(Level.INFO, "testTargetCanWrite: Can write, test file created/deleted successfully.");
+				return true;
+			}
+			else {
+				logger.log(Level.INFO, "testTargetCanWrite: Can NOT write, target does not exist.");
+				return false;
+			}
+		}
+		catch (IOException e) {
+			logger.log(Level.INFO, "testTargetCanWrite: Can NOT write to target.", e);
+			return false;
+		}
 	}
 
 	@Override
@@ -313,52 +312,40 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public boolean testTargetCanCreate() {
-		throw new NotImplementedException();
-//		// Find parent path
-//		String repoPathNoSlash = FileUtil.removeTrailingSlash(this.path);
-//		int repoPathLastSlash = repoPathNoSlash.lastIndexOf("/");
-//		String parentPath = (repoPathLastSlash > 0) ? repoPathNoSlash.substring(0, repoPathLastSlash) : "/";
-//
-//		// Test parent path permissions
-//		try {
-//			DbxEntry metadata = this.client.getMetadata(parentPath);
-//
-//			// our app has read/write for EVERY folder inside a dropbox. as long as it exists, we can write in it
-//			if (metadata.isFolder()) {
-//				logger.log(Level.INFO, "testTargetCanCreate: Can create target at " + parentPath);
-//				return true;
-//			}
-//			else {
-//				logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target (parent does not exist)");
-//
-//				return false;
-//			}
-//		}
-//		catch (DbxException e) {
-//			logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target at " + parentPath, e);
-//			return false;
-//		}
+		String parentPath = Paths.get(this.path).getParent().toString();
+
+		try {
+			if(this.client.folderExists(parentPath)) {
+				logger.log(Level.INFO, "testTargetCanCreate: Can create target at " + parentPath);
+				return true;
+			} else {
+				logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target (parent does not exist)");
+				return false;
+			}
+		}
+		catch (IOException e) {
+			logger.log(Level.INFO, "testTargetCanCreate: Can NOT create target at " + parentPath, e);
+			return false;
+		}
 	}
 
 	@Override
 	public boolean testRepoFileExists() {
-		throw new NotImplementedException();
-//		try {
-//			String repoFilePath = getRemoteFile(new SyncanyRemoteFile());
-//			DbxEntry metadata = this.client.getMetadata(repoFilePath);
-//
-//			if (metadata != null && metadata.isFile()) {
-//				logger.log(Level.INFO, "testRepoFileExists: Repo file exists at " + repoFilePath);
-//				return true;
-//			}
-//			else {
-//				logger.log(Level.INFO, "testRepoFileExists: Repo file DOES NOT exist at " + repoFilePath);
-//				return false;
-//			}
-//		}
-//		catch (Exception e) {
-//			logger.log(Level.INFO, "testRepoFileExists: Exception when trying to check repo file existence.", e);
-//			return false;
-//		}
+		try {
+			String repoFilePath = getRemoteFile(new SyncanyRemoteFile());
+
+			if(client.fileExists(repoFilePath)) {
+				logger.log(Level.INFO, "testRepoFileExists: Repo file exists at " + repoFilePath);
+				return true;
+			}
+			else {
+				logger.log(Level.INFO, "testRepoFileExists: Repo file DOES NOT exist at " + repoFilePath);
+				return false;
+			}
+		}
+		catch (Exception e) {
+			logger.log(Level.INFO, "testRepoFileExists: Exception when trying to check repo file existence.", e);
+			return false;
+		}
 	}
 }
