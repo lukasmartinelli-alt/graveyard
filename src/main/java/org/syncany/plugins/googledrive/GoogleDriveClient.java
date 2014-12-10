@@ -2,10 +2,8 @@ package org.syncany.plugins.googledrive;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.About;
-import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.model.FileList;
-import com.google.api.services.drive.model.ParentReference;
+import com.google.api.services.drive.model.*;
+import org.syncany.plugins.transfer.StorageException;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -104,6 +102,37 @@ public class GoogleDriveClient {
     public void delete(String remotePath) throws IOException {
         String remoteId = find(remotePath);
         client.files().delete(remoteId);
+    }
+
+    public List<File> list(String remotePath) throws IOException {
+        String remoteId = find(remotePath);
+        ChildList children = client.children().list(remoteId).execute();
+        List<File> results = new ArrayList<>();
+
+        for (ChildReference child : children.getItems()) {
+            results.add(client.files().get(child.getId()).execute());
+        }
+
+        return results;
+    }
+
+    public void move(String sourceRemotePath, String targetRemotePath) throws IOException {
+        String sourceRemoteId = find(sourceRemotePath);
+        String targetRemoteId = find(targetRemotePath);
+
+        ParentList targetParents = client.parents().list(targetRemoteId).execute();
+        ParentList sourceParents = client.parents().list(sourceRemoteId).execute();
+
+        if(targetParents.getItems().size() == 0) {
+            throw new IOException("Target has no parents");
+        }
+
+        for(ParentReference parent : sourceParents.getItems()) {
+            client.parents().delete(parent.getId(), sourceRemoteId);
+        }
+
+        ParentReference parent = targetParents.getItems().get(0);
+        client.parents().insert(parent.getId(), parent);
     }
 }
 

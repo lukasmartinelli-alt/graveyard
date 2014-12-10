@@ -21,6 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ import java.util.logging.Logger;
 import org.syncany.config.Config;
 import org.syncany.plugins.transfer.AbstractTransferManager;
 import org.syncany.plugins.transfer.StorageException;
+import org.syncany.plugins.transfer.StorageMoveException;
 import org.syncany.plugins.transfer.TransferManager;
 import org.syncany.plugins.transfer.files.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -187,65 +190,62 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 
 	@Override
 	public boolean delete(RemoteFile remoteFile) throws StorageException {
-		throw new NotImplementedException();
-//		String remotePath = getRemoteFile(remoteFile);
-//
-//		try {
-//			this.client.delete(remotePath);
-//			return true;
-//		}
-//		catch (DbxException ex) {
-//			logger.log(Level.SEVERE, "Could not delete file " + remoteFile.getName(), ex);
-//			throw new StorageException(ex);
-//		}
+		String remotePath = getRemoteFile(remoteFile);
+
+		try {
+			this.client.delete(remotePath);
+			return true;
+		}
+		catch (IOException ex) {
+			logger.log(Level.SEVERE, "Could not delete file " + remoteFile.getName(), ex);
+			throw new StorageException(ex);
+		}
 	}
 
 	@Override
 	public void move(RemoteFile sourceFile, RemoteFile targetFile) throws StorageException {
-		throw new NotImplementedException();
-//		String sourceRemotePath = getRemoteFile(sourceFile);
-//		String targetRemotePath = getRemoteFile(targetFile);
-//
-//		try {
-//			this.client.move(sourceRemotePath, targetRemotePath);
-//		}
-//		catch (DbxException e) {
-//			logger.log(Level.SEVERE, "Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
-//			throw new StorageMoveException("Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
-//		}
+		String sourceRemotePath = getRemoteFile(sourceFile);
+		String targetRemotePath = getRemoteFile(targetFile);
+
+		try {
+			this.client.move(sourceRemotePath, targetRemotePath);
+		}
+		catch (IOException e) {
+			logger.log(Level.SEVERE, "Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
+			throw new StorageMoveException("Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
+		}
 	}
 
 	@Override
 	public <T extends RemoteFile> Map<String, T> list(Class<T> remoteFileClass) throws StorageException {
-		throw new NotImplementedException();
-//		try {
-//			// List folder
-//			String remoteFilePath = getRemoteFilePath(remoteFileClass);
-//
-//			DbxEntry.WithChildren listing = this.client.getMetadataWithChildren(remoteFilePath);
-//
-//			// Create RemoteFile objects
-//			Map<String, T> remoteFiles = new HashMap<String, T>();
-//
-//			for (DbxEntry child : listing.children) {
-//				try {
-//					T remoteFile = RemoteFile.createRemoteFile(child.name, remoteFileClass);
-//					remoteFiles.put(child.name, remoteFile);
-//				}
-//				catch (Exception e) {
-//					logger.log(Level.INFO, "Cannot create instance of " + remoteFileClass.getSimpleName() + " for file " + child.name
-//							+ "; maybe invalid file name pattern. Ignoring file.");
-//				}
-//			}
-//
-//			return remoteFiles;
-//		}
-//		catch (DbxException ex) {
-//			disconnect();
-//
-//			logger.log(Level.SEVERE, "Unable to list Dropbox directory.", ex);
-//			throw new StorageException(ex);
-//		}
+		try {
+			// List folder
+			String remoteFilePath = getRemoteFilePath(remoteFileClass);
+
+			List<com.google.api.services.drive.model.File> listing = this.client.list(remoteFilePath);
+
+			// Create RemoteFile objects
+			Map<String, T> remoteFiles = new HashMap<String, T>();
+
+			for (com.google.api.services.drive.model.File child : listing) {
+				try {
+					T remoteFile = RemoteFile.createRemoteFile(child.getTitle(), remoteFileClass);
+					remoteFiles.put(child.getTitle(), remoteFile);
+				}
+				catch (Exception e) {
+					logger.log(Level.INFO, "Cannot create instance of " + remoteFileClass.getSimpleName() + " for file " + child.getTitle()
+							+ "; maybe invalid file name pattern. Ignoring file.");
+				}
+			}
+
+			return remoteFiles;
+		}
+		catch (IOException ex) {
+			disconnect();
+
+			logger.log(Level.SEVERE, "Unable to list Dropbox directory.", ex);
+			throw new StorageException(ex);
+		}
 	}
 
 	private String getRemoteFile(RemoteFile remoteFile) {
