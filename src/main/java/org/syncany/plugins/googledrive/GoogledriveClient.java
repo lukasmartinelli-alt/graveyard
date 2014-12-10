@@ -12,12 +12,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleDriveClient {
+public class GoogledriveClient {
     private static final String FOLDER_MIMETYPE = "application/vnd.google-apps.folder";
     private static final String FILE_MIMETYPE = "application/x-syncany";
     private final Drive client;
 
-    public GoogleDriveClient(Drive client) {
+    public GoogledriveClient(Drive client) {
         this.client = client;
     }
 

@@ -21,14 +21,12 @@ import org.syncany.plugins.transfer.Encrypted;
 import org.syncany.plugins.transfer.Setup;
 import org.syncany.plugins.transfer.TransferPluginOptionCallback;
 import org.syncany.plugins.transfer.TransferSettings;
-
-import com.google.api.services.drive.Drive;
 import org.simpleframework.xml.Element;
 
 import java.io.File;
 import java.io.IOException;
 
-public class GoogleDriveTransferSettings extends TransferSettings {
+public class GoogledriveTransferSettings extends TransferSettings {
 	@Element(name = "authorizationCode", required = true)
 	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = GoogleDriveAuthPluginOptionCallback.class)
 	@Encrypted
@@ -41,7 +39,7 @@ public class GoogleDriveTransferSettings extends TransferSettings {
 	public static class GoogleDriveAuthPluginOptionCallback implements TransferPluginOptionCallback {
 		@Override
 		public String preQueryCallback() {
-			String authorizeUrl = GoogleDriveTransferPlugin.getAuthorizationUrl();
+			String authorizeUrl = GoogledriveTransferPlugin.getAuthorizationUrl();
 			return String.format(
 				      "\n"
 					+ "The Google Drive plugin needs to obtain an access token from Google\n"
@@ -54,7 +52,7 @@ public class GoogleDriveTransferSettings extends TransferSettings {
 		@Override
 		public String postQueryCallback(String optionValue) {
 			try {
-				GoogleDriveClient client = GoogleDriveTransferPlugin.createClient(optionValue);
+				GoogledriveClient client = GoogledriveTransferPlugin.createClient(optionValue);
 				return String.format("\nSuccessfully linked with %s's account!\n", client.about().getName());
 			}
 			catch (IOException e) {

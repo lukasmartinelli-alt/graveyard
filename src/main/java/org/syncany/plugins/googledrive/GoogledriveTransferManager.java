@@ -37,9 +37,9 @@ import java.util.logging.Logger;
 /**
  * <p>
  * Implements a {@link TransferManager} based on an Google Drive storage backend for the
- * {@link GoogleDriveTransferPlugin}.
+ * {@link GoogledriveTransferPlugin}.
  * <p/>
- * <p>Using a {@link GoogleDriveTransferSettings}, the transfer manager is configured and uses
+ * <p>Using a {@link GoogledriveTransferSettings}, the transfer manager is configured and uses
  * a well defined Samba share and folder to store the Syncany repository data. While repo and
  * master file are stored in the given folder, databases and multichunks are stored
  * in special sub-folders:
@@ -54,15 +54,15 @@ import java.util.logging.Logger;
  *
  * @author Christian Roth <christian.roth@port17.de>
  */
-public class GoogleDriveTransferManager extends CloudStorageTransferManager {
-	private static final Logger logger = Logger.getLogger(GoogleDriveTransferManager.class.getSimpleName());
+public class GoogledriveTransferManager extends CloudStorageTransferManager {
+	private static final Logger logger = Logger.getLogger(GoogledriveTransferManager.class.getSimpleName());
 
 	private final String path;
 	private final String authorizationCode;
 
-	private GoogleDriveClient client;
+	private GoogledriveClient client;
 
-	public GoogleDriveTransferManager(GoogleDriveTransferSettings settings, Config config) {
+	public GoogledriveTransferManager(GoogledriveTransferSettings settings, Config config) {
 		super(settings, config, ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/"));
 		String path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
 		this.path = path;
@@ -72,7 +72,7 @@ public class GoogleDriveTransferManager extends CloudStorageTransferManager {
 	@Override
 	public void connect() throws StorageException {
 		try {
-			this.client = GoogleDriveTransferPlugin.createClient(authorizationCode);
+			this.client = GoogledriveTransferPlugin.createClient(authorizationCode);
 			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().getName() });
 		}
 		catch (IOException e) {
