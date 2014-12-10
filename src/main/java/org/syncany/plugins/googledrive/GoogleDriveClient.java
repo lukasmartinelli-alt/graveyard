@@ -18,27 +18,26 @@ public class GoogleDriveClient {
         this.client = client;
     }
 
-    public About accountInfo() throws IOException {
+    public About about() throws IOException {
         return client.about().get().execute();
     }
 
-    public List<File> getAllFiles() throws IOException {
-        Drive.Files.List listRequest = this.client.files().list().setQ("'appfolder' in parents");
+    public List<File> allFiles() throws IOException {
+        List<File> results = new ArrayList<>();
+        Drive.Files.List request = this.client.files().list().setQ("'appfolder' in parents");
 
-        FileList partialResults = listRequest.execute();
-        List<File> allResults = new ArrayList<File>(partialResults.getItems());
+        do {
+            FileList files = request.execute();
+            results.addAll(files.getItems());
+            request.setPageToken(files.getNextPageToken());
+        } while (request.getPageToken() != null &&
+                !request.getPageToken().isEmpty());
 
-        String pageToken = partialResults.getNextPageToken();
-        while(!pageToken.isEmpty()) {
-            partialResults = listRequest.setPageToken(pageToken).execute();
-            allResults.addAll(partialResults.getItems());
-        }
-
-        return allResults;
+        return results;
     }
 
     public boolean folderExists(String path) throws IOException {
-        PathMap paths = new PathMap().build(getAllFiles());
+        PathMap paths = new PathMap().build(allFiles());
 
         if(paths.containsKey(path)) {
             String fileId = paths.get(path);
@@ -50,18 +49,23 @@ public class GoogleDriveClient {
     }
 
     public void createFolder(String path) throws IOException {
-        PathMap paths = new PathMap().build(getAllFiles());
+        File folder = new File()
+                .setTitle(new java.io.File(path).getName())
+                .setParents(createParents(path))
+                .setMimeType(FOLDER_MIMETYPE);
+
+        client.files().insert(folder).execute();
+    }
+
+    private List<ParentReference> createParents(String path) throws IOException {
+        PathMap paths = new PathMap().build(allFiles());
 
         String parentPath = new java.io.File(path).getParentFile().getPath();
         String parentId = paths.get(parentPath);
         List<ParentReference> parents = new ArrayList<>();
         parents.add(new ParentReference().setId(parentId));
 
-        File folder = new File()
-                .setTitle(new java.io.File(path).getName())
-                .setParents(parents)
-                .setMimeType(FOLDER_MIMETYPE);
-        client.files().insert(folder).execute();
+        return parents;
     }
 }
 

@@ -17,33 +17,18 @@
  */
 package org.syncany.plugins.googledrive;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.api.services.drive.Drive;
-import org.apache.commons.io.FileUtils;
 import org.syncany.config.Config;
 import org.syncany.plugins.transfer.AbstractTransferManager;
 import org.syncany.plugins.transfer.StorageException;
-import org.syncany.plugins.transfer.StorageMoveException;
 import org.syncany.plugins.transfer.TransferManager;
-import org.syncany.plugins.transfer.files.ActionRemoteFile;
 import org.syncany.plugins.transfer.files.DatabaseRemoteFile;
-import org.syncany.plugins.transfer.files.MultichunkRemoteFile;
 import org.syncany.plugins.transfer.files.RemoteFile;
-import org.syncany.plugins.transfer.files.SyncanyRemoteFile;
-import org.syncany.plugins.transfer.files.TempRemoteFile;
-import org.syncany.plugins.transfer.files.TransactionRemoteFile;
-import org.syncany.util.FileUtil;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -96,7 +81,7 @@ public class GoogleDriveTransferManager extends AbstractTransferManager {
 	public void connect() throws StorageException {
 		try {
 			this.client = GoogleDriveTransferPlugin.createClient(authorizationCode);
-			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.accountInfo().getName() });
+			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().getName() });
 		}
 		catch (IOException e) {
 			throw new StorageException("Unable to connect to dropbox", e);
