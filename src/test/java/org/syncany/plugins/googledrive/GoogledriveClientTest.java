@@ -7,15 +7,20 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.syncany.util.FileUtil;
 
 import java.io.Console;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class GoogledriveClientTest {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
@@ -59,7 +64,36 @@ public class GoogledriveClientTest {
     @Test
     public void testCreateFolder() throws IOException {
         client.createFolder(rootPath.resolve("folder"));
-
         Assert.assertTrue(client.folderExists(rootPath.resolve("folder")));
+    }
+
+    @Test
+    public void testDeleteFolder() throws IOException {
+        client.createFolder(rootPath.resolve("folder"));
+        client.delete(rootPath.resolve("folder"));
+        Assert.assertFalse(client.folderExists(rootPath.resolve("folder")));
+    }
+
+    @Test
+    public void testList() throws IOException {
+        client.createFolder(rootPath.resolve("folder"));
+        client.createFolder(rootPath.resolve("folder/subfolder1"));
+        client.createFolder(rootPath.resolve("folder/subfolder2"));
+
+        List<File> listing = client.list(rootPath.resolve("folder"));
+        Assert.assertEquals("subfolder2", listing.get(0).getTitle());
+        Assert.assertEquals("subfolder1", listing.get(1).getTitle());
+    }
+
+    @Test
+    public void testUpload() throws IOException {
+        java.io.File tempLocalFile = java.io.File.createTempFile("file", ".bin");
+        try(FileOutputStream outputStream = new FileOutputStream(tempLocalFile)) {
+            outputStream.write(new byte[100]);
+        }
+
+        client.uploadFile(rootPath.resolve("file.bin"), tempLocalFile);
+
+        Assert.assertTrue(client.fileExists(rootPath.resolve("file.bin")));
     }
 }
