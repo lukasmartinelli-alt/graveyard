@@ -14,6 +14,7 @@ import java.util.List;
 
 public class GoogleDriveClient {
     private static final String FOLDER_MIMETYPE = "application/vnd.google-apps.folder";
+    private static final String FILE_MIMETYPE = "application/x-syncany";
     private final Drive client;
 
     public GoogleDriveClient(Drive client) {
@@ -90,11 +91,10 @@ public class GoogleDriveClient {
     }
 
     public File uploadFile(Path remoteFilePath, java.io.File localFile) throws IOException {
-        String mimeType = "foo";
         File remoteMetadata = new File()
                 .setTitle(remoteFilePath.getFileName().toString())
                 .setParents(createParents(remoteFilePath.toString()));
-        FileContent remoteMedia = new FileContent(mimeType, localFile);
+        FileContent remoteMedia = new FileContent(FILE_MIMETYPE, localFile);
 
         return client.files().insert(remoteMetadata, remoteMedia).execute();
     }
