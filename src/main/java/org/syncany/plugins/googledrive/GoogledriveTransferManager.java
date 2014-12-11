@@ -58,14 +58,21 @@ public class GoogledriveTransferManager extends CloudStorageTransferManager {
 	private GoogledriveClient client;
 
 	public GoogledriveTransferManager(GoogledriveTransferSettings settings, Config config) {
-		super(settings, config, settings.path.getPath());
-		this.accessToken = settings.accessToken;
+		super(settings, config, settings.getPath().getPath());
+		this.accessToken = settings.getAccessToken();
+	}
+
+	public GoogledriveTransferManager(GoogledriveTransferSettings settings, Config config, GoogledriveClient client) {
+		this(settings, config);
+		this.client = client;
 	}
 
 	@Override
 	public void connect() throws StorageException {
 		try {
-			this.client = GoogledriveTransferPlugin.createClient(accessToken);
+			if(this.client == null) {
+				this.client = GoogledriveTransferPlugin.createClient(accessToken);
+			}
 			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().getName() });
 		}
 		catch (IOException e) {

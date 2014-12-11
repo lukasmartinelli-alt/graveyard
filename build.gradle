@@ -28,6 +28,7 @@ dependencies {
 	pluginjar 'com.google.apis:google-api-services-drive:v2-rev154-1.19.0'
 
 	testCompile	"junit:junit:4.9"
+    testCompile "org.mockito:mockito-core:1.+"
 }
 
 compileJava {

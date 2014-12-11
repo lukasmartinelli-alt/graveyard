@@ -28,11 +28,19 @@ public class GoogledriveTransferSettings extends TransferSettings {
 	@Element(name = "accessToken", required = true)
 	@Setup(order = 1, sensitive = true, singular = true, description = "Access token", callback = GoogleDriveAuthPluginOptionCallback.class, converter = GoogledriveAuthPluginOptionConverter.class)
 	@Encrypted
-	public String accessToken;
+	private String accessToken;
 
 	@Element(name = "path", required = true)
 	@Setup(order = 2, description = "Path relative to Google Drive application root")
-	public File path;
+	private File path;
+
+	public File getPath() {
+		return path;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
 
 	public static class GoogleDriveAuthPluginOptionCallback implements TransferPluginOptionCallback {
 		@Override
