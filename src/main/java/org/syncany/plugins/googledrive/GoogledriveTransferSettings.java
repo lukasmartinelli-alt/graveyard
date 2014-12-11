@@ -31,7 +31,7 @@ public class GoogledriveTransferSettings extends TransferSettings {
 	public String accessToken;
 
 	@Element(name = "path", required = true)
-	@Setup(order = 2, description = "Path relative to syncany's app root")
+	@Setup(order = 2, description = "Path relative to Google Drive application root")
 	public File path;
 
 	public static class GoogleDriveAuthPluginOptionCallback implements TransferPluginOptionCallback {

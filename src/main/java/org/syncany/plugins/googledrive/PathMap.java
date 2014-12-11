@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class PathMap extends HashMap<String, String> {
+public class PathMap extends TreeMap<String, String> {
     private final String rootId;
     private List<File> files = new ArrayList<>();
 

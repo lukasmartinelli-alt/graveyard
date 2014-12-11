@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public abstract class CloudStorageTransferManager extends AbstractTransferManager {
     private static final Logger logger = Logger.getLogger(CloudStorageTransferManager.class.getSimpleName());
 
-    private final Path path;
+    protected final Path path;
     private final Path multichunksPath;
     private final Path databasesPath;
     private final Path actionsPath;

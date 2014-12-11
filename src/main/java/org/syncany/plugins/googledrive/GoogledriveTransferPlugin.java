@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class GoogledriveTransferPlugin extends TransferPlugin {
-	private static final String CLIENT_ID = "143404779943-76gn8gao2qoii3cnmiiji6g6qc2msaj6.apps.googleusercontent.com";
-	private static final String CLIENT_SECRET = "hNQwo8i-0P0x5KN8cZ6aBMK3";
+	public static final String CLIENT_ID = "143404779943-76gn8gao2qoii3cnmiiji6g6qc2msaj6.apps.googleusercontent.com";
+	public static final String CLIENT_SECRET = "hNQwo8i-0P0x5KN8cZ6aBMK3";
 	public static final String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
 
 	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();

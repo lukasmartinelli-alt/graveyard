@@ -24,6 +24,7 @@ import org.syncany.plugins.transfer.StorageMoveException;
 import org.syncany.plugins.transfer.TransferManager;
 import org.syncany.plugins.transfer.files.*;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,12 +43,7 @@ import java.util.logging.Logger;
  * <p>Using a {@link GoogledriveTransferSettings}, the transfer manager is configured and uses
  * a well defined Samba share and folder to store the Syncany repository data. While repo and
  * master file are stored in the given folder, databases and multichunks are stored
- * in special sub-folders:
- * <p/>
- * <ul>
- * <li>The <tt>databases</tt> folder keeps all the {@link DatabaseRemoteFile}s</li>
- * <li>The <tt>multichunks</tt> folder keeps the actual data within the {@link MultiChunkRemoteFile}s</li>
- * </ul>
+ * in special sub-folders.
  * <p/>
  * <p>All operations are auto-connected, i.e. a connection is automatically
  * established.
@@ -57,22 +53,19 @@ import java.util.logging.Logger;
 public class GoogledriveTransferManager extends CloudStorageTransferManager {
 	private static final Logger logger = Logger.getLogger(GoogledriveTransferManager.class.getSimpleName());
 
-	private final String path;
-	private final String authorizationCode;
+	private final String accessToken;
 
 	private GoogledriveClient client;
 
 	public GoogledriveTransferManager(GoogledriveTransferSettings settings, Config config) {
-		super(settings, config, ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/"));
-		String path = ("/" + settings.path.getPath()).replaceAll("[/]{2,}", "/");
-		this.path = path;
-		this.authorizationCode = settings.accessToken;
+		super(settings, config, settings.path.getPath());
+		this.accessToken = settings.accessToken;
 	}
 
 	@Override
 	public void connect() throws StorageException {
 		try {
-			this.client = GoogledriveTransferPlugin.createClient(authorizationCode);
+			this.client = GoogledriveTransferPlugin.createClient(accessToken);
 			logger.log(Level.INFO, "Using googledrive account from {0}", new Object[] { this.client.about().getName() });
 		}
 		catch (IOException e) {
@@ -156,6 +149,10 @@ public class GoogledriveTransferManager extends CloudStorageTransferManager {
 		}
 		catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
+			throw new StorageMoveException("Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
+		}
+		catch (OperationNotSupportedException e) {
+			logger.log(Level.SEVERE, "Renaming a folder " + sourceRemotePath + " to " + targetRemotePath + " is not supported in Google Drive", e);
 			throw new StorageMoveException("Could not rename file " + sourceRemotePath + " to " + targetRemotePath, e);
 		}
 	}

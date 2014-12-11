@@ -5,6 +5,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.*;
 import com.google.api.services.drive.model.File;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -132,11 +133,14 @@ public class GoogledriveClient {
         return results;
     }
 
-    public void move(Path sourceRemotePath, Path targetRemotePath) throws IOException {
+    public void move(Path sourceRemotePath, Path targetRemotePath) throws IOException, OperationNotSupportedException {
         String sourceRemoteId = find(sourceRemotePath);
         String targetRemoteParentId = find(targetRemotePath.getParent());
 
         File copy = client.files().get(sourceRemoteId).execute();
+        if(copy.getMimeType().equals(FOLDER_MIMETYPE)) {
+            throw new OperationNotSupportedException("Cannot move a folder by copying it.");
+        }
         copy.setTitle(targetRemotePath.getFileName().toString());
         copy.setParents(Arrays.asList(new ParentReference().setId(targetRemoteParentId)));
 

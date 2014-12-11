@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,7 +27,8 @@ import java.util.UUID;
 public class GoogledriveClientTest {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final String ACCESS_TOKEN = "ya29.2QACH88WA7ReTA7b78BSG4P_LpRKDSjeBlMOMCkj_JlUmbN9edu7hLKkh0iTYqXZSbZQCJ1v3qfl3A";
+    private static final String ACCESS_TOKEN = "ya29.2QB5qRZX2N2Dh_AJn0CdXOSPHk6TYnqY5se3kOQzAqq5jy5C3PRhpdV51-dCZkjdrxJ786R5wVkN3w";
+    private static final String REFRESH_TOKEN = "1/jH00Opu4gvpVWT9hVpKTL45oDcv352YhYHWifY-1RLcMEudVrK5jSpoR30zcRFq6";
 
     private GoogledriveClient client;
     private Path rootPath;
@@ -49,7 +51,11 @@ public class GoogledriveClientTest {
 
     @Before
     public void setUp() throws IOException {
-        GoogleCredential credential = new GoogleCredential().setAccessToken(ACCESS_TOKEN);
+        GoogleCredential credential = new GoogleCredential.Builder()
+                .setClientSecrets(GoogledriveTransferPlugin.CLIENT_ID, GoogledriveTransferPlugin.CLIENT_SECRET)
+                .setJsonFactory(GoogledriveTransferPlugin.FLOW.getJsonFactory())
+                .setTransport(GoogledriveTransferPlugin.FLOW.getTransport()).build()
+                .setAccessToken(ACCESS_TOKEN).setRefreshToken(REFRESH_TOKEN);
         Drive wrappedClient = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName("Syncany Test Suite")
                 .build();
@@ -128,7 +134,7 @@ public class GoogledriveClientTest {
     }
 
     @Test
-    public void testMoveFile() throws IOException {
+    public void testMoveFile() throws IOException, OperationNotSupportedException {
         java.io.File tempUploadFile = java.io.File.createTempFile("file", ".bin");
         try(FileOutputStream outputStream = new FileOutputStream(tempUploadFile)) {
             outputStream.write(new byte[100]);
@@ -139,11 +145,9 @@ public class GoogledriveClientTest {
         Assert.assertFalse(client.fileExists(rootPath.resolve("file.bin")));
     }
 
-    @Test
-    public void testMoveDirectory() throws IOException {
+    @Test(expected=OperationNotSupportedException.class)
+    public void testMoveDirectory() throws IOException, OperationNotSupportedException {
         client.createFolder(rootPath.resolve("folder"));
         client.move(rootPath.resolve("folder"), rootPath.resolve("renamed"));
-        Assert.assertTrue(client.folderExists(rootPath.resolve("renamed")));
-        Assert.assertFalse(client.folderExists(rootPath.resolve("file")));
     }
 }
