@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GoogledriveClient {
@@ -133,21 +134,14 @@ public class GoogledriveClient {
 
     public void move(Path sourceRemotePath, Path targetRemotePath) throws IOException {
         String sourceRemoteId = find(sourceRemotePath);
-        String targetRemoteId = find(targetRemotePath);
+        String targetRemoteParentId = find(targetRemotePath.getParent());
 
-        ParentList targetParents = client.parents().list(targetRemoteId).execute();
-        ParentList sourceParents = client.parents().list(sourceRemoteId).execute();
+        File copy = client.files().get(sourceRemoteId).execute();
+        copy.setTitle(targetRemotePath.getFileName().toString());
+        copy.setParents(Arrays.asList(new ParentReference().setId(targetRemoteParentId)));
 
-        if(targetParents.getItems().size() == 0) {
-            throw new IOException("Target has no parents");
-        }
-
-        for(ParentReference parent : sourceParents.getItems()) {
-            client.parents().delete(parent.getId(), sourceRemoteId);
-        }
-
-        ParentReference parent = targetParents.getItems().get(0);
-        client.parents().insert(parent.getId(), parent);
+        client.files().copy(sourceRemoteId, copy).execute();
+        client.files().delete(sourceRemoteId).execute();
     }
 }
 

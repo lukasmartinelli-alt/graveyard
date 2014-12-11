@@ -43,8 +43,8 @@ public class GoogledriveTransferPlugin extends TransferPlugin {
 			JSON_FACTORY,
 			CLIENT_ID,
 			CLIENT_SECRET,
-			Arrays.asList(DriveScopes.DRIVE_APPDATA)
-	).setAccessType("online").setApprovalPrompt("auto").build();
+			Arrays.asList(DriveScopes.DRIVE_APPDATA, DriveScopes.DRIVE_FILE)
+	).setAccessType("offline").setApprovalPrompt("auto").build();
 
 	public GoogledriveTransferPlugin() {
 		super("googledrive");

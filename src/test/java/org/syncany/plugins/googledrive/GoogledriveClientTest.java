@@ -1,6 +1,7 @@
 package org.syncany.plugins.googledrive;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,16 +26,21 @@ import java.util.UUID;
 public class GoogledriveClientTest {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final String ACCESS_TOKEN = "ya29.2QBPOL_FWfr0F1tC9N6RxBS9i3rmyiVJrziImwmh-zn4Mk16aBks90lK5aqifwNQWzqmUM5pgqY9GA";
+    private static final String ACCESS_TOKEN = "ya29.2QACH88WA7ReTA7b78BSG4P_LpRKDSjeBlMOMCkj_JlUmbN9edu7hLKkh0iTYqXZSbZQCJ1v3qfl3A";
 
     private GoogledriveClient client;
     private Path rootPath;
 
-    /*
-    private void printAccessToken() throws IOException {
+    private void clearAppfolder() throws IOException {
+        for(File child : client.list(Paths.get("/"))) {
+            client.delete(Paths.get("/", child.getTitle()));
+        }
+    }
+
+    /*private void printAccessToken() throws IOException {
         String authorizeUrl = GoogledriveTransferPlugin.getAuthorizationUrl();
         String authorizationToken = "";
-        GoogleTokenResponse response = GoogledriveTransferPlugin.FLOW
+        com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse response = GoogledriveTransferPlugin.FLOW
                 .newTokenRequest(authorizationToken)
                 .setRedirectUri(GoogledriveTransferPlugin.REDIRECT_URI)
                 .execute();
@@ -118,5 +125,25 @@ public class GoogledriveClientTest {
             byte[] bytes = IOUtils.toByteArray(inputStream);
             Assert.assertEquals(100, bytes.length);
         }
+    }
+
+    @Test
+    public void testMoveFile() throws IOException {
+        java.io.File tempUploadFile = java.io.File.createTempFile("file", ".bin");
+        try(FileOutputStream outputStream = new FileOutputStream(tempUploadFile)) {
+            outputStream.write(new byte[100]);
+        }
+        client.uploadFile(rootPath.resolve("file.bin"), tempUploadFile);
+        client.move(rootPath.resolve("file.bin"), rootPath.resolve("renamed.bin"));
+        Assert.assertTrue(client.fileExists(rootPath.resolve("renamed.bin")));
+        Assert.assertFalse(client.fileExists(rootPath.resolve("file.bin")));
+    }
+
+    @Test
+    public void testMoveDirectory() throws IOException {
+        client.createFolder(rootPath.resolve("folder"));
+        client.move(rootPath.resolve("folder"), rootPath.resolve("renamed"));
+        Assert.assertTrue(client.folderExists(rootPath.resolve("renamed")));
+        Assert.assertFalse(client.folderExists(rootPath.resolve("file")));
     }
 }
