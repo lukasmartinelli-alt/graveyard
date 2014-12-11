@@ -21,16 +21,13 @@ project.ext {
 }
 
 dependencies {
-	compile		project(":syncany-lib")
-	compile		project(":syncany-util")
+	compile project(":syncany-lib")
+	compile project(":syncany-util")
 
 	compile 'com.google.apis:google-api-services-drive:v2-rev154-1.19.0'
 	pluginjar 'com.google.apis:google-api-services-drive:v2-rev154-1.19.0'
 
-	testCompile	project(path: ":syncany-lib", configuration: "tests")
-	testCompile	project(path: ":syncany-util", configuration: "tests")
 	testCompile	"junit:junit:4.9"
-	testCompile	"org.apache.ftpserver:ftpserver-core:1.0.6"
 }
 
 compileJava {

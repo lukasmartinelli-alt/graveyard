@@ -8,10 +8,12 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import junit.framework.Assert;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -97,5 +99,24 @@ public class GoogledriveClientTest {
         client.uploadFile(rootPath.resolve("file.bin"), tempLocalFile);
 
         Assert.assertTrue(client.fileExists(rootPath.resolve("file.bin")));
+    }
+
+    @Test
+    public void testDownload() throws IOException {
+        java.io.File tempUploadFile = java.io.File.createTempFile("upload", ".bin");
+        try(FileOutputStream outputStream = new FileOutputStream(tempUploadFile)) {
+            outputStream.write(new byte[100]);
+        }
+        client.uploadFile(rootPath.resolve("upload.bin"), tempUploadFile);
+
+        java.io.File tempDownloadFile = java.io.File.createTempFile("download", ".bin");
+        try(FileOutputStream outputStream = new FileOutputStream(tempDownloadFile)) {
+            client.downloadFile(rootPath.resolve("upload.bin"), outputStream);
+        }
+
+        try(FileInputStream inputStream = new FileInputStream(tempDownloadFile)) {
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            Assert.assertEquals(100, bytes.length);
+        }
     }
 }
