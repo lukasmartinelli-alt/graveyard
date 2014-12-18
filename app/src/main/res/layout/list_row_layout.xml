@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableRow>
+        <com.malinskiy.materialicons.widget.IconTextView
+            android:id="@+id/fileIcon"
+            android:text="{md-folder}"
+            android:textColor="@color/colorFolder"
+            android:layout_margin="5dip"
+            android:textSize="24dip"
+        />
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_column="2"
+            android:padding="10dip"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+    </TableRow>
+</TableLayout>
