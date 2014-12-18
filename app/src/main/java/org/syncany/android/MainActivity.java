@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.malinskiy.materialicons.widget.IconTextView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +29,14 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         ArrayList<FileInfo> sampleData = new ArrayList<>();
-        sampleData.add(new FileInfo("bewerbung"));
-        sampleData.add(new FileInfo("Businessplan"));
-        sampleData.add(new FileInfo("hsr"));
-        sampleData.add(new FileInfo("rechnungen"));
+        sampleData.add(new FileInfo("bewerbung", FileType.SPECIAL_FOLDER));
+        sampleData.add(new FileInfo("Businessplan", FileType.FOLDER));
+        sampleData.add(new FileInfo("hsr", FileType.FOLDER));
+        sampleData.add(new FileInfo("architecture.doc", FileType.FILE));
+        sampleData.add(new FileInfo("portrait.jpg", FileType.PHOTO));
+        sampleData.add(new FileInfo("excel_file.xls", FileType.FILE));
+        sampleData.add(new FileInfo("party.mp4", FileType.MOVIE));
+        sampleData.add(new FileInfo("kopie.pdf", FileType.FILE));
 
         ListView fileListView = (ListView) findViewById(R.id.files_list);
         FileListAdapter fileAdapter = new FileListAdapter(this, R.layout.list_row_layout, sampleData);
@@ -71,6 +77,30 @@ public class MainActivity extends ActionBarActivity {
                 convertView = View.inflate(getContext(), R.layout.list_row_layout, null);
             }
             FileInfo info = getItem(position);
+
+            IconTextView fileIconView = (IconTextView) convertView.findViewById(R.id.fileIcon);
+            switch (info.type) {
+                case SPECIAL_FOLDER:
+                    fileIconView.setText("{md-folder-special}");
+                    break;
+                case FILE:
+                    fileIconView.setText("{md-insert-drive-file}");
+                    break;
+                case MOVIE:
+                    fileIconView.setText("{md-movie}");
+                    break;
+                case PHOTO:
+                    fileIconView.setText("{md-insert-photo}");
+                    break;
+                case FOLDER:
+                    fileIconView.setText("{md-folder}");
+                    break;
+                default:
+                    fileIconView.setText("{md-folder}");
+                    break;
+            }
+
+
             TextView nameView = (TextView) convertView.findViewById(R.id.fileName);
             nameView.setText(info.name);
 

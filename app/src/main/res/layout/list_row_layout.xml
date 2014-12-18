@@ -6,7 +6,6 @@
     <TableRow>
         <com.malinskiy.materialicons.widget.IconTextView
             android:id="@+id/fileIcon"
-            android:text="{md-folder}"
             android:textColor="@color/colorFolder"
             android:layout_margin="5dip"
             android:textSize="24dip"
