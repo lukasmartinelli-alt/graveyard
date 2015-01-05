@@ -24,31 +24,43 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libiberty-dev \
     scons \
-    git
+    git \
+    wget \
+    unzip
 
 # build and install folly
+WORKDIR /tmp/build
 RUN git clone https://github.com/facebook/folly
 WORKDIR folly/folly
-RUN autoreconf -ivf && \
-    ./configure && \
-    make
-RUN apt-get install -y wget unzip
 RUN wget https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
     unzip gtest-1.6.0.zip -d test
-RUN make check && \
+RUN autoreconf -ivf && \
+    ./configure && \
+    make check && \
     make install
 
 # build and install double-conversion
+WORKDIR /tmp/build
 RUN git clone https://github.com/floitsch/double-conversion.git
-WORKDIR /double-conversion
+WORKDIR double-conversion
 RUN scons install
 
 # build and install flint
+WORKDIR /tmp/build
 RUN git clone https://github.com/facebook/flint
-WORKDIR /flint
-RUN curl -0 https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
+WORKDIR flint
+RUN wget https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
     unzip gtest-1.6.0.zip -d cxx
-ENV LDFLAGS="-L../double-conversion" CPPFLAGS="-I../double-conversion/src"
+ENV LDFLAGS="-L/root/double-conversion" CPPFLAGS="-I/root/double-conversion/src"
 RUN autoreconf --install && \
-    configure ... && \
-    make
+    ./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu
+    make &&
+#   make check &&
+    make install
+
+# cleanup build
+WORKDIR /root
+RUN rm -r /tmp/build
+
+ENV LD_LIBRARY_PATH="/usr/local/lib"
+ENTRYPOINT ["/usr/local/bin/flint"]
