@@ -32,7 +32,8 @@ WORKDIR folly/folly
 RUN autoreconf -ivf && \
     ./configure && \
     make
-RUN curl -0 https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
+RUN apt-get install -y wget unzip
+RUN wget https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
     unzip gtest-1.6.0.zip -d test
 RUN make check && \
     make install
