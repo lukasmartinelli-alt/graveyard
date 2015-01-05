@@ -54,9 +54,9 @@ RUN wget https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
 ENV LDFLAGS -L/root/double-conversion
 ENV CPPFLAGS -I/root/double-conversion/src
 RUN autoreconf --install && \
-    ./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu
-    make &&
-#   make check &&
+    ./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu && \
+    make && \
+#   make check && \
     make install
 
 # cleanup build
