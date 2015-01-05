@@ -51,7 +51,8 @@ RUN git clone https://github.com/facebook/flint
 WORKDIR flint
 RUN wget https://googletest.googlecode.com/files/gtest-1.6.0.zip && \
     unzip gtest-1.6.0.zip -d cxx
-ENV LDFLAGS="-L/root/double-conversion" CPPFLAGS="-I/root/double-conversion/src"
+ENV LDFLAGS -L/root/double-conversion
+ENV CPPFLAGS -I/root/double-conversion/src
 RUN autoreconf --install && \
     ./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu
     make &&
@@ -62,5 +63,5 @@ RUN autoreconf --install && \
 WORKDIR /root
 RUN rm -r /tmp/build
 
-ENV LD_LIBRARY_PATH="/usr/local/lib"
+ENV LD_LIBRARY_PATH /usr/local/lib
 ENTRYPOINT ["/usr/local/bin/flint"]
