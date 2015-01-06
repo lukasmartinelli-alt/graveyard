@@ -14,11 +14,11 @@ Pull the docker image.
 docker pull lukasmartinelli/docker-flint
 ```
 
-Run flint on code of yours by mounting it into the `/root` folder of the docker
+Run flint current directory by mounting it into the `/root` folder of the docker
 container.
 
 ```
-sudo docker run -v /path/to/project/src:/root docker-flint /root
+sudo docker run -v $(pwd):/root docker-flint /root
 ```
 
 ## Build
