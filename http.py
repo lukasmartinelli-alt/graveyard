@@ -23,12 +23,13 @@ def get_data(url, proxy, oauth_helper, method=0, **queryParams):
         opener = urllib2.build_opener(handler)
         print 'build_opener'
 
-        head = oauth_helper.generateHeader(url, queryParams)
-        print 'generate Header'
+        if oauth_helper:
+            head = oauth_helper.generateHeader(url, queryParams)
+            print 'generate Header'
 
-        opener.addheaders = [('Authorization', head)]
-        print(opener.addheaders)
-        print 'addheaders'
+            opener.addheaders = [('Authorization', head)]
+            print(opener.addheaders)
+            print 'addheaders'
 
         data = opener.open(http_url, data=http_body).read()
         print 'open...'
