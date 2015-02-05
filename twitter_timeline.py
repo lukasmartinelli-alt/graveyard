@@ -116,7 +116,6 @@ print 'Beginning to collect Twitter tweets...'
 locale.setlocale(locale.LC_ALL, 'C')
 
 print 'Loading input task data...'
-collectionSize = Collection.Size()
 searchTermRec = DataManager.NewDataRecord()
 searchCollectors = []
 

@@ -1,5 +1,4 @@
 import locale
-import time
 import datetime
 import calendar
 from http import get_data
@@ -19,7 +18,8 @@ def unix_timestamp(timestamp):
 
 class Post(object):
     """Facebook post with metrics"""
-    def __init__(self, id, message, lang, typ, timestamp):
+    def __init__(self, page_name, id, message, lang, typ, timestamp):
+        self.page_name = page_name
         self.id = id
         self.message = message
         self.lang = lang
@@ -29,6 +29,43 @@ class Post(object):
 
     def __repr__(self):
         return 'Post(id={0}, timestamp={1})'.format(self.id, self.timestamp)
+
+
+def create_record(post):
+    """Create DSRecord for post and add to collection"""
+    metrics = post.metrics
+
+    engaged_users = metrics[u'post_engaged_users']
+    impr_organic = metrics[u'post_impressions_organic']
+    impr_organic_unique = metrics[u'post_impressions_organic_unique']
+    impr_paid = metrics['post_impressions_paid']
+    impr_paid_unique = metrics['post_impressions_paid_unique']
+    impr_viral = metrics['post_impressions_viral']
+    impr_viral_unique = metrics['post_impressions_viral_unique']
+    impr = metrics['post_impressions']
+    impr_unique = metrics['post_impressions_unique']
+
+    DSRecord = DataManager.NewDataRecord(1)
+
+    DSRecord.SetField(u'PAGE_NAME', unicode(post.page_name))
+    DSRecord.SetField(u'POST_ID', unicode(post.id))
+    DSRecord.SetField(u'POST_TEXT', unicode(post.message))
+    DSRecord.SetField(u'TYP', unicode(post.typ))
+    DSRecord.SetField(u'SPRACHE', unicode(post.lang))
+    DSRecord.SetField(u'TIMESTAMP', unicode(post.timestamp))
+    DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
+    DSRecord.SetField(u'post_impressions_organic', unicode(impr_organic))
+    DSRecord.SetField(u'post_impressions_organic_unique', unicode(impr_organic_unique))
+    DSRecord.SetField(u'post_impressions_paid', unicode(impr_paid))
+    DSRecord.SetField(u'post_impressions_paid_unique', unicode(impr_paid_unique))
+    DSRecord.SetField(u'post_impressions_viral', unicode(impr_viral))
+    DSRecord.SetField(u'post_impressions_viral_unique', unicode(impr_viral_unique))
+    DSRecord.SetField(u'post_impressions', unicode(impr))
+    DSRecord.SetField(u'post_impressions_unique', unicode(impr_unique))
+
+    # store record
+    Collection.AddRecord(DSRecord)
+    del DSRecord
 
 
 class FacebookCollector(object):
@@ -56,7 +93,7 @@ class FacebookCollector(object):
             lang = None
             typ = post[u'type']
             timestamp = post['created_time']
-            return Post(id, message, lang, typ, timestamp)
+            return Post(self.page_name, id, message, lang, typ, timestamp)
         except Exception, ex:
             print 'Could not parse post: %s' % ex
             pass
@@ -87,9 +124,6 @@ class FacebookCollector(object):
 
     def newest_posts(self):
         """Fetch newest posts from page"""
-        # Do we really need those??
-        collectionSize = Collection.Size()
-        searchTermRec = DataManager.NewDataRecord()
 
         try:
             # Get all Posts of Swisscom Page (ID, DATE, TYPE)
@@ -98,54 +132,36 @@ class FacebookCollector(object):
                                None, **self.params)
             data = results[u'data']
             posts = [self.parse_post(post) for post in data]
-            for post in posts:
-                post = self.add_post_metrics(post)
-                metrics = post.metrics
-
-                engaged_users = metrics[u'post_engaged_users']
-                impr_organic = metrics[u'post_impressions_organic']
-                impr_organic_unique = metrics[u'post_impressions_organic_unique']
-                impr_paid = metrics['post_impressions_paid']
-                impr_paid_unique = metrics['post_impressions_paid_unique']
-                impr_viral = metrics['post_impressions_viral']
-                impr_viral_unique = metrics['post_impressions_viral_unique']
-                impr = metrics['post_impressions']
-                ipr_unique = metrics['post_impressions_unique']
-
-                print(post)
-                print(metrics)
-
+            posts = [self.add_post_metrics(post) for post in data]
             return posts
         except Exception, e:
             print 'Could not fetch posts {0}'.format(e)
-            raise
 
-# Begin Search Job
 print 'Beginning to collect Facebook Posts...'
-
 locale.setlocale(locale.LC_ALL, 'C')
 
 print 'Loading input task data...'
-collectionSize = Collection.Size()
-searchTermRec = DataManager.NewDataRecord()
+last_post_record = DataManager.NewDataRecord()
+Collection.GetRecord(last_post_record, 1)
+max_id = last_post_record.GetField(u'POST_ID_IN')
+DataManager.DeleteDataRecord(last_post_record)
+
+print 'Creating input task for {0}'.format(PAGE_NAME)
 collectors = []
-
-Collection.GetRecord(searchTermRec, 1)
-max_id = searchTermRec.GetField(u'POST_ID_IN')
 try:
-    print 'Preparing search task'
-    sc = FacebookCollector(ACCESS_TOKEN, PAGE_NAME)
-    collectors.append(sc)
+    collector = FacebookCollector(ACCESS_TOKEN, PAGE_NAME)
+    collectors.append(collector)
     # delete this dataRecord
-    Collection.DeleteRecord(searchTermRec)
+    Collection.DeleteRecord(last_post_record)
 except Exception, e:
-    print "Error occurred while preparing input tasks: %s" % e
+    print "Error occurred while creating input tasks: %s" % e
 
-DataManager.DeleteDataRecord(searchTermRec)
 print 'Total %d tasks to search.\n' % len(collectors)
 
 print 'Begin data search...'
-for sc in collectors:
-    results = sc.newest_posts()
+for collector in collectors:
+    results = collector.newest_posts()
+    for post in results:
+        create_record(post)
     print 'The term search finished. Total posts collected: %d.\n' % (len(results))
 print 'Finished collecting Facebook posts'
