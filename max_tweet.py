@@ -1,5 +1,3 @@
-import ConfigParser
-
 print 'Loading history data...'
 
 collectionSize = Collection.Size()
@@ -15,12 +13,13 @@ for recNum in range(collectionSize, 0, -1):
     if int(tweet_id) > maxTweet:
       maxTweet = int(tweet_id)
   except:
-     pass 
+     pass
   Collection.DeleteRecord(searchTermRec)
 
 DataManager.DeleteDataRecord(searchTermRec)
 
 print 'Loaded %d history data rows...' % collectionSize
+print 'Max tweet is %d' % maxTweet
 
 DSRecord = DataManager.NewDataRecord(1)
 DSRecord.SetField(u'TWEET_ID', unicode(maxTweet))
