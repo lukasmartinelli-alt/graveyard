@@ -83,40 +83,47 @@ class Post(object):
         self.metrics = {}  # Insights data
 
     def __repr__(self):
-        return 'Post(id={0}, timestamp={1})'.format(self.id, sap_timestamp(self.timestamp))
+        msg = self.message[:35] + (self.message[35:] and '..')
+        return u'Post(id={0}, timestamp={1}, typ={2}, message={3})'.format(
+            self.id, sap_timestamp(self.timestamp), self.typ, msg)
 
 
 def create_record(post):
     """Create DSRecord for post and add to collection"""
-    metrics = post.metrics
-
-    engaged_users = metrics[u'post_engaged_users']
-    impr_organic = metrics[u'post_impressions_organic']
-    impr_organic_unique = metrics[u'post_impressions_organic_unique']
-    impr_paid = metrics[u'post_impressions_paid']
-    impr_paid_unique = metrics[u'post_impressions_paid_unique']
-    impr_viral = metrics[u'post_impressions_viral']
-    impr_viral_unique = metrics[u'post_impressions_viral_unique']
-    impr = metrics[u'post_impressions']
-    impr_unique = metrics[u'post_impressions_unique']
 
     DSRecord = DataManager.NewDataRecord(1)
 
     DSRecord.SetField(u'PAGE_NAME', unicode(post.page_name))
     DSRecord.SetField(u'POST_ID', unicode(post.id))
-    DSRecord.SetField(u'POST_TEXT', unicode(post.message))
     DSRecord.SetField(u'TYP', unicode(post.typ))
     DSRecord.SetField(u'SPRACHE', unicode(post.lang))
     DSRecord.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
-    DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', unicode(impr_organic_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID', unicode(impr_paid))
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', unicode(impr_paid_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL', unicode(impr_viral))
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', unicode(impr_viral_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS', unicode(impr))
-    DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', unicode(impr_unique))
+
+    if len(post.message) > 0:
+        DSRecord.SetField(u'POST_TEXT', unicode(post.message))
+
+    metrics = post.metrics
+    if len(metrics) > 0:
+        engaged_users = metrics[u'post_engaged_users']
+        impr_organic = metrics[u'post_impressions_organic']
+        impr_organic_unique = metrics[u'post_impressions_organic_unique']
+        impr_paid = metrics[u'post_impressions_paid']
+        impr_paid_unique = metrics[u'post_impressions_paid_unique']
+        impr_viral = metrics[u'post_impressions_viral']
+        impr_viral_unique = metrics[u'post_impressions_viral_unique']
+        impr = metrics[u'post_impressions']
+        impr_unique = metrics[u'post_impressions_unique']
+
+
+        DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
+        DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
+        DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', unicode(impr_organic_unique))
+        DSRecord.SetField(u'POST_IMPRESSIONS_PAID', unicode(impr_paid))
+        DSRecord.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', unicode(impr_paid_unique))
+        DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL', unicode(impr_viral))
+        DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', unicode(impr_viral_unique))
+        DSRecord.SetField(u'POST_IMPRESSIONS', unicode(impr))
+        DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', unicode(impr_unique))
 
     # store record
     Collection.AddRecord(DSRecord)
@@ -140,16 +147,19 @@ class FacebookCollector(object):
 
     def parse_post(self, post):
         try:
-            # import pdb; pdb.set_trace()
-            # message = post[u'message']
-            import pdb; pdb.set_trace()
-            message = None
             id = post[u'id']
-            # lang = post[u'privacy'][u'description']
+            message = ''
             lang = None
             typ = post[u'type']
+
             timestamp = time.strptime(post[u'created_time'],
                                       '%Y-%m-%dT%H:%M:%S+0000')
+
+            if 'message' in post:
+                message = post[u'message']
+
+            # lang = post[u'privacy'][u'description']
+
             return Post(self.page_name, id, message, lang, typ, timestamp)
         except Exception, ex:
             print 'Could not parse post: %s' % ex
@@ -183,7 +193,7 @@ class FacebookCollector(object):
 
         try:
             # Get all Posts of Swisscom Page (ID, DATE, TYPE)
-            request_url = '{0}/{1}/posts'.format(self.BASE_URL, self.page_name)
+            request_url = '{0}/{1}/feed'.format(self.BASE_URL, self.page_name)
             results = get_data(request_url, PROXY,
                                None, **self.params)
             data = results[u'data']
@@ -224,6 +234,6 @@ if __name__ == '__main__':
         results = collector.newest_posts()
         for post in results:
             create_record(post)
-            print 'Created record {0}'.format(post)
+            print u'Created record {0}'.format(post)
         print 'The term search finished. Total posts collected: %d.\n' % (len(results))
     print 'Finished collecting Facebook posts'
