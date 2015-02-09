@@ -7,6 +7,7 @@ from sap import Collection, DataManager
 
 ACCESS_TOKEN = 'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGizqCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtvbeS5mX67Clyyec3uLZCz3VDiQ87Xyw4o9eMFpDijU5IojmZAo2QiZC0iYbb50uwKB'
 PAGE_NAME = 'swisscom'
+POST_LIMIT = 5
 # PROXY = 'iproxy.corproot.net:8080'
 PROXY = ''
 
@@ -78,7 +79,7 @@ class FacebookCollector(object):
         self.page_name = page_name
         self.since = unix_timestamp(last_post_time)
         self.params = {'access_token': self.access_token,
-                       'limit': 250,
+                       'limit': POST_LIMIT,
                        'since': self.since,
                        'fields': 'type,message,privacy'}
         self.post_detail_params = {'access_token': self.access_token}
@@ -132,7 +133,8 @@ class FacebookCollector(object):
                                None, **self.params)
             data = results[u'data']
             posts = [self.parse_post(post) for post in data]
-            posts = [self.add_post_metrics(post) for post in data]
+            posts = [self.add_post_metrics(post) for post in posts]
+            print posts
             return posts
         except Exception, e:
             print 'Could not fetch posts {0}'.format(e)
