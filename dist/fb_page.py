@@ -8,6 +8,9 @@ import urllib2
 import sys
 
 
+locale.setlocale(locale.LC_ALL, 'C')
+
+
 def get_data(url, proxy, oauth_helper, method=0, **queryParams):
     """
     Send an http or https request and receive a JSON object if
@@ -65,9 +68,8 @@ def runs_in_sap():
     return sys.executable.endswith(u'al_engine.exe')
 
 
-locale.setlocale(locale.LC_ALL, 'C')
 PAGE_NAME = u'swisscom'
-POST_LIMIT = 3
+POST_LIMIT = 10
 PROXY = u''
 ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
                 u'qCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtv'
@@ -86,30 +88,28 @@ class Post(object):
         self.timestamp = timestamp
         self.metrics = {}  # Insights data
 
-    def __repr__(self):
-        return u'Post(id={0}, timestamp={1}, typ={2}, message={3})'.format(
-            self.id, sap_timestamp(self.timestamp),
-            self.typ, self.message
-        )
-
 
 def create_record(post):
     """Create DSRecord for post and add to collection"""
-
     DSRecord = DataManager.NewDataRecord(1)
 
-    DSRecord.SetField(u'PAGE_NAME', post.page_name)
-    DSRecord.SetField(u'POST_ID', post.id)
-    DSRecord.SetField(u'TYP', post.typ)
-    DSRecord.SetField(u'SPRACHE', post.lang)
-    DSRecord.SetField(u'TIMESTAMP', sap_timestamp(post.timestamp))
+    print 'Set basic fields for {0}'.format(post.id)
+    DSRecord.SetField(u'PAGE_NAME', unicode(post.page_name))
+    DSRecord.SetField(u'POST_ID', unicode(post.id))
+    DSRecord.SetField(u'TYP', unicode(post.typ))
+    DSRecord.SetField(u'SPRACHE', unicode(post.lang))
+    DSRecord.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
 
     # can raise error for utf-8 chars
     DSRecord.SetField(u'POST_TEXT', post.message)
 
     metrics = post.metrics
-
-    print vars(post)
+    actions = metrics.get(u'post_stories_by_action_type')
+    if actions:
+        likes = metrics.get(u'like', 0)
+        shared = metrics.get(u'share', 0)
+        comments = metrics.get(u'comment', 0)
+        print u'likes: {0}, shared:{1}, comments: {2}'.format(likes, shared, comments)
 
     engaged_users = metrics.get(u'post_engaged_users', 0)
     impr_organic = metrics.get(u'post_impressions_organic', 0)
@@ -121,20 +121,19 @@ def create_record(post):
     impr = metrics.get(u'post_impressions', 0)
     impr_unique = metrics.get(u'post_impressions_unique', 0)
 
-    DSRecord.SetField(u'POST_ENGAGED_USERS', engaged_users)
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', impr_organic)
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', impr_organic_unique)
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID', impr_paid)
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', impr_paid_unique)
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL', impr_viral)
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', impr_viral_unique)
-    DSRecord.SetField(u'POST_IMPRESSIONS', impr)
-    DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', impr_unique)
+    print 'Set metrics for {0}'.format(post.id)
+    DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
+    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
+    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', unicode(impr_organic_unique))
+    DSRecord.SetField(u'POST_IMPRESSIONS_PAID', unicode(impr_paid))
+    DSRecord.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', unicode(impr_paid_unique))
+    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL', unicode(impr_viral))
+    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', unicode(impr_viral_unique))
+    DSRecord.SetField(u'POST_IMPRESSIONS', unicode(impr))
+    DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', unicode(impr_unique))
 
     # store record
-    print 'About to add {0} to collection'.format(post.id)
     Collection.AddRecord(DSRecord)
-    print 'Successfully added {0} to collection'.format(post.id)
 
 
 class FacebookPage(object):
@@ -146,16 +145,16 @@ class FacebookPage(object):
         self.access_token = access_token
         self.page_name = page_name
         self.since = unix_timestamp(last_post_time)
-        self.params = {u'access_token': self.access_token,
-                       u'limit': POST_LIMIT,
-                       u'since': self.since,
-                       u'fields': u'type,message,privacy'}
-        self.post_detail_params = {u'access_token': self.access_token}
+        self.params = {'access_token': self.access_token,
+                       'limit': POST_LIMIT,
+                       'since': self.since,
+                       'fields': u'type,message,privacy'}
+        self.post_detail_params = {'access_token': self.access_token}
 
     def parse_post(self, post):
         try:
             id = post[u'id']
-            message = None
+            message = u''
             lang = None
             typ = post[u'type']
 
@@ -239,8 +238,8 @@ if __name__ == '__main__':
         print u'Fetch newest posts for page {0}...'.format(page.page_name)
         newest_posts = page.newest_posts()
         for post in newest_posts:
-            print u'Creating record {0}'.format(post)
             create_record(post)
+            print 'Successfully added {0} to collection'.format(post.id)
         print u'Page {0} finished. Total posts collected: {1}.'.format(
             page.page_name, len(newest_posts))
     print u'Finished collecting Facebook posts'
