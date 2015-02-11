@@ -9,8 +9,7 @@ import sys
 
 
 RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
-PAGE_NAME = u'swisscom'
-POST_LIMIT = 10
+POST_LIMIT = 200
 BASE_URL = u'https://graph.facebook.com'
 MIN_SINCE = datetime.datetime(2015, 1, 1)
 ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
@@ -166,6 +165,11 @@ class FacebookPage(object):
             print 'Could not fetch post metrics: {0}'.format(e)
         return post
 
+    def is_irrelevant_status_post(self, post):
+        return (post.typ == 'status' and
+                len(post.message) == 0 and
+                post.metrics.get(u'post_engaged_users', 0) == 0)
+
     def extract_metrics(self, insights):
         """Put metrics into dict with metric name as key"""
         def metric_value(insight):
@@ -189,6 +193,7 @@ class FacebookPage(object):
             data = results[u'data']
             posts = [self.parse_post(post) for post in data]
             posts = [self.add_post_metrics(post) for post in posts]
+            posts = [p for p in posts if not self.is_irrelevant_status_post(p)]
 
             return posts
         except Exception, e:
@@ -210,10 +215,9 @@ if __name__ == '__main__':
     print u'Start collecting Facebook Posts...'
     Collection.Truncate()  # clear input collection
 
-    pages = []
-    print u'Creating input task for {0}'.format(PAGE_NAME)
-    page = FacebookPage(ACCESS_TOKEN, PAGE_NAME)
-    pages.append(page)
+    swisscom = FacebookPage(ACCESS_TOKEN, 'swisscom')
+    swisscom_business = FacebookPage(ACCESS_TOKEN, 'Swisscom.Business')
+    pages = [swisscom_business, swisscom]
 
     print u'Total %d tasks to search.\n' % len(pages)
     for page in pages:
