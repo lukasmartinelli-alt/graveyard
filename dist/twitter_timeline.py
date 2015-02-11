@@ -9,15 +9,27 @@ import binascii
 from hashlib import sha1
 
 
-locale.setlocale(locale.LC_ALL, 'C')
+RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
+ACCESS_TOKEN = '115386140-BjCIEooK9mmm9k5oUntAyLw1YxHTCbRIPVwZzQH7'
+TOKEN_SECRET = '1WrDzn4gIWZKf3nrSpU9MA0yAEPNMdRdKvPjRO884u0oq'
+CONSUMER_KEY = 'UEr0TKR4oW1OMt9kNuUxN32nA'
+CONSUMER_SECRET = 'KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl'
+BASE_URL = 'https://api.twitter.com/1.1/'
+TWEET_LIMIT = 100
+if RUNS_IN_SAP:
+    PROXY = u'iproxy.corproot.net:8080'
+    locale.setlocale(locale.LC_ALL, 'C')
+else:
+    PROXY = u''
+    from sap import Collection, DataManager
+    # setup fake input data
+    DSRecord = DataManager.NewDataRecord(1)
+    DSRecord.SetField(u'TWEET_ID_IN', unicode('0'))
+    Collection.AddRecord(DSRecord)
 
 
 def sap_timestamp(timestamp):
     return time.strftime('%Y.%m.%d %H:%M:%S', timestamp)
-
-
-def runs_in_sap():
-    return sys.executable.endswith(u'al_engine.exe')
 
 
 def get_data(url, proxy, oauth_helper, method=0, **queryParams):
@@ -204,32 +216,29 @@ class OAuth1Helper(object):
         return str(int(random_number))
 
 
-class TwitterCollector(object):
+class TwitterUserTimeline(object):
     """Collects tweets from Twitter"""
     def __init__(self, max_tweet, screen_name, user_id, oauth_helper):
         self.since_id = int(max_tweet)
         self.screen_name = screen_name
         self.user_id = user_id
-        self.proxy = ''
-        # self.proxy = 'iproxy.corproot.net:8080'
         self.oauth_helper = oauth_helper
 
-        baseurl = 'https://api.twitter.com/1.1/'
-        self.requestUrl = baseurl + 'statuses/user_timeline.json'
-
+        self.requestUrl = '{0}/statuses/user_timeline.json'.format(BASE_URL)
         self.params = {'screen_name': self.screen_name,
-                       'user_id': self.user_id}
+                       'user_id': self.user_id,
+                       'count': TWEET_LIMIT}
 
         if self.since_id > 0:
             self.params['since_id'] = self.since_id
 
-    def search(self):
+    def newest_tweets(self):
         twitters = 0
         current_page = 1
 
         try:
             while True:
-                search_results = get_data(self.requestUrl, self.proxy,
+                search_results = get_data(self.requestUrl, PROXY,
                                           self.oauth_helper, **self.params)
                 # Stop searching if there are no more results
                 if search_results is None or len(search_results) == 0:
@@ -305,22 +314,6 @@ class TwitterCollector(object):
 
         return twitters
 
-ACCESS_TOKEN = '115386140-BjCIEooK9mmm9k5oUntAyLw1YxHTCbRIPVwZzQH7'
-TOKEN_SECRET = '1WrDzn4gIWZKf3nrSpU9MA0yAEPNMdRdKvPjRO884u0oq'
-CONSUMER_KEY = 'UEr0TKR4oW1OMt9kNuUxN32nA'
-CONSUMER_SECRET = 'KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl'
-
-
-if runs_in_sap():
-    PROXY = u'iproxy.corproot.net:8080'
-else:
-    from sap import Collection, DataManager
-    # setup fake input data
-    DSRecord = DataManager.NewDataRecord(1)
-    DSRecord.SetField(u'TWEET_ID_IN', unicode('0'))
-    Collection.AddRecord(DSRecord)
-
-
 
 if __name__ == '__main__':
     print 'Start collecting tweets...'
@@ -339,7 +332,7 @@ if __name__ == '__main__':
             consumer_key='UEr0TKR4oW1OMt9kNuUxN32nA',
             consumer_key_secret='KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl'
         )
-        return TwitterCollector(max_id, 'Swisscom_fr', 115386140, helper)
+        return TwitterUserTimeline(max_id, 'Swisscom_fr', 115386140, helper)
 
     def swisscom_b2b_de():
         helper = OAuth1Helper(
@@ -348,16 +341,16 @@ if __name__ == '__main__':
             consumer_key = 'orY4X8ni9SjpWbbHZzy7WLQFC',
             consumer_key_secret = 'HORdoxOSnG8U4E1gW6GRutRiqJ1RmOsCydAHSlRp7LY3ZyTwUG',
         )
-        return TwitterCollector(max_id, 'swisscom_b2b_de', 268323153, helper)
+        return TwitterUserTimeline(max_id, 'swisscom_b2b_de', 268323153, helper)
 
     print 'Preparing fetch tasks'
-    searchCollectors = [swisscom_fr(), swisscom_b2b_de()]
+    user_timelines = [swisscom_fr(), swisscom_b2b_de()]
 
-    print 'Total %d tasks to search.\n' % len(searchCollectors)
+    print 'Total %d tasks to search.\n' % len(user_timelines)
 
     print 'Begin data search...'
-    for sc in searchCollectors:
-        results = sc.search()
+    for timeline in user_timelines:
+        tweets = timeline.newest_tweets()
         print 'Twitter account {0}. Total tweets collected: {1}'.format(
-            sc.screen_name, results)
+            timeline.screen_name, tweets)
     print 'Finished collecting tweets using the Twitter API v1.1.'

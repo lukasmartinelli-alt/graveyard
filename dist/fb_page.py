@@ -8,7 +8,21 @@ import urllib2
 import sys
 
 
-locale.setlocale(locale.LC_ALL, 'C')
+RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
+PAGE_NAME = u'swisscom'
+POST_LIMIT = 10
+BASE_URL = u'https://graph.facebook.com'
+MIN_SINCE = datetime.datetime(2015, 1, 1)
+ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
+                u'qCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtv'
+                u'beS5mX67Clyyec3uLZCz3VDiQ87Xyw4o9eMFpDijU5IojmZAo2QiZC0iYbb5'
+                u'0uwKB')
+if RUNS_IN_SAP:
+    PROXY = u'iproxy.corproot.net:8080'
+    locale.setlocale(locale.LC_ALL, 'C')
+else:
+    PROXY = u''
+    from sap import Collection, DataManager
 
 
 def get_data(url, proxy, oauth_helper, method=0, **queryParams):
@@ -64,43 +78,32 @@ def sap_timestamp(timestamp):
     return time.strftime('%Y.%m.%d %H:%M:%S', timestamp)
 
 
-def runs_in_sap():
-    return sys.executable.endswith(u'al_engine.exe')
-
-
-PAGE_NAME = u'swisscom'
-POST_LIMIT = 10
-PROXY = u''
-ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
-                u'qCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtv'
-                u'beS5mX67Clyyec3uLZCz3VDiQ87Xyw4o9eMFpDijU5IojmZAo2QiZC0iYbb5'
-                u'0uwKB')
-
-
 class Post(object):
     """Facebook post with metrics"""
-    def __init__(self, page_name, id, message, lang, typ, timestamp):
+    def __init__(self, page_name, page_id, id, message, typ, timestamp):
         self.page_name = page_name
+        self.page_id = page_id
         self.id = id
         self.message = message[:100]
-        self.lang = lang
         self.typ = typ
         self.timestamp = timestamp
         self.metrics = {}  # Insights data
 
+    def full_id(self):
+        return '{0}_{1}'.format(self.page_id, self.id)
+
 
 def create_record(post, page_likes):
     """Create DSRecord for post and add to collection"""
-    DSRecord = DataManager.NewDataRecord(1)
+    rec = DataManager.NewDataRecord(1)
 
     # print 'Set basic fields for {0}'.format(post.id)
-    DSRecord.SetField(u'PAGE_NAME', unicode(post.page_name))
-    DSRecord.SetField(u'POST_ID', unicode(post.id))
-    DSRecord.SetField(u'TYP', unicode(post.typ))
-    DSRecord.SetField(u'SPRACHE', unicode(post.lang))
-    DSRecord.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
-    DSRecord.SetField(u'POST_TEXT', post.message)
-    DSRecord.SetField(u'PAGE_FANS', unicode(page_likes))
+    rec.SetField(u'PAGE_NAME', unicode(post.page_name))
+    rec.SetField(u'POST_ID', unicode(post.id))
+    rec.SetField(u'TYP', unicode(post.typ))
+    rec.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
+    rec.SetField(u'POST_TEXT', post.message)
+    rec.SetField(u'PAGE_FANS', unicode(page_likes))
 
     metrics = post.metrics
     engaged_users = metrics.get(u'post_engaged_users', 0)
@@ -114,25 +117,24 @@ def create_record(post, page_likes):
     impr_unique = metrics.get(u'post_impressions_unique', 0)
 
     # print 'Set metrics for {0}'.format(post.id)
-    DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
-    DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', unicode(impr_organic_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID', unicode(impr_paid))
-    DSRecord.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', unicode(impr_paid_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL', unicode(impr_viral))
-    DSRecord.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', unicode(impr_viral_unique))
-    DSRecord.SetField(u'POST_IMPRESSIONS', unicode(impr))
-    DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', unicode(impr_unique))
+    rec.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
+    rec.SetField(u'POST_IMPRESSIONS_PAID', unicode(impr_paid))
+    rec.SetField(u'POST_IMPRESSIONS_PAID_UNIQUE', unicode(impr_paid_unique))
+    rec.SetField(u'POST_IMPRESSIONS_VIRAL', unicode(impr_viral))
+    rec.SetField(u'POST_IMPRESSIONS_VIRAL_UNIQUE', unicode(impr_viral_unique))
+    rec.SetField(u'POST_IMPRESSIONS', unicode(impr))
+    rec.SetField(u'POST_IMPRESSIONS_UNIQUE', unicode(impr_unique))
+    rec.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
+    rec.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE',
+                 unicode(impr_organic_unique))
 
     # store record
-    Collection.AddRecord(DSRecord)
+    Collection.AddRecord(rec)
+    del rec
 
 
 class FacebookPage(object):
     """Collects insights about posts from a Facebook page"""
-    BASE_URL = u'https://graph.facebook.com'
-    MIN_SINCE = datetime.datetime(2015, 1, 1)
-
     def __init__(self, access_token, page_name, last_post_time=MIN_SINCE):
         self.access_token = access_token
         self.page_name = page_name
@@ -145,26 +147,17 @@ class FacebookPage(object):
 
     def parse_post(self, post):
         try:
-            id = post[u'id']
-            message = u''
-            lang = None
+            page_id, id = post[u'id'].split('_')
+            message = post.get(u'message', u'')
             typ = post[u'type']
-
             timestamp = time.strptime(post[u'created_time'],
                                       '%Y-%m-%dT%H:%M:%S+0000')
-
-            if u'message' in post:
-                message = post[u'message']
-
-            # lang = post[u'privacy'][u'description']
-
-            return Post(self.page_name, id, message, lang, typ, timestamp)
+            return Post(self.page_name, page_id, id, message, typ, timestamp)
         except Exception, ex:
             print u'Could not parse post: %s' % ex
-            pass
 
     def add_post_metrics(self, post):
-        detail_url = u'{0}/{1}/insights'.format(self.BASE_URL, post.id)
+        detail_url = u'{0}/{1}/insights'.format(BASE_URL, post.full_id())
         try:
             resp = get_data(detail_url, PROXY, None, **self.post_detail_params)
             data = resp[u'data']
@@ -190,8 +183,7 @@ class FacebookPage(object):
     def newest_posts(self):
         """Fetch newest posts from page"""
         try:
-            # Get all Posts of Swisscom Page (ID, DATE, TYPE)
-            request_url = u'{0}/{1}/posts'.format(self.BASE_URL, self.page_name)
+            request_url = u'{0}/{1}/posts'.format(BASE_URL, self.page_name)
             results = get_data(request_url, PROXY,
                                None, **self.params)
             data = results[u'data']
@@ -205,7 +197,7 @@ class FacebookPage(object):
 
     def likes(self):
         try:
-            request_url = u'{0}/{1}'.format(self.BASE_URL, self.page_name)
+            request_url = u'{0}/{1}'.format(BASE_URL, self.page_name)
             data = get_data(request_url, PROXY,
                             None, access_token=self.access_token)
             return data[u'likes']
@@ -214,20 +206,9 @@ class FacebookPage(object):
             return 0
 
 
-if runs_in_sap():
-    PROXY = u'iproxy.corproot.net:8080'
-else:
-    from sap import Collection, DataManager
-
-
 if __name__ == '__main__':
     print u'Start collecting Facebook Posts...'
-
-    # print u'Loading input task data...'
-    # last_post_record = DataManager.NewDataRecord()
-    # Collection.GetRecord(last_post_record, 1)
-    # max_id = last_post_record.GetField(u'POST_ID_IN')
-    # DataManager.DeleteDataRecord(last_post_record)
+    Collection.Truncate()  # clear input collection
 
     pages = []
     print u'Creating input task for {0}'.format(PAGE_NAME)
@@ -235,8 +216,6 @@ if __name__ == '__main__':
     pages.append(page)
 
     print u'Total %d tasks to search.\n' % len(pages)
-
-    Collection.Truncate()  # clear input collection
     for page in pages:
         print u'Fetch newest posts for page {0}...'.format(page.page_name)
         likes = page.likes()
