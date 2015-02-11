@@ -81,6 +81,7 @@ class Post(object):
     """Facebook post with metrics"""
     def __init__(self, page_name, id, message, lang, typ, timestamp):
         self.page_name = page_name
+        self.page_likes = 0
         self.id = id
         self.message = message[:100]
         self.lang = lang
@@ -93,15 +94,14 @@ def create_record(post):
     """Create DSRecord for post and add to collection"""
     DSRecord = DataManager.NewDataRecord(1)
 
-    print 'Set basic fields for {0}'.format(post.id)
+    # print 'Set basic fields for {0}'.format(post.id)
     DSRecord.SetField(u'PAGE_NAME', unicode(post.page_name))
     DSRecord.SetField(u'POST_ID', unicode(post.id))
     DSRecord.SetField(u'TYP', unicode(post.typ))
     DSRecord.SetField(u'SPRACHE', unicode(post.lang))
     DSRecord.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
-
-    # can raise error for utf-8 chars
     DSRecord.SetField(u'POST_TEXT', post.message)
+    DSRecord.SetField(u'PAGE_FANS', unicode(post.page_likes))
 
     metrics = post.metrics
     actions = metrics.get(u'post_stories_by_action_type')
@@ -109,7 +109,8 @@ def create_record(post):
         likes = metrics.get(u'like', 0)
         shared = metrics.get(u'share', 0)
         comments = metrics.get(u'comment', 0)
-        print u'likes: {0}, shared:{1}, comments: {2}'.format(likes, shared, comments)
+        print u'likes: {0}, shared:{1}, comments: {2}'.format(
+            likes, shared, comments)
 
     engaged_users = metrics.get(u'post_engaged_users', 0)
     impr_organic = metrics.get(u'post_impressions_organic', 0)
@@ -121,7 +122,7 @@ def create_record(post):
     impr = metrics.get(u'post_impressions', 0)
     impr_unique = metrics.get(u'post_impressions_unique', 0)
 
-    print 'Set metrics for {0}'.format(post.id)
+    # print 'Set metrics for {0}'.format(post.id)
     DSRecord.SetField(u'POST_ENGAGED_USERS', unicode(engaged_users))
     DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', unicode(impr_organic))
     DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC_UNIQUE', unicode(impr_organic_unique))
@@ -197,6 +198,7 @@ class FacebookPage(object):
 
     def newest_posts(self):
         """Fetch newest posts from page"""
+        likes = self.likes()
 
         try:
             # Get all Posts of Swisscom Page (ID, DATE, TYPE)
@@ -206,10 +208,24 @@ class FacebookPage(object):
             data = results[u'data']
             posts = [self.parse_post(post) for post in data]
             posts = [self.add_post_metrics(post) for post in posts]
+
+            for post in posts:
+                post.page_likes = likes
+
             return posts
         except Exception, e:
             print u'Could not fetch posts {0}'.format(e)
             return []
+
+    def likes(self):
+        try:
+            request_url = u'{0}/{1}'.format(self.BASE_URL, self.page_name)
+            data = get_data(request_url, PROXY,
+                            None, access_token=self.access_token)
+            return data[u'likes']
+        except Exception, e:
+            print u'Could not determine likes {0}'.format(e)
+            return 0
 
 
 if runs_in_sap():
@@ -234,6 +250,7 @@ if __name__ == '__main__':
 
     print u'Total %d tasks to search.\n' % len(pages)
 
+    Collection.Truncate()  # clear input collection
     for page in pages:
         print u'Fetch newest posts for page {0}...'.format(page.page_name)
         newest_posts = page.newest_posts()
