@@ -81,7 +81,6 @@ class Post(object):
     """Facebook post with metrics"""
     def __init__(self, page_name, id, message, lang, typ, timestamp):
         self.page_name = page_name
-        self.page_likes = 0
         self.id = id
         self.message = message[:100]
         self.lang = lang
@@ -90,7 +89,7 @@ class Post(object):
         self.metrics = {}  # Insights data
 
 
-def create_record(post):
+def create_record(post, page_likes):
     """Create DSRecord for post and add to collection"""
     DSRecord = DataManager.NewDataRecord(1)
 
@@ -101,17 +100,9 @@ def create_record(post):
     DSRecord.SetField(u'SPRACHE', unicode(post.lang))
     DSRecord.SetField(u'TIMESTAMP', unicode(sap_timestamp(post.timestamp)))
     DSRecord.SetField(u'POST_TEXT', post.message)
-    DSRecord.SetField(u'PAGE_FANS', unicode(post.page_likes))
+    DSRecord.SetField(u'PAGE_FANS', unicode(page_likes))
 
     metrics = post.metrics
-    actions = metrics.get(u'post_stories_by_action_type')
-    if actions:
-        likes = metrics.get(u'like', 0)
-        shared = metrics.get(u'share', 0)
-        comments = metrics.get(u'comment', 0)
-        print u'likes: {0}, shared:{1}, comments: {2}'.format(
-            likes, shared, comments)
-
     engaged_users = metrics.get(u'post_engaged_users', 0)
     impr_organic = metrics.get(u'post_impressions_organic', 0)
     impr_organic_unique = metrics.get(u'post_impressions_organic_unique', 0)
@@ -198,8 +189,6 @@ class FacebookPage(object):
 
     def newest_posts(self):
         """Fetch newest posts from page"""
-        likes = self.likes()
-
         try:
             # Get all Posts of Swisscom Page (ID, DATE, TYPE)
             request_url = u'{0}/{1}/posts'.format(self.BASE_URL, self.page_name)
@@ -208,9 +197,6 @@ class FacebookPage(object):
             data = results[u'data']
             posts = [self.parse_post(post) for post in data]
             posts = [self.add_post_metrics(post) for post in posts]
-
-            for post in posts:
-                post.page_likes = likes
 
             return posts
         except Exception, e:
@@ -253,9 +239,10 @@ if __name__ == '__main__':
     Collection.Truncate()  # clear input collection
     for page in pages:
         print u'Fetch newest posts for page {0}...'.format(page.page_name)
+        likes = page.likes()
         newest_posts = page.newest_posts()
         for post in newest_posts:
-            create_record(post)
+            create_record(post, likes)
             print 'Successfully added {0} to collection'.format(post.id)
         print u'Page {0} finished. Total posts collected: {1}.'.format(
             page.page_name, len(newest_posts))
