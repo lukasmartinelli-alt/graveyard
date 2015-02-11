@@ -8,24 +8,15 @@ import sys
 import binascii
 from hashlib import sha1
 
-
 RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
-ACCESS_TOKEN = '115386140-BjCIEooK9mmm9k5oUntAyLw1YxHTCbRIPVwZzQH7'
-TOKEN_SECRET = '1WrDzn4gIWZKf3nrSpU9MA0yAEPNMdRdKvPjRO884u0oq'
-CONSUMER_KEY = 'UEr0TKR4oW1OMt9kNuUxN32nA'
-CONSUMER_SECRET = 'KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl'
 BASE_URL = 'https://api.twitter.com/1.1/'
-TWEET_LIMIT = 100
+TWEET_LIMIT = 200
 if RUNS_IN_SAP:
     PROXY = u'iproxy.corproot.net:8080'
     locale.setlocale(locale.LC_ALL, 'C')
 else:
     PROXY = u''
     from sap import Collection, DataManager
-    # setup fake input data
-    DSRecord = DataManager.NewDataRecord(1)
-    DSRecord.SetField(u'TWEET_ID_IN', unicode('0'))
-    Collection.AddRecord(DSRecord)
 
 
 def sap_timestamp(timestamp):
@@ -216,10 +207,22 @@ class OAuth1Helper(object):
         return str(int(random_number))
 
 
+class Tweet(object):
+    def __init__(self, screen_name, created_at, id, text, favourites,
+                 retweets, followers, friends):
+        self.screen_name = screen_name
+        self.created_at = created_at
+        self.id = id
+        self.text = text
+        self.favourites = favourites
+        self.retweets = retweets
+        self.followers = followers
+        self.friends = friends
+
+
 class TwitterUserTimeline(object):
     """Collects tweets from Twitter"""
-    def __init__(self, max_tweet, screen_name, user_id, oauth_helper):
-        self.since_id = int(max_tweet)
+    def __init__(self, screen_name, user_id, oauth_helper):
         self.screen_name = screen_name
         self.user_id = user_id
         self.oauth_helper = oauth_helper
@@ -229,128 +232,138 @@ class TwitterUserTimeline(object):
                        'user_id': self.user_id,
                        'count': TWEET_LIMIT}
 
-        if self.since_id > 0:
-            self.params['since_id'] = self.since_id
+    def parse_tweet(self, tweet):
+        timestamp = time.strptime(tweet[u'created_at'],
+                                  '%a %b %d %H:%M:%S +0000 %Y')
+        user = tweet[u'user']
+
+        return Tweet(
+            id=tweet[u'id_str'],
+            created_at=timestamp,
+            text=tweet[u'text'].replace('\n', '')[:140],
+            screen_name=user[u'screen_name'],
+            retweets=int(tweet[u'retweet_count']),
+            favourites=int(tweet[u'favorite_count']),
+            followers=int(user[u'followers_count']),
+            friends=int(user[u'friends_count'])
+        )
 
     def newest_tweets(self):
-        twitters = 0
-        current_page = 1
+        results = get_data(self.requestUrl, PROXY,
+                                  self.oauth_helper, **self.params)
 
-        try:
-            while True:
-                search_results = get_data(self.requestUrl, PROXY,
-                                          self.oauth_helper, **self.params)
-                # Stop searching if there are no more results
-                if search_results is None or len(search_results) == 0:
-                    print 'No additional tweets are available.'
-                    break
-                else:
-                    print 'Processing %d tweets.' % len(search_results)
+        if not results:
+            print 'No tweets found for {0}'.format(self.screen_name)
+            return []
 
-                # tweet information
-                for innerIndex in (range(len(search_results))):
-                    sResult = search_results[innerIndex]
+        return [self.parse_tweet(t) for t in results]
 
-                    # read ID
-                    tweet_id = sResult[u'id_str']
 
-                    # read content
-                    text = sResult[u'text']
-                    text = text.replace('\n', '')
+def create_record(tweet):
+    rec = DataManager.NewDataRecord(1)
 
-                    # read screen name of poster
-                    user = sResult[u'user']
-                    screen_name = user[u'screen_name']
+    rec.SetField(u'SCREEN_NAME', unicode(tweet.screen_name))
+    rec.SetField(u'TIME_STAMP', unicode(sap_timestamp(tweet.created_at)))
+    rec.SetField(u'TWEET_ID', unicode(tweet.id))
+    rec.SetField(u'TWEET_TEXT', unicode(tweet.text))
+    rec.SetField(u'FAV_COUNT', unicode(tweet.favourites))
+    rec.SetField(u'RETWEETS', unicode(tweet.retweets))
+    rec.SetField(u'FOLLOWERS_COUNT', unicode(tweet.followers))
+    rec.SetField(u'FRIENDS_COUNT', unicode(tweet.friends))
 
-                    # read and format creation date
-                    created_at = sResult[u'created_at']
-                    if created_at is None:
-                        continue
+    Collection.AddRecord(rec)
+    del rec
 
-                    timestamp = time.strptime(sResult[u'created_at'],
-                                              '%a %b %d %H:%M:%S +0000 %Y')
-                    created_at = time.strftime('%Y.%m.%d %H:%M:%S', timestamp)
 
-                    # read retweets and favorites
-                    retweets = int(sResult[u'retweet_count'])
-                    favourites = int(sResult[u'favorite_count'])
+def swisscom_de():
+    helper = OAuth1Helper(
+        consumer_key='oyveJx1aWvVn1Rjb1SGL0NuJd',
+        consumer_key_secret='1N6HRGIH99q4K1tt3RILIGxOA7cBAKUSpBxpBc2m7Ju101Q8zE',
+        access_token='2813614259-pMRHgmDMxokYqQ0DLsTX82J2IsXhhzdb9hVhp4A',
+        access_token_secret='GlPDk4Ekul1fPDGq8tTHjqkBMmPKkAIZrWB0oVvbkyibN'
+    )
+    return TwitterUserTimeline('Swisscom_de', 98382537, helper)
 
-                    # read Follower and Friends count of poster
-                    followers_count = int(user[u'followers_count'])
-                    friends_count = int(user[u'friends_count'])
 
-                    try:
-                        # Move read Data to record
-                        DSRecord = DataManager.NewDataRecord(1)
-                        DSRecord.SetField(u'SCREEN_NAME', unicode(screen_name))
-                        DSRecord.SetField(u'TIME_STAMP', unicode(created_at))
+def swisscom_fr():
+    helper = OAuth1Helper(
+        consumer_key='UEr0TKR4oW1OMt9kNuUxN32nA',
+        consumer_key_secret='KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl',
+        access_token='115386140-BjCIEooK9mmm9k5oUntAyLw1YxHTCbRIPVwZzQH7',
+        access_token_secret='1WrDzn4gIWZKf3nrSpU9MA0yAEPNMdRdKvPjRO884u0oq'
+    )
+    return TwitterUserTimeline('Swisscom_fr', 115386140, helper)
 
-                        DSRecord.SetField(u'TWEET_ID', unicode(tweet_id))
 
-                        DSRecord.SetField(u'TWEET_TEXT', unicode(text) if len(text) <= 140 else unicode(text[:140]))
+def swisscom_it():
+    helper = OAuth1Helper(
+        access_token='115389988-MYkBXTqzBrZL67oXnmQ6XAEFrQYEFKOUE90V3ehf',
+        access_token_secret='9m4C8pncSGPgvvIzuFFDcS8EfNdiayhYbqWCgRiqP2tjp',
+        consumer_key='41v8vifMt1mGWZAK9H316iAp1',
+        consumer_key_secret='Qtw4p8BjIoISzg71WNwWxj81sjIVIarpBY5zVcNZNDmUSuh4Se'
+    )
+    return TwitterUserTimeline('Swisscom_it', 115389988, helper)
 
-                        DSRecord.SetField(u'FAV_COUNT', unicode(favourites))
-                        DSRecord.SetField(u'RETWEETS', unicode(retweets))
 
-                        DSRecord.SetField(u'FOLLOWERS_COUNT', unicode(followers_count))
-                        DSRecord.SetField(u'FRIENDS_COUNT', unicode(friends_count))
+def swisscom_b2b_de():
+    helper = OAuth1Helper(
+        consumer_key='orY4X8ni9SjpWbbHZzy7WLQFC',
+        consumer_key_secret='HORdoxOSnG8U4E1gW6GRutRiqJ1RmOsCydAHSlRp7LY3ZyTwUG',
+        access_token='268323153-TZBMexArlur68E4hIAvtzy17QvMTMGyvXMar1Z0y',
+        access_token_secret='J7Zvvy0i35meR2yJeway9ctjLJiCC60OTjCQSRugPgE3R'
+    )
+    return TwitterUserTimeline('swisscom_b2b_de', 268323153, helper)
 
-                        # store record
-                        Collection.AddRecord(DSRecord)
-                        print 'Successfully added {0} to collection'.format(tweet_id)
-                        del DSRecord
 
-                        # set record size
-                        twitters += 1
-                    except Exception, e:
-                        print 'Error occurred while saving tweet data: %s' % e
+def swisscom_b2b_fr():
+    helper = OAuth1Helper(
+        consumer_key='wRpAGlNj60u1fC4ispSxLyn7L',
+        consumer_key_secret='BJFqafzl4YF7Daqx4y0rsV86taIsQoIXmAcgy7Ivc5R70bjNsW',
+        access_token='270905981-jbOdFr5GYiqv8hUWQky3J918EGGjMT8uTFYiujQB',
+        access_token_secret='SQrqiONtaNRJL3YuSSm3ksiMiaCKIN4rzexjQ60dgvxLY'
+    )
+    return TwitterUserTimeline('swisscom_b2b_fr', 270905981, helper)
 
-                current_page += 1
-                print 'There are no more result pages. Ending the search for this term.'
-                break
-                print '-----------------------------------'
-        except Exception, e:
-            print e
 
-        return twitters
+def swisscom_b2b_it():
+    helper = OAuth1Helper(
+        consumer_key='HUgLPizY6eyytVBaXgwcSTKkM',
+        consumer_key_secret='gIVkqmfE481aPBlc6doPdeaNJMSKaNaS1v94ZGxudm4hcSjaHI',
+        access_token='270906967-cvXwpZ0FHxDk6mopRGBwDQepQ6RQeAAmNb4VfVlA',
+        access_token_secret='NeL8q84SrV4mjqXJT0cRJgc2pcVSQDrGNN4MMQb8v43LI'
+    )
+    return TwitterUserTimeline('swisscom_b2b_it', 270906967, helper)
+
+
+def swisscom_b2b_en():
+    helper = OAuth1Helper(
+        consumer_key='N3K26GkPXNaQan5tN9DOQvtTK',
+        consumer_key_secret='wLTAbMDdsltFdzrvGZsGZBOvnKdpOyWW144lzSMxJqbxmURc8O',
+        access_token='270907679-pDf5svBy6w3e0m3OAbJQaG9xiRuuL7Fq2dC6TKfX',
+        access_token_secret='J9G2bL0bp6S2wYtrpQOWQGDzJmGRbHVFJ99dPsaKlGSZS'
+    )
+    return TwitterUserTimeline('swisscom_b2b_en', 270907679, helper)
 
 
 if __name__ == '__main__':
     print 'Start collecting tweets...'
+    Collection.Truncate()
 
     print 'Loading input task data...'
-    searchTermRec = DataManager.NewDataRecord()
-    Collection.GetRecord(searchTermRec, 1)
-    max_id = searchTermRec.GetField(u'TWEET_ID_IN')
-    Collection.DeleteRecord(searchTermRec)
-    DataManager.DeleteDataRecord(searchTermRec)
-
-    def swisscom_fr():
-        helper = OAuth1Helper(
-            access_token='115386140-BjCIEooK9mmm9k5oUntAyLw1YxHTCbRIPVwZzQH7',
-            access_token_secret='1WrDzn4gIWZKf3nrSpU9MA0yAEPNMdRdKvPjRO884u0oq',
-            consumer_key='UEr0TKR4oW1OMt9kNuUxN32nA',
-            consumer_key_secret='KU9xjOfV6mL3pPmQ1KZoOB8MZZgKVdrztWOiRR0MFn0rMUOJZl'
-        )
-        return TwitterUserTimeline(max_id, 'Swisscom_fr', 115386140, helper)
-
-    def swisscom_b2b_de():
-        helper = OAuth1Helper(
-            access_token = '268323153-TZBMexArlur68E4hIAvtzy17QvMTMGyvXMar1Z0y',
-            access_token_secret = 'J7Zvvy0i35meR2yJeway9ctjLJiCC60OTjCQSRugPgE3R',
-            consumer_key = 'orY4X8ni9SjpWbbHZzy7WLQFC',
-            consumer_key_secret = 'HORdoxOSnG8U4E1gW6GRutRiqJ1RmOsCydAHSlRp7LY3ZyTwUG',
-        )
-        return TwitterUserTimeline(max_id, 'swisscom_b2b_de', 268323153, helper)
 
     print 'Preparing fetch tasks'
-    user_timelines = [swisscom_fr(), swisscom_b2b_de()]
+    user_timelines = [swisscom_de(), swisscom_fr(), swisscom_it(),
+                      swisscom_b2b_de(), swisscom_b2b_fr(),
+                      swisscom_b2b_it(), swisscom_b2b_en()]
 
     print 'Total %d tasks to search.\n' % len(user_timelines)
 
-    print 'Begin data search...'
+    print 'Fetching newest tweets form user timelines...'
     for timeline in user_timelines:
         tweets = timeline.newest_tweets()
+        for tweet in tweets:
+            create_record(tweet)
+            print 'Successfully added {0} to collection'.format(tweet.id)
         print 'Twitter account {0}. Total tweets collected: {1}'.format(
-            timeline.screen_name, tweets)
+            timeline.screen_name, len(tweets))
     print 'Finished collecting tweets using the Twitter API v1.1.'
