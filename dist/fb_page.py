@@ -33,17 +33,17 @@ def get_data(url, proxy, oauth_helper, method=0, **queryParams):
                                  (u'Accept-Charset', 'utf-8')]
             print(opener.addheaders)
 
-        print u'GET:{0}'.format(http_url)
+        print u'GET {0}'.format(http_url)
         data = opener.open(http_url, data=http_body).read()
 
         try:
             result = json.loads(data, encoding='utf-8')
         except ValueError, e:
-            print e
+            print u'Could not load JSON: {0}'.format(e)
             return None
         return result
     except urllib2.HTTPError, e:
-        print(e.read())
+        print e.read()
     except urllib2.URLError, e:
         if hasattr(e, u'reason'):
             print u'Could not reach %s due to %s.' % (http_url, str(e.reason))
@@ -65,11 +65,14 @@ def runs_in_sap():
     return sys.executable.endswith(u'al_engine.exe')
 
 
-ACCESS_TOKEN = u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGizqCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtvbeS5mX67Clyyec3uLZCz3VDiQ87Xyw4o9eMFpDijU5IojmZAo2QiZC0iYbb50uwKB'
+locale.setlocale(locale.LC_ALL, 'C')
 PAGE_NAME = u'swisscom'
 POST_LIMIT = 3
 PROXY = u''
-locale.setlocale(locale.LC_ALL, 'C')
+ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
+                u'qCYtZCmpw90yL5AaneoaDCqzLnZAZC3zbi2ZAdjanWNbLOts5LvcjFZCWRtv'
+                u'beS5mX67Clyyec3uLZCz3VDiQ87Xyw4o9eMFpDijU5IojmZAo2QiZC0iYbb5'
+                u'0uwKB')
 
 
 class Post(object):
@@ -77,7 +80,7 @@ class Post(object):
     def __init__(self, page_name, id, message, lang, typ, timestamp):
         self.page_name = page_name
         self.id = id
-        self.message = message
+        self.message = message[:100]
         self.lang = lang
         self.typ = typ
         self.timestamp = timestamp
@@ -106,9 +109,7 @@ def create_record(post):
 
     metrics = post.metrics
 
-    print '----------------------------'
     print vars(post)
-    print '----------------------------'
 
     engaged_users = metrics.get(u'post_engaged_users', 0)
     impr_organic = metrics.get(u'post_impressions_organic', 0)
@@ -119,7 +120,6 @@ def create_record(post):
     impr_viral_unique = metrics.get(u'post_impressions_viral_unique', 0)
     impr = metrics.get(u'post_impressions', 0)
     impr_unique = metrics.get(u'post_impressions_unique', 0)
-
 
     DSRecord.SetField(u'POST_ENGAGED_USERS', engaged_users)
     DSRecord.SetField(u'POST_IMPRESSIONS_ORGANIC', impr_organic)
@@ -132,12 +132,12 @@ def create_record(post):
     DSRecord.SetField(u'POST_IMPRESSIONS_UNIQUE', impr_unique)
 
     # store record
-    print 'about to add'
+    print 'About to add {0} to collection'.format(post.id)
     Collection.AddRecord(DSRecord)
-    print 'added over'
+    print 'Successfully added {0} to collection'.format(post.id)
 
 
-class FacebookCollector(object):
+class FacebookPage(object):
     """Collects insights about posts from a Facebook page"""
     BASE_URL = u'https://graph.facebook.com'
     MIN_SINCE = datetime.datetime(2015, 1, 1)
@@ -173,12 +173,13 @@ class FacebookCollector(object):
             pass
 
     def add_post_metrics(self, post):
-        detail_url = u'%s/%s/insights' % (self.BASE_URL, post.id)
-        resp = get_data(detail_url, PROXY, None,
-                        **self.post_detail_params)
-        data = resp[u'data']
-        post.metrics = self.extract_metrics(data)
-
+        detail_url = u'{0}/{1}/insights'.format(self.BASE_URL, post.id)
+        try:
+            resp = get_data(detail_url, PROXY, None, **self.post_detail_params)
+            data = resp[u'data']
+            post.metrics = self.extract_metrics(data)
+        except Exception, e:
+            print 'Could not fetch post metrics: {0}'.format(e)
         return post
 
     def extract_metrics(self, insights):
@@ -219,29 +220,27 @@ else:
 
 
 if __name__ == '__main__':
-    print u'Beginning to collect Facebook Posts...'
+    print u'Start collecting Facebook Posts...'
 
-    print u'Loading input task data...'
+    # print u'Loading input task data...'
     # last_post_record = DataManager.NewDataRecord()
     # Collection.GetRecord(last_post_record, 1)
     # max_id = last_post_record.GetField(u'POST_ID_IN')
     # DataManager.DeleteDataRecord(last_post_record)
 
+    pages = []
     print u'Creating input task for {0}'.format(PAGE_NAME)
-    collectors = []
-    try:
-        collector = FacebookCollector(ACCESS_TOKEN, PAGE_NAME)
-        collectors.append(collector)
-    except Exception, e:
-        print u"Error occurred while creating input tasks: %s" % e
+    page = FacebookPage(ACCESS_TOKEN, PAGE_NAME)
+    pages.append(page)
 
-    print u'Total %d tasks to search.\n' % len(collectors)
+    print u'Total %d tasks to search.\n' % len(pages)
 
-    print u'Begin data search...'
-    for collector in collectors:
-        results = collector.newest_posts()
-        for post in results:
+    for page in pages:
+        print u'Fetch newest posts for page {0}...'.format(page.page_name)
+        newest_posts = page.newest_posts()
+        for post in newest_posts:
             print u'Creating record {0}'.format(post)
             create_record(post)
-        print u'The term search finished. Total posts collected: %d.\n' % (len(results))
+        print u'Page {0} finished. Total posts collected: {1}.'.format(
+            page.page_name, len(newest_posts))
     print u'Finished collecting Facebook posts'
