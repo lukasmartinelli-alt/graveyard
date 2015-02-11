@@ -202,7 +202,7 @@ class FacebookPage(object):
 
         try:
             # Get all Posts of Swisscom Page (ID, DATE, TYPE)
-            request_url = u'{0}/{1}/feed'.format(self.BASE_URL, self.page_name)
+            request_url = u'{0}/{1}/posts'.format(self.BASE_URL, self.page_name)
             results = get_data(request_url, PROXY,
                                None, **self.params)
             data = results[u'data']
