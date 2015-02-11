@@ -20,7 +20,7 @@ class _Collection:
 
 
 class _DataManager:
-    def NewDataRecord(self, num=1):
+    def NewDataRecord(self, owner=1):
         return DSRecord()
 
     def DeleteDataRecord(self, num=1):
@@ -35,6 +35,7 @@ class DSRecord:
 
     def GetField(self, key):
         return self.values[key]
+
 
 Collection = _Collection()
 DataManager = _DataManager()
