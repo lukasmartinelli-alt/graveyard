@@ -6,10 +6,19 @@ import json
 import urllib
 import urllib2
 import sys
+import os
+
+
+def load_substitution_param(substitution, default_value):
+    if substitution.startswith('[$$'):
+        return default_value
+    else:
+        return substitution
 
 
 RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
-POST_LIMIT = 200
+POST_LIMIT = int(load_substitution_param(r'[$$FACEBOOK_POST_LIMIT]',
+                                         os.environ.get('POST_LIMIT', 200)))
 BASE_URL = u'https://graph.facebook.com'
 MIN_SINCE = datetime.datetime(2015, 1, 1)
 ACCESS_TOKEN = (u'CAAIcqYlr5QMBAEpoQTEqQn6y2qp6z5y1n3aoriTShRwvYo3SsusyWuAaGiz'
