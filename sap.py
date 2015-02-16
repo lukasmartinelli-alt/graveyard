@@ -16,9 +16,11 @@ class FIDataCollection:
         pass
         # self.records.remove(record)
 
-    def GetRecord(self, record, index=1):
+    def GetRecord(self, record, index):
         """Get a record at a given index from the collection."""
-        for key, value in self.records[0].values.iteritems():
+        if index < 1:
+            raise ValueError("Indizes in SAP BODS start at 1 and not 0!")
+        for key, value in self.records[index-1].values.iteritems():
             record.SetField(key, value)
 
     def Size(self):
@@ -27,26 +29,34 @@ class FIDataCollection:
 
     def Truncate(self):
         """Removes all the records from collection."""
-        pass
+        self.records = []
 
 
 class FIDataManager:
     def NewDataRecord(self, ownership=1):
         """
-        Creates a new record object.
+        Creates a new record object. Do not use this method in a loop,
+        otherwise the Python expression may experience a
+        memory leak. Depending on the expression, you'll probably want to
+        place this method at the beginning of the expression.
         Returns a new object of type FlDataRecord.
         """
         return FIDataRecord()
 
     def DeleteDataRecord(self, record):
-        """Deletes the memory allocated to the record object."""
-        pass
+        """
+        Deletes the memory allocated to the record object.
+        Do not call DeleteDataRecord() after calling AddRecord().
+        """
+        del record
 
 
 class FIProperties:
+    values = {}
+
     def GetProperty(self, property_name):
         """Returns the value of given property."""
-        pass
+        return self.values[property_name]
 
 
 class FIDataRecord:
