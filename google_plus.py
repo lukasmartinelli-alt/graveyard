@@ -69,9 +69,11 @@ def get_data(url, proxy, oauth_helper, method=0, **queryParams):
 
 
 class Activity(object):
-    def __init__(self, id, published_at, title, replies, plusoners, resharers):
+    def __init__(self, id, published_at, typ, title, replies,
+                 plusoners, resharers):
             self.id = id
             self.published_at = published_at
+            self.typ = typ
             self.title = title
             self.replies = replies
             self.plusoners = plusoners
@@ -91,14 +93,15 @@ class GooglePlusFeed(object):
         self.params = {'key': self.access_token,
                        'maxResults': MAX_RESULTS,
                        'fields': self.FIELDS}
+        self.page_detail_params = {'key': self.access_token}
 
     def parse_activity(self, activity):
         obj = activity['object']
         timestamp = time.strptime(activity[u'published'],
                                   '%Y-%m-%dT%H:%M:%S.%fZ')
-        print(obj)
         return Activity(
             id=activity['id'],
+            typ=obj['objectType'],
             published_at=timestamp,
             title=activity['title'],
             replies=obj['replies']['totalItems'],
@@ -116,13 +119,21 @@ class GooglePlusFeed(object):
         items = response['items']
         return [self.parse_activity(i) for i in items]
 
+    def followers(self):
+        """Follower count from Google+ profile"""
+        request_url = '{0}/{1}'.format(BASE_URL, self.user_id)
+        response = get_data(request_url, PROXY, None, **self.page_detail_params)
+        return int(response['plusOneCount'])
 
-def create_record(activity):
+
+def create_record(activity, followers):
     rec = DataManager.NewDataRecord(1)
 
     rec.SetField(u'POST_ID', unicode(activity.id))
     rec.SetField(u'POST_TEXT', unicode(activity.title))
+    rec.SetField(u'TYP', unicode(activity.typ))
     rec.SetField(u'TIMESTAMP', unicode(sap_timestamp(activity.published_at)))
+    rec.SetField(u'PAGE_FOLLOWERS', unicode(followers))
     rec.SetField(u'POST_PLUSEINS', unicode(activity.plusoners))
     rec.SetField(u'POST_SHARES', unicode(activity.resharers))
     rec.SetField(u'POST_COMMENTS', unicode(activity.replies))
@@ -140,10 +151,10 @@ if __name__ == '__main__':
 
     print 'Processing {0} input tasks'.format(len(feeds))
     for feed in feeds:
+        followers = feed.followers()
         activities = feed.newest_activities()
         for activity in activities:
-            create_record(activity)
-            print(activity)
+            create_record(activity, followers)
             print 'Successfully added {0} to collection'.format(activity.id)
         print '{0} activities fetched.'.format(len(activities))
 
