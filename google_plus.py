@@ -81,17 +81,12 @@ class Activity(object):
 
 class GooglePlusFeed(object):
     """Fetches information about public activities of a profile"""
-    FIELDS = ('items(access,id,object(content,id,objectType,originalContent,'
-              'plusoners/totalItems,replies/totalItems,resharers/totalItems,'
-              'url),placeId,placeName,published,title)')
-
     def __init__(self, access_token, user_id):
         self.access_token = access_token
         self.user_id = user_id
 
         self.params = {'key': self.access_token,
-                       'maxResults': MAX_RESULTS,
-                       'fields': self.FIELDS}
+                       'maxResults': MAX_RESULTS}
         self.page_detail_params = {'key': self.access_token}
 
     def parse_activity(self, activity):
@@ -122,7 +117,7 @@ class GooglePlusFeed(object):
         """Follower count from Google+ profile"""
         request_url = '{0}/{1}'.format(BASE_URL, self.user_id)
         response = get_data(request_url, PROXY, None, **self.page_detail_params)
-        return int(response['plusOneCount'])
+        return int(response['circledByCount'])
 
 
 def create_record(activity, followers):
