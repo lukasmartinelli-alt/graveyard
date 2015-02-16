@@ -120,12 +120,12 @@ class GooglePlusFeed(object):
 def create_record(activity):
     rec = DataManager.NewDataRecord(1)
 
-    rec.SetField(u'ACTIVITY_ID', unicode(activity.id))
-    rec.SetField(u'TIME_STAMP', unicode(sap_timestamp(activity.published_at)))
-    rec.SetField(u'TITLE', unicode(activity.title))
-    rec.SetField(u'REPLIES', unicode(activity.replies))
-    rec.SetField(u'PLUSONERS', unicode(activity.plusoners))
-    rec.SetField(u'RESHARERS', unicode(activity.resharers))
+    rec.SetField(u'POST_ID', unicode(activity.id))
+    rec.SetField(u'POST_TEXT', unicode(activity.title))
+    rec.SetField(u'TIMESTAMP', unicode(sap_timestamp(activity.published_at)))
+    rec.SetField(u'POST_PLUSEINS', unicode(activity.plusoners))
+    rec.SetField(u'POST_SHARES', unicode(activity.resharers))
+    rec.SetField(u'POST_COMMENTS', unicode(activity.replies))
 
     Collection.AddRecord(rec)
     del rec
@@ -143,6 +143,7 @@ if __name__ == '__main__':
         activities = feed.newest_activities()
         for activity in activities:
             create_record(activity)
+            print(activity)
             print 'Successfully added {0} to collection'.format(activity.id)
         print '{0} activities fetched.'.format(len(activities))
 

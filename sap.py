@@ -1,4 +1,4 @@
-"""Mock out SAP classes"""
+"""Fake implementation of the SAP Python BODS runtime"""
 
 
 class FIDataCollection:
