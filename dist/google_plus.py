@@ -1,7 +1,9 @@
 import locale
 import sys
 import time
-from http import get_data
+import urllib
+import urllib2
+import json
 
 
 RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
@@ -20,6 +22,50 @@ else:
 
 def sap_timestamp(timestamp):
     return time.strftime('%Y.%m.%d %H:%M:%S', timestamp)
+
+
+def get_data(url, proxy, oauth_helper, method=0, **queryParams):
+    """
+    Send an http or https request and receive a JSON object if
+    there is no error.
+    """
+
+    handler = urllib2.BaseHandler()
+    # Determine if the request must use a proxy
+    if proxy is not None and proxy != '':
+        handler = urllib2.ProxyHandler({u'http': proxy, u'https': proxy})
+
+    params = urllib.urlencode(queryParams)
+    http_body = None if method == 0 else params
+    http_url = u'%s?%s' % (url, params) if method == 0 else url
+
+    try:
+        opener = urllib2.build_opener(handler)
+
+        if oauth_helper:
+            head = oauth_helper.generateHeader(url, queryParams)
+
+            opener.addheaders = [(u'Authorization', head),
+                                 (u'Accept-Charset', 'utf-8')]
+            print(opener.addheaders)
+
+        print u'GET {0}'.format(http_url)
+        data = opener.open(http_url, data=http_body).read()
+
+        try:
+            result = json.loads(data, encoding='utf-8')
+        except ValueError, e:
+            print u'Could not load JSON: {0}'.format(e)
+            return None
+        return result
+    except urllib2.HTTPError, e:
+        print e.read()
+    except urllib2.URLError, e:
+        if hasattr(e, u'reason'):
+            print u'Could not reach %s due to %s.' % (http_url, str(e.reason))
+        elif hasattr(e, u'code'):
+            print u'Could not fulfill the request due to %s.' % str(e.code)
+        return None
 
 
 class Activity(object):
