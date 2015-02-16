@@ -8,13 +8,14 @@ class FIDataCollection:
         """
         Add a new record(returned by DataManager.NewDataRecord()) to the
         collection.
+        For every NewDataRecord(), you can call AddRecord() only once.
+        After you call AddRecord(), do not call DeleteDataRecord().
         """
         self.records.append(record)
 
     def DeleteRecord(self, record):
         """Removes the specified record from collection."""
-        pass
-        # self.records.remove(record)
+        self.records.remove(record)
 
     def GetRecord(self, record, index):
         """Get a record at a given index from the collection."""
@@ -24,7 +25,10 @@ class FIDataCollection:
             record.SetField(key, value)
 
     def Size(self):
-        """Returns number of records in a collection."""
+        """
+        Counts the number of records in the collection.
+        Returns number of records in a collection.
+        """
         return len(self.records)
 
     def Truncate(self):
@@ -64,6 +68,9 @@ class FIDataRecord:
 
     def SetField(self, field_name, value):
         """Stores a value in the specified field."""
+        if not isinstance(value, unicode):
+            raise ValueError("You should use unicode for exporting values "
+                             "from Python to the schema output!")
         self.values[field_name] = value
 
     def GetField(self, field_name):
