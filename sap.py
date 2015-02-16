@@ -1,4 +1,7 @@
-"""Fake implementation of the SAP Python BODS runtime"""
+"""
+This module enables local testing of python code
+used for User Defined TransformsSAP BODS inUser Defined Transform.
+"""
 
 
 class FIDataCollection:
@@ -60,6 +63,8 @@ class FIProperties:
 
     def GetProperty(self, property_name):
         """Returns the value of given property."""
+        if not isinstance(property_name, unicode):
+            raise ValueError("You must use unicode for property name")
         return self.values[property_name]
 
 
@@ -68,13 +73,16 @@ class FIDataRecord:
 
     def SetField(self, field_name, value):
         """Stores a value in the specified field."""
+        if not isinstance(field_name, unicode):
+            raise ValueError("You must use unicode for field name")
         if not isinstance(value, unicode):
-            raise ValueError("You should use unicode for exporting values "
-                             "from Python to the schema output!")
+            raise ValueError("You must use unicode for setting the value")
         self.values[field_name] = value
 
     def GetField(self, field_name):
         """Get a field from record."""
+        if not isinstance(field_name, unicode):
+            raise ValueError("You must use unicode for field name")
         return self.values[field_name]
 
 

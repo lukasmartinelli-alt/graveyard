@@ -83,7 +83,7 @@ class Post(object):
         self.page_name = page_name
         self.page_id = page_id
         self.id = id
-        self.message = message[:100]
+        self.message = message[:200]
         self.typ = typ
         self.timestamp = timestamp
         self.metrics = {}  # Insights data

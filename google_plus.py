@@ -10,8 +10,7 @@ RUNS_IN_SAP = sys.executable.endswith(u'al_engine.exe')
 ACCESS_TOKEN = 'AIzaSyBCPXBT29p0GnxvZ-s0kggHmQjENxDHdh8'
 USER_ID = 116503069960955784178
 BASE_URL = 'https://www.googleapis.com/plus/v1/people'
-# MAX_RESULTS = 100
-MAX_RESULTS = 5
+MAX_RESULTS = 100
 if RUNS_IN_SAP:
     PROXY = u'iproxy.corproot.net:8080'
     locale.setlocale(locale.LC_ALL, 'C')
