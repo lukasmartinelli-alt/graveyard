@@ -1,0 +1,21 @@
+[Unit]
+Description=grafana
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=10m
+Restart=always
+RestartSec=10s
+ExecStartPre=-/usr/bin/docker kill grafana
+ExecStartPre=-/usr/bin/docker rm -f grafana
+ExecStartPre=/usr/bin/docker pull tutum/grafana
+ExecStart=/usr/bin/bash -c 'docker run --name grafana \
+-v /data/grafana:/var/lib/grafana -m 128m \
+-p 3000:3000 \
+-t grafana/grafana'
+ExecStop=/usr/bin/docker stop -t 2 grafana
+
+[X-Fleet]
+MachineMetadata="%i=/data/grafana"

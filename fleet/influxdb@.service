@@ -1,0 +1,23 @@
+[Unit]
+Description=InfluxDB
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=core
+EnvironmentFile=/etc/environment
+TimeoutStartSec=10m
+Restart=always
+RestartSec=10s
+ExecStartPre=-/usr/bin/docker kill %p-%i
+ExecStartPre=-/usr/bin/docker rm -f %p-%i
+ExecStartPre=/usr/bin/docker pull tutum/influxdb:0.9
+ExecStart=/usr/bin/docker run --name %p-%i \
+-v /data/influxdb:/data -m 1024m \
+-p 8083:8083 \
+-p 8086:8086 \
+-t tutum/influxdb:0.9
+ExecStop=/usr/bin/docker stop -t 2 %p-%i
+
+[X-Fleet]
+MachineMetadata="%i=/data/influxdb"
