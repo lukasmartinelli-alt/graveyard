@@ -14,41 +14,41 @@ It contains one branch for each old master branch of the dead repository.
 
 ## Projects
 
-### [fs-googledrive](Provides a PyFilesystem interface to Google Drive)
+### [talentpool](https://github.com/lukasmartinelli/graveyard/tree/talentpool)
+
+**Description:** Manage and keep track of your Talent Pool of future employees
+
+**Cause of Death:** Frontend and design actually finished. But never implemented a backend.
+
+### [fs-googledrive](https://github.com/lukasmartinelli/graveyard/tree/fs-googledrive)
 
 **Description:** Provides a PyFilesystem interface to Google Drive
 
 **Cause of Death:** No longer motivated to work on implementation. Google Drive is quite difficult to emulate as a normal filesystem.
 
-### [fs-dropbox](https://github.com/lukasmartinelli/fs-dropbox)
+### [fs-dropbox](https://github.com/lukasmartinelli/graveyard/tree/fs-dropbox)
 
-|--------------------|-----------------------------------------------
-|**Description:**    | Simpler PyFilesystem implementation for Dropbox than the original
-|**Cause of Death:** | The main project [cuckoodrive](https://github.com/lukasmartinelli/cuckoodrive) has been shut down.
+**Description:** Simpler PyFilesystem implementation for Dropbox than the original
 
-### [syncany-android](https://github.com/lukasmartinelli/syncany-android)
+**Cause of Death:** The main project [cuckoodrive](https://github.com/lukasmartinelli/cuckoodrive) has been shut down.
+
+### [syncany-android](https://github.com/lukasmartinelli/graveyard/tree/syncany-android)
 
 **Description:** Android Thin Client for Syncany.
 
 **Cause of Death:** Only contained design and was meant for a study project I didn't get.
 
-### [syncany-plugin-googledrive](https://github.com/lukasmartinelli/syncany-plugin-googledrive)
+### [syncany-plugin-googledrive](https://github.com/lukasmartinelli/graveyard/tree/syncany-plugin-googledrive)
 
 **Description:** Google Drive plugin for Syncany
 
 **Cause of Death:** My second failed attempt at emulating Google Drive as a filesystem.
 
-### [vss](https://github.com/lukasmartinelli/vss)
+### [vss](https://github.com/lukasmartinelli/graveyard/tree/vss)
 
 **Description:** Markdown summary of the "Verteilte Software Systeme" lecture at HSR
 
 **Cause of Death:** The summary has never been published and found it's way into a Google Document.
-
-### [flint](https://github.com/lukasmartinelli/flint)
-
-**Description:**  Dockerfile for Facebook's flint tool
-
-**Cause of Death:** Facebook refused my pull request for an official flint repo.
 
 ### [docker-flint](https://github.com/lukasmartinelli/graveyard/tree/docker-flint)
 
@@ -56,7 +56,7 @@ It contains one branch for each old master branch of the dead repository.
 
 **Cause of Death:** I cannot keep up with the flint releases that break each version.
 
-### [flint](https://github.com/lukasmartinelli/flint)
+### [flint](https://github.com/lukasmartinelli/graveyard/tree/flint)
 
 **Description:**  Dockerfile for Facebook's flint tool
 
