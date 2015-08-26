@@ -12,6 +12,8 @@ Projects that have reached a stable state and that I no longer maintain
 or were discontinued will live on in their separate repositories.
 It contains one branch for each old master branch of the dead repository.
 
+**Only projects that are older than a year are deleted on the GitHub parent repositories**.
+
 ## Projects
 
 ### [talentpool](https://github.com/lukasmartinelli/graveyard/tree/talentpool)
