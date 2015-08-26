@@ -2,7 +2,7 @@
 
 <img align="right" alt="graveyard" src="graveyard.png" />
 
-Where my old projects because they
+Where my old projects go to die because they
 - were never finished
 - are now irrelevant (school exercises)
 - contain code I am ashamed of
