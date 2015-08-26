@@ -1,5 +1,7 @@
 # graveyard
 
+<img align="right" alt="graveyard" src="graveyard.png" />
+
 ## Projects
 
 ## [docker-flint](https://github.com/lukasmartinelli/graveyard/tree/docker-flint)
