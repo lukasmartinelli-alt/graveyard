@@ -64,6 +64,18 @@ It contains one branch for each old master branch of the dead repository.
 
 **Cause of Death:** Facebook refused my pull request for an official flint repo.
 
+### [mailgenic-web](https://github.com/lukasmartinelli/graveyard/tree/mailgenic-web)
+
+**Description:**  Website of my startup Mailgenic
+
+**Cause of Death:** Mailgenic didn't solve a real problem and therefore failed.I could have tried harder though.
+
+### [mailgenic-deploy](https://github.com/lukasmartinelli/graveyard/tree/mailgenic-deploy)
+
+**Description:**  Ansible deployment configuration my startup Mailgenic
+
+**Cause of Death:** Mailgenic didn't solve a real problem and therefore failed.I could have tried harder though.
+
 ## Further Information
 
 The idea is inspired by the [GitHub Spring Cleaning](http://kvz.io/blog/2014/02/21/how-to-deprecate-projects-on-github/) article.
