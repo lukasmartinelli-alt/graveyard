@@ -7,3 +7,9 @@ User defined function is a JavaScript function that takes a JSON object
 as input and returns a JSON object as output.
 
 This could be done with the [Otto JavaScript interpreter](https://github.com/robertkrimen/otto).
+
+Build worker
+
+```
+docker run --rm -v $(pwd):/src centurylink/golang-builder
+```
