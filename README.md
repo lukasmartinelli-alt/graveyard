@@ -1,2 +1,3 @@
-# rtpp
-Reatime Text Processing Platform
+# Reatime Text Processing Platform
+
+![Flow diagram](flow.png)
