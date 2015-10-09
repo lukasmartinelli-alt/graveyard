@@ -1,5 +1,3 @@
-
-
 var ghrrUrl = process.env.GHRR_URL || 'http://ghrr.gq:80/events';
 var natsUrl = process.env.NATS_URL || 'nats://localhost:4222';
 
