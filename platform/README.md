@@ -1,1 +1,3 @@
-Users must be able to edit the platform.
+# Platform
+
+A platform for filtering public event streams.

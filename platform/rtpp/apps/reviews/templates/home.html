@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+        <div class="container">
+            <div class="row">
+                <h1 class="section-heading">Filter GitHub Events in Realtime</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                		<h3>User Defined Transform</h3>
+                        <br/>
+                        <textarea id="codemirror">// Script will be executed for each event in the stream
+function processEvent(pushEvent) {
+    // Filter out all repositories that are not C++
+    if(pushEvent.repo.name == 'c++') {
+        // Returned values will be stored for later retrieval
+        return pushEvent;
+    }
+}</textarea>
+
+                        <button class="btn btn-default btn-lg" type="button">Deploy</button>
+                        <button class="btn btn-default btn-lg" type="button">Save</button>
+                    </div>
+                    <div class="col-md-12">
+                		<h3>Log</h3>
+                        <br/>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Input</th>
+                                    <th>Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea class="json-record">{
+    "size": 0,
+    "stargazers_count": 0,
+    "watchers_count": 0,
+    "language": null,
+    "has_issues": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": true,
+    "forks_count": 0,
+    "mirror_url": null,
+    "open_issues_count": 2,
+    "forks": 0,
+    "open_issues": 2,
+    "watchers": 0,
+    "default_branch": "master"
+}</textarea></td>
+                                    <td><textarea class="json-record">{
+    "size": 0,
+    "stargazers_count": 0,
+    "watchers_count": 0,
+    "language": null,
+    "has_issues": true,
+    "has_downloads": true,
+    "has_wiki": true,
+    "has_pages": true,
+    "forks_count": 0,
+    "mirror_url": null,
+    "open_issues_count": 2,
+    "forks": 0,
+    "open_issues": 2,
+    "watchers": 0,
+    "default_branch": "master"
+}</textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jacob</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Larry</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+				</div>
+            </div>
+        </div>
+{% endblock %}

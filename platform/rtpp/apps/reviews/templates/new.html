@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1 class="section-heading">Request new review for your project</h1>
+    <div class="row">
+      <div class="col-md-8">
+          <form action="{% url "new" %}" method="post">
+            {% csrf_token %}
+            <div class="form-group {% if form.github_repo.errors %}has-error{% endif %}">
+                <label for="{{ form.github_repo.id_for_label }}">
+                    GitHub repository
+                </label>
+                {% render_field form.github_repo class+="form-control" %}
+                {% if form.github_repo.errors %}
+                  <span class="help-block">
+                    {% for error in form.github_repo.errors %}{{ error }}{% endfor %}
+                  </span>
+                {% endif %}
+            </div>
+            <div class="checkbox {% if form.create_issue.errors %}has-error{% endif %}">
+                {{ form.create_issue.errors }}
+                <label>
+                    {{ form.create_issue }}
+                    Create issue for review
+                </label>
+             </div>
+             <br/>
+             <div class="form-group {% if form.info.errors %}has-error{% endif %}">
+                <label for="{{ form.info.id_for_label }}">
+                    Provide some information for the reviewer
+                </label>
+                {% render_field form.info class+="form-control" data-provide="markdown" %}
+                {% if form.info.errors %}
+                  <span class="help-block">
+                    {% for error in form.info.errors %}{{ error }}{% endfor %}
+                  </span>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-default btn-lg">Request Review+</button>
+        </form>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
