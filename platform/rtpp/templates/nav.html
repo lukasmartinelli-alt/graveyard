@@ -8,16 +8,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="/">Event Processing Platform</a>
+                <a class="navbar-brand topnav" href="/">Event Filter</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                      <a href="#">Streams</a>
+                    </li>
+                    <li>
                       <a href="#">Browse</a>
                     </li>
                     <li>
-                      <a href="#">Request Review+</a>
+                      <a href="#">Create Filter+</a>
                     </li>
                     <li>
                         {% if user and not user.is_anonymous %}

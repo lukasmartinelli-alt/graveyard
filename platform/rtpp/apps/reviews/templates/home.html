@@ -3,11 +3,39 @@
 
 {% block content %}
         <div class="container">
+<div class="row">
+  <div class="col-lg-6 col-sm-6">
+      <hr class="section-heading-spacer">
+      <div class="clearfix"></div>
+      <h1 class="section-heading">Get started with Data Streams</h1>
+      <p class="lead">
+      Alot of data streams are available to the public yet it is difficult getting started.
+      The infrastructure needed for such a setup slows down people who are just interested
+      in a subset of the public data.
+      </p>
+      <p class="lead">
+
+      Our service allows you to easily access data streams and filter out the bits you
+      want to take action on. You write a small user defined script to filter and transform the data
+      you need and we will call your API endpoints and provide a query API to access those
+      events.
+      </p>
+      <p class="lead">
+
+      This takes the burden from infrastructure of dealing with high volume streams and let's you work
+      with the data you are actually interested in.
+      </p>
+  </div>
+  <div class="col-lg-5 col-sm-5">
+      <img style="max-width: 100%; margin-top: 120px;" alt="Event Filter Data Flow" src="{% static "img/event_filter_flow.svg" %}"/>
+  </div>
+</div>
             <div class="row">
                 <h1 class="section-heading">Filter GitHub Events in Realtime</h1>
-                <div class="row">
                     <div class="col-md-6">
                 		<h3>User Defined Transform</h3>
+                        <p>This user defined program is a function that takes an incoming event and decides to process it further. Returned values will be stored and sent to your API endpoint.
+                        </p>
                         <br/>
                         <textarea id="codemirror">// Script will be executed for each event in the stream
 function processEvent(pushEvent) {
