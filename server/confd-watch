@@ -1,0 +1,27 @@
+#!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
+
+readonly ETCD_PORT=2379
+readonly ETCD_HOST=172.17.42.1
+readonly ETCD="$ETCD_HOST:$ETCD_PORT"
+
+echo "[nginx] booting container. ETCD: $ETCD."
+
+initial_config() {
+    until confd -onetime -node $ETCD -config-file $1; do
+        echo "[nginx] waiting for confd to create initial nginx config for $1"
+        sleep 5
+    done
+}
+
+# The nginx config should never fail
+initial_config /etc/confd/conf.d/nginx.toml
+
+confd -interval 10 -node $ETCD -config-file /etc/confd/conf.d/nginx.toml &
+
+echo "[nginx] confd is now monitoring etcd for changes..."
+echo "[nginx] starting nginx service..."
+
+nginx -g "daemon off;"
