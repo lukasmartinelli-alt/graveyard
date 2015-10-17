@@ -16,6 +16,12 @@ It contains one branch for each old master branch of the dead repository.
 
 ## Projects
 
+### [redirekter](https://github.com/lukasmartinelli/graveyard/tree/redirekter)
+
+**Description:** Provide free HTTP redirects to other domains because on AWS one cannot create endless buckets for redirects.
+
+**Cause of Death:** Etcd did not want to play along and killed the initial joy.
+
 ### [talentpool](https://github.com/lukasmartinelli/graveyard/tree/talentpool)
 
 **Description:** Manage and keep track of your Talent Pool of future employees
