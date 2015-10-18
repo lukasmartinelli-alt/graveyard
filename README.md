@@ -16,11 +16,17 @@ It contains one branch for each old master branch of the dead repository.
 
 ## Projects
 
+### [song-of-github](https://github.com/lukasmartinelli/graveyard/tree/song-of-github)
+
+**Description:** Generate audio signal from all live Github commits to showcase my GHRR project.
+
+**Cause of Death:** Really difficult to generate sound that is pleasant to listen to.
+
 ### [rtpp](https://github.com/lukasmartinelli/graveyard/tree/rtpp)
 
 **Description:** Filter events from public stream and relay them to user webhooks.
 
-**Cause of Death:** Would have been very interesting to implement but apart from that it is very difficult to understand what the idea is and I doubt anyone would use such a service..
+**Cause of Death:** Would have been very interesting to implement but apart from that it is very difficult to understand what the idea is and I doubt anyone would use such a service.
 
 ### [redirekter](https://github.com/lukasmartinelli/graveyard/tree/redirekter)
 
