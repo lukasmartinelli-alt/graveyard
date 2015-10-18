@@ -9,12 +9,15 @@ $(function() {
 
 
     socket.on('pushevent', function(event) {
-      var freqModifier = event.payload.commits.length;
-      T("pluck", {freq: 300 + 4 * freqModifier, mul:0.5}).bang().play();
+      var rand = event.payload.commits.length;
+      T("pluck", {freq: 200 + 4 * rand, mul:0.2}).bang().play();
     });
 
     socket.on('createevent', function(event) {
       createPerSecond += 1;
+      T.soundfont.setInstrument(33);
+      console.log('create');
+      T.soundfont.play(60);
     });
 
     socket.on('watchevent', function(event) {
