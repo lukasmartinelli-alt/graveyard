@@ -6,12 +6,12 @@ module DistanceConversions
 
 -- Define yards to feet
 yardsToFeet ::  Float -> Float
-yardsToFeet y = undefined
+yardsToFeet yd = yd * 3.0
 
 -- Define feet to inches
 feetToInches :: Float -> Float
-feetToInches f = undefined
+feetToInches ft = ft / 12.0
 
 -- Define inches to centimetres
 inchesToCentimetres :: Float -> Float
-inchesToCentimetres i = undefined
+inchesToCentimetres i = i * 2.54

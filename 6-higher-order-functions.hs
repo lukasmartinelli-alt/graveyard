@@ -46,7 +46,16 @@ hoSumInts a b = higherOrderSum id a b
 --  - A function to apply to each value, op :: Int -> Int
 --  - A function to apply between each value, f :: Int -> Int -> Int
 --  - A value to return in the base case when a > b, z :: Int
-higherOrderSequenceApplication = undefined
+type OperatorFunc = Int -> Int
+type IntApplicationFunc = Int -> Int -> Int
+type BaseCaseDefault = Int
+
+higherOrderSequenceApplication :: Int -> Int -> OperatorFunc -> IntApplicationFunc -> BaseCaseDefault
+higherOrderSequenceApplication a b op f baseCaseDef
+    | a == b    = baseCaseDef
+    | a > b     = undefined
+    | otherwise = f (b - a) + (higherOrderSequenceApplication a (b - 1) op f baseCaseDef)
+
 
 -- Define a factorial method using the higherOrderSequenceAppliction
 hoFactorial :: Int -> Int
