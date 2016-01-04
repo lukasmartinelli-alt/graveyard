@@ -35,6 +35,9 @@ source-repository head
     type: git
     location: git://github.com/koalaman/shellcheck.git
 
+flag all
+    default: False
+
 library
     build-depends:
       base >= 4 && < 5,
@@ -71,6 +74,10 @@ executable shellcheck
       parsec,
       regex-tdfa
     main-is: shellcheck.hs
+    if flag(all)
+        buildable: True
+    else
+        buildable: False
 
 test-suite test-shellcheck
     type: exitcode-stdio-1.0
