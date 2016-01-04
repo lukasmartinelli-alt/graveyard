@@ -17,7 +17,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -}
-{-# LANGUAGE TemplateHaskell, FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts #-}
 module ShellCheck.Analytics (runAnalytics) where
 
 import ShellCheck.AST
@@ -3673,6 +3673,3 @@ checkNonportableSignals _ = checkUnqualifiedCommand "trap" (const f)
         guard $ map toLower str `elem` ["kill", "9", "sigkill", "stop", "sigstop"]
         return $ err id 2173
             "SIGKILL/SIGSTOP can not be trapped."
-
-
-return []

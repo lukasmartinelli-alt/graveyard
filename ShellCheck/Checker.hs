@@ -17,7 +17,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -}
-{-# LANGUAGE TemplateHaskell #-}
 module ShellCheck.Checker (checkScript) where
 
 import ShellCheck.Interface
@@ -155,5 +154,3 @@ prop_sourceDirectiveDoesntFollowFile =
     null $ checkWithIncludes
                 [("foo", "source bar"), ("bar", "baz=3")]
                 "#shellcheck source=foo\n. \"$1\"; echo \"$baz\""
-
-return []

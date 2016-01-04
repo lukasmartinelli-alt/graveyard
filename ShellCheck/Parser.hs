@@ -17,7 +17,7 @@
     yOU should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -}
-{-# LANGUAGE NoMonomorphismRestriction, TemplateHaskell, FlexibleContexts #-}
+{-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
 module ShellCheck.Parser (parseScript) where
 
 import ShellCheck.AST
@@ -2491,5 +2491,3 @@ parseScript sys spec =
 
 lt x = trace (show x) x
 ltt t = trace (show t)
-
-return []
