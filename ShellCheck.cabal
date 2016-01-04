@@ -43,8 +43,7 @@ library
       json,
       mtl >= 2.2.1,
       parsec,
-      regex-tdfa,
-      QuickCheck >= 2.7.4
+      regex-tdfa
     exposed-modules:
       ShellCheck.AST
       ShellCheck.ASTLib
@@ -72,8 +71,7 @@ executable shellcheck
       json,
       mtl >= 2.2.1,
       parsec,
-      regex-tdfa,
-      QuickCheck >= 2.7.4
+      regex-tdfa
     main-is: shellcheck.hs
 
 test-suite test-shellcheck
@@ -86,7 +84,6 @@ test-suite test-shellcheck
       json,
       mtl >= 2.2.1,
       parsec,
-      regex-tdfa,
-      QuickCheck >= 2.7.4
+      regex-tdfa
     main-is: test/shellcheck.hs
 

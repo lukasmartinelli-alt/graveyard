@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -}
 {-# LANGUAGE NoMonomorphismRestriction, TemplateHaskell, FlexibleContexts #-}
-module ShellCheck.Parser (parseScript, runTests) where
+module ShellCheck.Parser (parseScript) where
 
 import ShellCheck.AST
 import ShellCheck.ASTLib
@@ -44,8 +44,6 @@ import Text.Parsec.Pos
 import qualified Control.Monad.Reader as Mr
 import qualified Control.Monad.State as Ms
 import qualified Data.Map as Map
-
-import Test.QuickCheck.All (quickCheckAll)
 
 type SCBase m = Mr.ReaderT (SystemInterface m) (Ms.StateT SystemState m)
 type SCParser m v = ParsecT String UserState (SCBase m) v
@@ -2495,5 +2493,3 @@ lt x = trace (show x) x
 ltt t = trace (show t)
 
 return []
-runTests = $quickCheckAll
-

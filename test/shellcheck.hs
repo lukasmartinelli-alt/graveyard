@@ -9,9 +9,6 @@ import qualified ShellCheck.Parser
 main = do
     putStrLn "Running ShellCheck tests..."
     results <- sequence [
-        ShellCheck.Checker.runTests,
-        ShellCheck.Analytics.runTests,
-        ShellCheck.Parser.runTests
       ]
     if and results
       then exitSuccess

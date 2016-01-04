@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -}
 {-# LANGUAGE TemplateHaskell, FlexibleContexts #-}
-module ShellCheck.Analytics (runAnalytics, ShellCheck.Analytics.runTests) where
+module ShellCheck.Analytics (runAnalytics) where
 
 import ShellCheck.AST
 import ShellCheck.ASTLib
@@ -40,8 +40,6 @@ import Data.Maybe
 import Data.Ord
 import Debug.Trace
 import qualified Data.Map as Map
-import Test.QuickCheck.All (forAllProperties)
-import Test.QuickCheck.Test (quickCheckWithResult, stdArgs, maxSuccess)
 
 data Parameters = Parameters {
     variableFlow :: [StackData],
@@ -3678,4 +3676,3 @@ checkNonportableSignals _ = checkUnqualifiedCommand "trap" (const f)
 
 
 return []
-runTests =  $( [| $(forAllProperties) (quickCheckWithResult (stdArgs { maxSuccess = 1 }) ) |])
