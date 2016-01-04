@@ -39,7 +39,6 @@ import Data.Maybe
 import Data.Monoid
 import Prelude hiding (catch)
 import System.Console.GetOpt
-import System.Directory
 import System.Environment
 import System.Exit
 import System.IO
