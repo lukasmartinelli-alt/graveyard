@@ -1,7 +1,3 @@
-import com.github.retronym.SbtOneJar._
-
-oneJarSettings
-
 name := "scala-jcloud"
 
 version := "1.0"
