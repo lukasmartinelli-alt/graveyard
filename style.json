@@ -137,7 +137,7 @@
           "LineString"
         ],
         [
-          "==",
+          "in",
           "kind",
           "stream",
           "canal"
@@ -207,10 +207,7 @@
         "admin_level",
         "4"
       ],
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round"
-      },
+      "layout": {},
       "paint": {
         "fill-color": "#ededed",
         "fill-outline-color": "#cacecc"
@@ -541,7 +538,7 @@
           "Point"
         ],
         [
-          "==",
+          "in",
           "kind",
           "city",
           "county",
@@ -589,7 +586,7 @@
           "Point"
         ],
         [
-          "==",
+          "in",
           "kind",
           "neighbourhood",
           "hamlet",
