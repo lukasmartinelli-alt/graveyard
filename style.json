@@ -1,5 +1,6 @@
 {
   "version": 8,
+  "metadata": {},
   "sources": {
     "tilezen": {
       "type": "vector",
@@ -63,6 +64,7 @@
       "type": "fill",
       "source": "tilezen",
       "source-layer": "landuse",
+      "minzoom": 6,
       "filter": [
         "in",
         "kind",
@@ -81,14 +83,14 @@
       ],
       "paint": {
         "fill-color": "#c2cd44"
-      },
-      "minzoom": 6
+      }
     },
     {
       "id": "river",
       "type": "line",
       "source": "tilezen",
       "source-layer": "water",
+      "minzoom": 6,
       "filter": [
         "all",
         [
@@ -121,14 +123,14 @@
             ]
           ]
         }
-      },
-      "minzoom": 6
+      }
     },
     {
       "id": "stream-etc",
       "type": "line",
       "source": "tilezen",
       "source-layer": "water",
+      "minzoom": 11,
       "filter": [
         "all",
         [
@@ -162,18 +164,21 @@
             ]
           ]
         }
-      },
-      "minzoom": 11
+      }
     },
     {
       "id": "country-boundary",
       "type": "line",
       "source": "tilezen",
-      "source-layer": "places",
+      "source-layer": "boundaries",
+      "maxzoom": 4,
       "filter": [
-        "==",
-        "admin_level",
-        "2"
+        "all",
+        [
+          "==",
+          "admin_level",
+          2
+        ]
       ],
       "layout": {
         "line-cap": "round",
@@ -194,25 +199,24 @@
             ]
           ]
         }
-      },
-      "maxzoom": 4
+      }
     },
     {
       "id": "state-boundary",
-      "type": "fill",
+      "type": "line",
       "source": "tilezen",
-      "source-layer": "places",
+      "source-layer": "boundaries",
+      "maxzoom": 10,
       "filter": [
-        "==",
-        "admin_level",
-        "4"
+        "all",
+        [
+          "==",
+          "admin_level",
+          4
+        ]
       ],
       "layout": {},
-      "paint": {
-        "fill-color": "#ededed",
-        "fill-outline-color": "#cacecc"
-      },
-      "maxzoom": 10
+      "paint": {}
     },
     {
       "id": "subways",
@@ -402,6 +406,7 @@
       "type": "line",
       "source": "tilezen",
       "source-layer": "roads",
+      "minzoom": 12,
       "filter": [
         "==",
         "kind",
@@ -430,14 +435,14 @@
           2,
           2
         ]
-      },
-      "minzoom": 12
+      }
     },
     {
       "id": "country-label",
       "type": "symbol",
       "source": "tilezen",
       "source-layer": "places",
+      "maxzoom": 7,
       "filter": [
         "all",
         [
@@ -474,14 +479,15 @@
       "paint": {
         "text-color": "#cb4b49",
         "text-halo-color": "rgba(255,255,255,0.5)"
-      },
-      "maxzoom": 7
+      }
     },
     {
       "id": "state-label",
       "type": "symbol",
       "source": "tilezen",
       "source-layer": "places",
+      "minzoom": 6,
+      "maxzoom": 12,
       "filter": [
         "all",
         [
@@ -518,15 +524,15 @@
       "paint": {
         "text-color": "#f27a87",
         "text-halo-color": "rgba(255,255,255,0.5)"
-      },
-      "minzoom": 6,
-      "maxzoom": 12
+      }
     },
     {
       "id": "city-label",
       "type": "symbol",
       "source": "tilezen",
       "source-layer": "places",
+      "minzoom": 10,
+      "maxzoom": 14,
       "filter": [
         "all",
         [
@@ -566,15 +572,14 @@
       "paint": {
         "text-color": "#384646",
         "text-halo-color": "rgba(255,255,255,0.5)"
-      },
-      "minzoom": 10,
-      "maxzoom": 14
+      }
     },
     {
       "id": "other-label",
       "type": "symbol",
       "source": "tilezen",
       "source-layer": "places",
+      "minzoom": 12,
       "filter": [
         "all",
         [
@@ -613,14 +618,15 @@
       "paint": {
         "text-color": "#cb4b49",
         "text-halo-color": "rgba(255,255,255,0.5)"
-      },
-      "minzoom": 12
+      }
     },
     {
       "id": "ocean-label",
       "type": "symbol",
       "source": "tilezen",
       "source-layer": "places",
+      "minzoom": 2,
+      "maxzoom": 6,
       "filter": [
         "==",
         "kind",
@@ -650,9 +656,7 @@
       "paint": {
         "text-color": "#ededed",
         "text-halo-color": "rgba(0,0,0,0.2)"
-      },
-      "minzoom": 2,
-      "maxzoom": 6
+      }
     }
   ]
 }
