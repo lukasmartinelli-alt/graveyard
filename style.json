@@ -395,8 +395,7 @@
             ]
           ]
         }
-      },
-      "line-join": "round"
+      }
     },
     {
       "id": "path",
@@ -432,8 +431,6 @@
           2
         ]
       },
-      "line-join": "round",
-      "line-cap": "round",
       "minzoom": 12
     },
     {
