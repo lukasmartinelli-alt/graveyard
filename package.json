@@ -1,0 +1,26 @@
+{
+  "name": "vectorbaker",
+  "version": "1.0.0",
+  "description": "Turn GeoJSON/Shapefiles into vector tiles on disk.",
+  "main": "index.js",
+  "bin": {
+    "vectorbaker": "make-vectortiles.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukasmartinelli/vectorbaker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukasmartinelli/vectorbaker/issues"
+  },
+  "homepage": "https://github.com/lukasmartinelli/vectorbaker#readme",
+  "dependencies": {
+    "commander": "^2.10.0",
+    "mkdirp": "^0.5.1"
+  }
+}
