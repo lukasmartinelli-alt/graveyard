@@ -22,6 +22,12 @@ It contains one branch for each old master branch of the dead repository.
 
 **Cause of Death:** tippecanoe now supports this option natively.
 
+### [tilezen-gl-style](https://github.com/lukasmartinelli/graveyard/tree/tilezen-gl-style)
+
+**Description:** Mapbox GL style using the Mapzen vector tiles.
+
+**Cause of Death:** No longer maintained.
+
 ### [song-of-github](https://github.com/lukasmartinelli/graveyard/tree/song-of-github)
 
 **Description:** Generate audio signal from all live Github commits to showcase my GHRR project.
