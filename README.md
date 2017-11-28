@@ -16,6 +16,12 @@ It contains one branch for each old master branch of the dead repository.
 
 ## Projects
 
+### [vectorbaker](https://github.com/lukasmartinelli/graveyard/tree/vectorbaker)
+
+**Description:** Turn GeoJSON/Shapefiles into vector tiles on disk.
+
+**Cause of Death:** tippecanoe now supports this option natively.
+
 ### [song-of-github](https://github.com/lukasmartinelli/graveyard/tree/song-of-github)
 
 **Description:** Generate audio signal from all live Github commits to showcase my GHRR project.
