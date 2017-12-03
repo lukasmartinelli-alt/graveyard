@@ -9,7 +9,7 @@ Where my old projects go to die because they
 
 This container repo is only for the dead projects, 
 Projects that have reached a stable state and that I no longer maintain
-or were discontinued will live in [`lukasmartinelli-deprecated`[(https://github.com/lukasmartinelli-deprecated).
+or were discontinued were archived.
 It contains one branch for each old master branch of the dead repository.
 
 **Only projects that are older than a year are deleted on the GitHub parent repositories**.
